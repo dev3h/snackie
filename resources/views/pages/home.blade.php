@@ -1,4 +1,4 @@
-@extends('baseLayout')
+@extends('master')
 @section('content')
 <div class="features_items"><!--features_items-->
     <h2 class="title text-center">Features Items</h2>
