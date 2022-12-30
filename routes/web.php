@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,5 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// custom route
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/trang-chu', [HomeController::class, 'index']);
+
+// admin route
+Route::get('/admin', [AdminController::class, 'index']);
