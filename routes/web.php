@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 // custom route
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/trang-chu', [HomeController::class, 'index']);
+Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang-chu');
 
 // admin route
 Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');

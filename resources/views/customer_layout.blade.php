@@ -21,16 +21,16 @@
 </head><!--/head-->
 
 <body>
-    @include('customer.layouts.header')
+    @include('layouts.customer.header')
 
 	{{-- carousel --}}
-    @include('customer.layouts.carousel')
+    @include('layouts.customer.carousel')
 
 	<section>
 		<div class="container">
 			<div class="row">
 				{{-- sidebar --}}
-                @include('customer.layouts.sidebar')
+                @include('layouts.customer.sidebar')
 
                 {{-- content --}}
                 <div class="col-sm-9 padding-right">
@@ -40,7 +40,7 @@
 		</div>
 	</section>
 
-    @include('customer.layouts.footer')
+    @include('layouts.customer.footer')
 
 
 
