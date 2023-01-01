@@ -41,3 +41,18 @@ Route::get('trang-chu', function(){
 
 -   Để có thể hiển thị được trang home khi cắt giao diện, hiển thị phần content khi dùng `@section` và dùng `@yield` để gọi nội dung của `@section` thì ta sẽ tạo một `controller`.
 -   Vd: HomeController.php có hàm index để gọi view `home.blade.php`. Sau khi gọi thì nó chạy qua extends `master.blade.php` và hiển thị nội dung của section `content` bằng yield.
+
+## query
+- [https://laravel.com/docs/8.x/queries#main-content]
+```php
+use Illuminate\Support\Facades\DB;
+```
+
+- Lấy dữ liệu từ form thông qua request
+```php
+use Illuminate\Http\Request;
+```
+- Mã hóa về md5
+```php
+$pass = md5($request->password);
+```

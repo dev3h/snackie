@@ -43,15 +43,8 @@
         <!--main content start-->
         <section id="main-content">
             <section class="wrapper">
-                <h1>Chào mừng đến với trang quản trị</h1>
+                @yield('admin_content')
             </section>
-        <!-- footer -->
-            <div class="footer">
-                <div class="wthree-copyright">
-                <p>© 2017 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
-                </div>
-            </div>
-        <!-- / footer -->
         </section>
         <!--main content end-->
     </section>
@@ -67,15 +60,15 @@
     <script>
         $(document).ready(function() {
             //BOX BUTTON SHOW AND CLOSE
-        jQuery('.small-graph-box').hover(function() {
-            jQuery(this).find('.box-button').fadeIn('fast');
-        }, function() {
-            jQuery(this).find('.box-button').fadeOut('fast');
-        });
-        jQuery('.small-graph-box .box-close').click(function() {
-            jQuery(this).closest('.small-graph-box').fadeOut(200);
-            return false;
-        });
+            jQuery('.small-graph-box').hover(function() {
+                jQuery(this).find('.box-button').fadeIn('fast');
+            }, function() {
+                jQuery(this).find('.box-button').fadeOut('fast');
+            });
+            jQuery('.small-graph-box .box-close').click(function() {
+                jQuery(this).closest('.small-graph-box').fadeOut(200);
+                return false;
+            });
 
             //CHARTS
             function gd(year, day, month) {
@@ -85,15 +78,15 @@
             graphArea2 = Morris.Area({
                 element: 'hero-area',
                 padding: 10,
-            behaveLikeLine: true,
-            gridEnabled: false,
-            gridLineColor: '#dddddd',
-            axes: true,
-            resize: true,
-            smooth:true,
-            pointSize: 0,
-            lineWidth: 0,
-            fillOpacity:0.85,
+                behaveLikeLine: true,
+                gridEnabled: false,
+                gridLineColor: '#dddddd',
+                axes: true,
+                resize: true,
+                smooth:true,
+                pointSize: 0,
+                lineWidth: 0,
+                fillOpacity:0.85,
                 data: [
                     {period: '2015 Q1', iphone: 2668, ipad: null, itouch: 2649},
                     {period: '2015 Q2', iphone: 15780, ipad: 13799, itouch: 12051},
@@ -104,7 +97,6 @@
                     {period: '2016 Q3', iphone: 4830, ipad: 3805, itouch: 1598},
                     {period: '2016 Q4', iphone: 15083, ipad: 8977, itouch: 5185},
                     {period: '2017 Q1', iphone: 10697, ipad: 4470, itouch: 2038},
-
                 ],
                 lineColors:['#eb6f6f','#926383','#eb6f6f'],
                 xkey: 'period',
@@ -115,17 +107,14 @@
                 hideHover: 'auto',
                 resize: true
             });
-
-
         });
-        </script>
+    </script>
     <!-- calendar -->
     <script type="text/javascript" src="{{asset('backend/js/monthly.js')}}"></script>
     <script type="text/javascript">
         $(window).load( function() {
             $('#mycalendar').monthly({
                 mode: 'event',
-
             });
 
             $('#mycalendar2').monthly({
