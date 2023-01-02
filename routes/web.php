@@ -22,4 +22,5 @@ Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang-chu');
 // admin route
 Route::get('/admin', [AdminController::class, 'index']);
 Route::post('/admin', [AdminController::class, 'login'])->name('admin-login');
+Route::get('/logout', [AdminController::class, 'logout'])->name('admin-logout');
 Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');

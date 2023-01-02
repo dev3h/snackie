@@ -28,6 +28,13 @@
     <div class="log-w3">
         <div class="w3layouts-main">
             <h2>Đăng nhập</h2>
+             @php
+                $message = session()->get('message');
+                if($message) {
+                    echo '<span class="text-alert">'.$message.'</span>';
+                    session()->put('message', null);
+                }
+            @endphp
             <form action="{{route('admin-login')}}" method="post">
                 @csrf
                 <input type="text" class="ggg" name="email" placeholder="E-MAIL" required="" />

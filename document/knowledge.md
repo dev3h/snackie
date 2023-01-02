@@ -43,16 +43,53 @@ Route::get('trang-chu', function(){
 -   Vd: HomeController.php có hàm index để gọi view `home.blade.php`. Sau khi gọi thì nó chạy qua extends `master.blade.php` và hiển thị nội dung của section `content` bằng yield.
 
 ## query
-- [https://laravel.com/docs/8.x/queries#main-content]
+
+-   [https://laravel.com/docs/8.x/queries#main-content]
+
 ```php
 use Illuminate\Support\Facades\DB;
 ```
 
-- Lấy dữ liệu từ form thông qua request
+-   Lấy dữ liệu từ form thông qua request
+
 ```php
 use Illuminate\Http\Request;
 ```
-- Mã hóa về md5
+
+-   Mã hóa về md5
+
 ```php
 $pass = md5($request->password);
+```
+
+## session, redirect
+
+### session
+
+```php
+use Illuminate\Support\Facades\Session;
+```
+
+-   Lưu trữ session
+
+```php
+Session::put('id', $customer_id); // key và value
+```
+
+hoặc nếu dùng `session()` thì không cần use cái kia
+
+```php
+session()->put('id', $customer_id);
+```
+
+-   Lấy session
+
+```php
+session()->get('id'); // truyền key đã đặt
+```
+
+### redirect
+
+```php
+redirect()->route('tên route')
 ```

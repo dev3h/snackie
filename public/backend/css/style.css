@@ -25,7 +25,7 @@ body a{
 	text-decoration:none;
 }
 h1,h2,h3,h4,h5,h6{
-	margin:0;			   
+	margin:0;
 }
 p{
 	margin:0;
@@ -784,7 +784,7 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
     padding: 0 16px;
     background:#ddede0;
    border-top-right-radius: 2px;
-   border-top-left-radius: 2px; 
+   border-top-left-radius: 2px;
     text-transform: uppercase;
     text-align: center;
 }
@@ -1015,7 +1015,7 @@ div#graph1,div#graph4,div#graph5,div#graph6,div#graph7,div#graph8,div#graph9 {
 }
 .progress .bar {
 		z-index: 2;
-		height:15px; 
+		height:15px;
 		font-size: 12px;
 		color: white;
 		text-align: center;
@@ -1031,19 +1031,19 @@ div#graph1,div#graph4,div#graph5,div#graph6,div#graph7,div#graph8,div#graph9 {
 	}
 .progress-striped .yellow{
 	background:#f0ad4e;
-} 
+}
 .progress-striped .green{
 	background:#5cb85c;
-} 
+}
 .progress-striped .light-blue{
 	background:#4F52BA;
-} 
+}
 .progress-striped .red{
 	background:#d9534f;
-} 
+}
 .progress-striped .blue{
 	background:#428bca;
-} 
+}
 .progress-striped .orange {
 	background:#e94e02;
 }
@@ -1180,7 +1180,7 @@ h4.title {
     -ms-transition: 0.5s all;
     -moz-transition: 0.5s all;
     cursor: pointer;
-} 
+}
 .icon-box:hover {
     background: #000;
 	transition:0.5s all;
@@ -1199,11 +1199,11 @@ h4.title {
     float: left;
     width: 12.5%;
     height: 115px;
-    padding: 10px; 
+    padding: 10px;
     line-height: 1.4;
-    text-align: center;  
+    text-align: center;
     font-size: 12px;
-    list-style-type: none;	
+    list-style-type: none;
 }
 .codes .bs-glyphicons .glyphicon {
     margin-top: 5px;
@@ -1221,7 +1221,7 @@ h4.title {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 	color: #777;
-} 
+}
 .codes .bs-glyphicons .glyphicon-class {
     display: block;
     text-align: center;
@@ -1279,7 +1279,7 @@ h3.agileits-icons-title {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 	color: #777;
-} 
+}
 .bs-glyphicons .glyphicon-class {
     display: block;
     text-align: center;
@@ -1391,12 +1391,12 @@ li.list-group-item1 {
 }
 .grid_4{
 	background:none;
-	
+
 }
 .label {
 	font-weight: 300 !important;
 	border-radius:4px;
-}  
+}
 .grid_5{
 	background:none;
 	padding:2em 0;
@@ -1496,6 +1496,13 @@ ol {
 }
 h2.typoh2{
     margin: 0 0 10px;
+}
+span.text-alert {
+    display: inline-block;
+    width: 100% !important;
+    font-weight: bold;
+    text-align: center;
+    color: #E14D2A !important;
 }
 @media (max-width:768px){
 .grid_5 {
@@ -2465,12 +2472,12 @@ h4 input[type="checkbox"] {
 	color:#fff !important;
 }
 :-moz-placeholder { /* Firefox 18- */
-	color:#fff !important; 
+	color:#fff !important;
 }
 ::-moz-placeholder {  /* Firefox 19+ */
 	color:#fff !important;
 }
-:-ms-input-placeholder {  
+:-ms-input-placeholder {
 	color:#fff !important;
 }
 /*--//placeholder-color--*/
