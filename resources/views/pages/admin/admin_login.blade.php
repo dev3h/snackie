@@ -35,7 +35,7 @@
                     session()->put('message', null);
                 }
             @endphp
-            <form action="{{route('admin-login')}}" method="post">
+            <form action="{{route('admin.login')}}" method="post">
                 @csrf
                 <input type="text" class="ggg" name="email" placeholder="E-MAIL" required="" />
                 <input type="password" class="ggg" name="password" placeholder="MẬT KHẨU" required="" />

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -22,17 +21,17 @@ class AdminController extends Controller
             session()->put('admin_name', $result->name);
             session()->put('admin_id', $result->id);
 
-            return redirect()->route('dashboard');
+            return redirect()->route('admin.dashboard');
         } else {
             session()->put('message', 'Email hoặc mật khẩu không đúng');
-            return redirect()->route('admin-login');
+            return redirect()->route('admin.login');
         }
     }
     public function logout()
     {
         session()->put('admin_name', null);
         session()->put('admin_id', null);
-        return redirect()->route('admin-login');
+        return redirect()->route('admin.login');
     }
     public function show_dashboard()
     {

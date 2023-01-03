@@ -1,26 +1,31 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 // custom route
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang-chu');
+Route::get('/trang-chu', [HomeController::class, 'index'])->name('customer.home');
+// end customer route
 
-// admin route
-Route::get('/admin', [AdminController::class, 'index']);
-Route::post('/admin', [AdminController::class, 'login'])->name('admin-login');
-Route::get('/logout', [AdminController::class, 'logout'])->name('admin-logout');
-Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');
+// Admin route
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('', [AdminController::class, 'index']);
+    Route::post('', [AdminController::class, 'login'])->name('login');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');
+});
+
+// Category Product route
+Route::group(['prefix' => 'admin/categories-product', 'as' => 'category_product.'], function () {
+    Route::get('', [CategoryProductController::class, 'index'])->name('index');
+    Route::get('/create', [CategoryProductController::class, 'create'])->name('create');
+    Route::post('/create', [CategoryProductController::class, 'store'])->name('store');
+    Route::get('/edit/{category_product}', [CategoryProductController::class, 'edit'])->name('edit');
+    Route::put('/edit/{category_product}', [CategoryProductController::class, 'update'])->name('update');
+    Route::delete('/destroy/{category_product}', [CategoryProductController::class, 'destroy'])->name('destroy');
+
+});
+// end Amin route
