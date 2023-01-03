@@ -35,7 +35,12 @@ class CategoryProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $object = new CategoryProduct();
+        $object->fill($request->except('_token'));
+        $object->save();
+
+        session()->put('message', 'thêm danh mục sản phẩm thành công');
+        return redirect()->route('category_product.create');
     }
 
     /**
