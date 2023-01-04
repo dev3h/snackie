@@ -14,7 +14,10 @@ class CategoryProductController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.CategoriesProduct.index');
+        $data = CategoryProduct::get();
+        return view('pages.admin.CategoriesProduct.index', [
+            'data' => $data
+        ]);
     }
 
     /**

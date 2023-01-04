@@ -35,23 +35,23 @@
             </th>
             <th>Tên danh mục</th>
             <th>Hiển thị</th>
-            <th>Ngày thêm</th>
             <th style="width:30px;"></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-            <td>Idrawfast prototype design prototype design prototype design prototype design prototype design</td>
-            <td><span class="text-ellipsis">{item.PrHelpText1}</span></td>
-            <td><span class="text-ellipsis">{item.PrHelpText1}</span></td>
-            <td>
-                <a href="" class="active" ui-toggle-class="">
-                    <i class="fa fa-pencil-square-o text-success text-active"></i>
-                    <i class="fa fa-times text-danger text"></i>
-                </a>
-            </td>
-          </tr>
+            @foreach ($data as $each)
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>{{$each->name}}</td>
+                <td>{{$each->category_product_status}}</td>
+                <td>
+                    <a href="" class="active" ui-toggle-class="">
+                        <i class="fa fa-pencil-square-o text-success text-active"></i>
+                        <i class="fa fa-times text-danger text"></i>
+                    </a>
+                </td>
+            </tr>
+            @endforeach
         </tbody>
       </table>
     </div>

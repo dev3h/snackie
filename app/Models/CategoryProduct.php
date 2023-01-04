@@ -14,4 +14,9 @@ class CategoryProduct extends Model
         'description',
         'status'
     ];
+
+    public function getCategoryProductStatusAttribute()
+    {
+        return $this->status == 1 ? 'Hiện' : 'Ẩn';
+    }
 }
