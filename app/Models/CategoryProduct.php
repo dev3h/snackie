@@ -15,8 +15,12 @@ class CategoryProduct extends Model
         'status'
     ];
 
-    public function getCategoryProductStatusAttribute()
+    public function getCategoryProductStatusAttribute($each)
     {
-        return $this->status == 1 ? 'Hiện' : 'Ẩn';
+        if($this->status == 1) {
+            return "<a href='{{route('category_product.inactive', $each)}}' class='btn btn-success'><span class='fa fa-eye'></span></a>";
+        } else {
+            return "<a href='{{route('category_product.active', $each)}}' class='btn btn-success'><span class='fa fa-eye'></span></a>";
+        }
     }
 }

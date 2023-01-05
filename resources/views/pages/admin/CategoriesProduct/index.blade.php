@@ -25,6 +25,13 @@
       </div>
     </div>
     <div class="table-responsive">
+        @php
+            $message = session()->get('message');
+            if($message) {
+                echo '<span class="text-alert">'.$message.'</span>';
+                session()->put('message', null);
+            }
+        @endphp
       <table class="table table-striped b-t b-light">
         <thead>
           <tr>
@@ -43,7 +50,13 @@
               <tr>
                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
                 <td>{{$each->name}}</td>
-                <td>{{$each->category_product_status}}</td>
+                <td>
+                    @if ($each->status == 1)
+                        <a href="{{route('category_product.inactive', $each->id)}}" class='btn btn-success'><span class='fa fa-eye'></span></a>
+                    @else
+                        <a href="{{route('category_product.active', $each->id)}}" class='btn btn-danger'><span class='fa fa-eye-slash'></span></a>
+                    @endif
+                </td>
                 <td>
                     <a href="" class="active" ui-toggle-class="">
                         <i class="fa fa-pencil-square-o text-success text-active"></i>

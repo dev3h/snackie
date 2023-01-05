@@ -93,3 +93,24 @@ session()->get('id'); // truyền key đã đặt
 ```php
 redirect()->route('tên route')
 ```
+
+## Hiển thị html khi giá trị return trong 1 attribute là 1 html
+
+-   Dùng {!tên attribute!}
+
+```php
+ public function getCategoryProductStatusAttribute()
+    {
+        if($this->status == 1) {
+            return '<a href="#"><span class="fa fa-eye"></span></a>';
+        } else {
+            return '<a href="#"><span class="fa fa-eye-slash"></span></a>';
+        }
+    }
+```
+
+gọi
+
+```php
+{!$each->category_product_status!}
+```

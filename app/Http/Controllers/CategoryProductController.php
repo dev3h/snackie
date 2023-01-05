@@ -46,6 +46,23 @@ class CategoryProductController extends Controller
         return redirect()->route('category_product.create');
     }
 
+    public function inactive($category_product_id)
+    {
+        $object = CategoryProduct::find($category_product_id);
+        $object->status = 0;
+        $object->save();
+        session()->put('message', 'không kích hoạt danh mục sản phẩm thành công');
+        return redirect()->route('category_product.index');
+    }
+    public function active($category_product_id)
+    {
+        $object = CategoryProduct::find($category_product_id);
+        $object->status = 1;
+        $object->save();
+        session()->put('message', 'kích hoạt danh mục sản phẩm thành công');
+        return redirect()->route('category_product.index');
+    }
+
     /**
      * Display the specified resource.
      *

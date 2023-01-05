@@ -21,10 +21,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 // Category Product route
 Route::group(['prefix' => 'admin/categories-product', 'as' => 'category_product.'], function () {
     Route::get('', [CategoryProductController::class, 'index'])->name('index');
+
+    Route::get('/inactive/{category_product_id}', [CategoryProductController::class, 'inactive'])->name('inactive');
+    Route::get('/active/{category_product_id}', [CategoryProductController::class, 'active'])->name('active');
+
     Route::get('/create', [CategoryProductController::class, 'create'])->name('create');
     Route::post('/create', [CategoryProductController::class, 'store'])->name('store');
+
     Route::get('/edit/{category_product}', [CategoryProductController::class, 'edit'])->name('edit');
     Route::put('/edit/{category_product}', [CategoryProductController::class, 'update'])->name('update');
+
     Route::delete('/destroy/{category_product}', [CategoryProductController::class, 'destroy'])->name('destroy');
 
 });
