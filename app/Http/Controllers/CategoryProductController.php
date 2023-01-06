@@ -111,6 +111,9 @@ class CategoryProductController extends Controller
      */
     public function destroy(CategoryProduct $categoryProduct)
     {
-        //
+        $categoryProduct->delete();
+
+        session()->put('message', 'xóa danh mục sản phẩm thành công');
+        return redirect()->route('category_product.index');
     }
 }

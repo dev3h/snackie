@@ -1633,12 +1633,16 @@ span.text-alert {
     text-align: center;
     color: #e14d2a !important;
 }
-a.table-button {
+.table-button {
     display: flex;
     align-items: center;
     padding: 7px;
     padding-top: 0;
     font-size: 20px;
+}
+button.table-button {
+    border: none;
+    background: transparent
 }
 div.button-group {
     display: flex;

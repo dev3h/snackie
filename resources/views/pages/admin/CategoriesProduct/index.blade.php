@@ -62,9 +62,14 @@
                         <a href="{{route('category_product.edit', $each)}}" class="active table-button" ui-toggle-class="">
                             <i class="fa fa-pencil-square-o text-success text-active"></i>
                         </a>
-                        <a href="{{route('category_product.destroy', $each)}}" class="active table-button" ui-toggle-class="">
-                            <i class="fa fa-times text-danger text"></i>
-                        </a>
+                        <form action="{{route('category_product.destroy', $each)}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button onclick="return confirm('Bạn có chắc muốn xóa danh mục này không?')" class="active table-button" ui-toggle-class="">
+                                <i class="fa fa-times text-danger text"></i>
+                            </button>
+                        </form>
+
                     </div>
                 </td>
             </tr>
