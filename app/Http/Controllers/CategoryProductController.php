@@ -82,7 +82,9 @@ class CategoryProductController extends Controller
      */
     public function edit(CategoryProduct $categoryProduct)
     {
-        //
+        return view('pages.admin.CategoriesProduct.edit', [
+            'each' => $categoryProduct,
+        ]);
     }
 
     /**
@@ -94,7 +96,11 @@ class CategoryProductController extends Controller
      */
     public function update(Request $request, CategoryProduct $categoryProduct)
     {
-        //
+        $categoryProduct->fill($request->except('_token'));
+        $categoryProduct->save();
+
+        session()->put('message', 'sửa danh mục sản phẩm thành công');
+        return redirect()->route('category_product.index');
     }
 
     /**

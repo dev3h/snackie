@@ -58,10 +58,14 @@
                     @endif
                 </td>
                 <td>
-                    <a href="" class="active" ui-toggle-class="">
-                        <i class="fa fa-pencil-square-o text-success text-active"></i>
-                        <i class="fa fa-times text-danger text"></i>
-                    </a>
+                    <div class="button-group">
+                        <a href="{{route('category_product.edit', $each)}}" class="active table-button" ui-toggle-class="">
+                            <i class="fa fa-pencil-square-o text-success text-active"></i>
+                        </a>
+                        <a href="{{route('category_product.destroy', $each)}}" class="active table-button" ui-toggle-class="">
+                            <i class="fa fa-times text-danger text"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
             @endforeach
