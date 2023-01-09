@@ -16,8 +16,18 @@
                         <span>Danh mục sản phẩm</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="{{route('category_product.create')}}">Thêm danh mục sản phẩm</a></li>
-                        <li><a href="{{route('category_product.index')}}">Liệt kê danh mục sản phẩm</a></li>
+                        <li><a href="{{route('category_product.create')}}">Thêm</a></li>
+                        <li><a href="{{route('category_product.index')}}">Liệt kê</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Thương hiệu sản phẩm</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{route('brand_product.create')}}">Thêm</a></li>
+                        <li><a href="{{route('brand_product.index')}}">Liệt kê</a></li>
                     </ul>
                 </li>
             </ul>

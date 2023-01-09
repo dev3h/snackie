@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BrandProductController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,22 @@ Route::group(['prefix' => 'admin/categories-product', 'as' => 'category_product.
     Route::delete('/destroy/{category_product}', [CategoryProductController::class, 'destroy'])->name('destroy');
 
 });
+
+// Brand Product route
+Route::group(['prefix' => 'admin/brand-product', 'as' => 'brand_product.'], function () {
+    Route::get('', [BrandProductController::class, 'index'])->name('index');
+
+    Route::get('/inactive/{brand_product_id}', [BrandProductController::class, 'inactive'])->name('inactive');
+    Route::get('/active/{brand_product_id}', [BrandProductController::class, 'active'])->name('active');
+
+    Route::get('/create', [BrandProductController::class, 'create'])->name('create');
+    Route::post('/create', [BrandProductController::class, 'store'])->name('store');
+
+    Route::get('/edit/{brand_product}', [BrandProductController::class, 'edit'])->name('edit');
+    Route::put('/edit/{brand_product}', [BrandProductController::class, 'update'])->name('update');
+
+    Route::delete('/destroy/{brand_product}', [BrandProductController::class, 'destroy'])->name('destroy');
+
+});
+
 // end Amin route
