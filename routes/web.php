@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandProductController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 // custom route
@@ -50,6 +51,23 @@ Route::group(['prefix' => 'admin/brand-product', 'as' => 'brand_product.'], func
     Route::put('/edit/{brand_product}', [BrandProductController::class, 'update'])->name('update');
 
     Route::delete('/destroy/{brand_product}', [BrandProductController::class, 'destroy'])->name('destroy');
+
+});
+
+// Product route
+Route::group(['prefix' => 'admin/product', 'as' => 'product.'], function () {
+    Route::get('', [ProductController::class, 'index'])->name('index');
+
+    Route::get('/inactive/{product_id}', [ProductController::class, 'inactive'])->name('inactive');
+    Route::get('/active/{product_id}', [ProductController::class, 'active'])->name('active');
+
+    Route::get('/create', [ProductController::class, 'create'])->name('create');
+    Route::post('/create', [ProductController::class, 'store'])->name('store');
+
+    Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
+    Route::put('/edit/{product}', [ProductController::class, 'update'])->name('update');
+
+    Route::delete('/destroy/{product}', [ProductController::class, 'destroy'])->name('destroy');
 
 });
 

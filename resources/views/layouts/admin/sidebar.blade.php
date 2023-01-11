@@ -30,6 +30,16 @@
                         <li><a href="{{route('brand_product.index')}}">Liệt kê</a></li>
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Sản phẩm</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{route('product.create')}}">Thêm</a></li>
+                        <li><a href="{{route('product.index')}}">Liệt kê</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <!-- sidebar menu end-->

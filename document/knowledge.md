@@ -114,3 +114,7 @@ gọi
 ```php
 {!$each->category_product_status!}
 ```
+## eloquent
+- [https://laravel.com/docs/8.x/eloquent]
+## query
+- [https://laravel.com/docs/8.x/queries]
