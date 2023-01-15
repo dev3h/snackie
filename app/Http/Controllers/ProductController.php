@@ -6,6 +6,7 @@ use App\Models\BrandProduct;
 use App\Models\CategoryProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -47,9 +48,26 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create($request->except('_token'));
+        $get_image = $request->file('image');
 
-        session()->put('message', 'thêm sản phẩm thành công');
+        if ($get_image) {
+            $get_name_image = $get_image->getClientOriginalName();
+            $new_name_image = current(explode('.', $get_name_image));
+            $new_image = $new_name_image . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
+            $get_image->move('uploads/products', $new_image);
+            
+            $arr = $request->except('_token');
+            $arr['image'] = $new_image;
+            Product::create($arr);
+
+            session()->put('message', 'thêm sản phẩm thành công');
+        } else {
+            $arr = $request->except('_token');
+            $arr['image'] = '';
+            Product::create($arr);
+            session()->put('message', 'thêm sản phẩm thành công');
+        }
+
         return redirect()->route('product.create');
 
     }

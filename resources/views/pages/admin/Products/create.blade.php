@@ -13,7 +13,7 @@
                         }
                     @endphp
                     <div class="position-center">
-                        <form role="form" method="post" action="{{ route('product.store') }}">
+                        <form role="form" method="post" action="{{ route('product.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tên sản phẩm</label>
@@ -22,8 +22,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Giá sản phẩm</label>
-                                <input type="text" name="name" class="form-control" id="exampleInputEmail1"
-                                    placeholder="tên sản phẩm" />
+                                <input type="text" name="price" class="form-control" id="exampleInputEmail1"
+                                    placeholder="giá sản phẩm" />
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Ảnh sản phẩm</label>
@@ -43,7 +43,7 @@
                                 <label for="exampleInputPassword1">Danh mục sản phẩm</label>
                                 <select name="category_id" class="form-control input-sm m-bot15">
                                     @foreach ($categories_product as $category_product)
-                                        <option value="{{$category_product->id}}">{{$category_product->name}}</option>
+                                        <option value="{{ $category_product->id }}">{{ $category_product->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -51,7 +51,7 @@
                                 <label for="exampleInputPassword1">Thương hiệu sản phẩm</label>
                                 <select name="brand_id" class="form-control input-sm m-bot15">
                                     @foreach ($brands_product as $brand_product)
-                                        <option value="{{$brand_product->id}}">{{$brand_product->name}}</option>
+                                        <option value="{{ $brand_product->id }}">{{ $brand_product->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

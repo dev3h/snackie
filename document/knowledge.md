@@ -114,7 +114,50 @@ gọi
 ```php
 {!$each->category_product_status!}
 ```
+
+---
+
 ## eloquent
-- [https://laravel.com/docs/8.x/eloquent]
+
+-   [https://laravel.com/docs/8.x/eloquent]
+
+---
+
 ## query
-- [https://laravel.com/docs/8.x/queries]
+
+-   [https://laravel.com/docs/8.x/queries]
+
+---
+
+## up ảnh
+
+```php
+ $new_image = rand(0, 9999) . $request->file('image')->getClientOriginalExtension();
+ $path = Storage::putFileAs('public/images/products', $request->file('image'), $new_image);
+```
+
+-   Sau khi up xong thì nó sẽ nằm ở `storage/app/public/tên folder mình ghi ở put()` (folder này tự động tạo khi thêm)
+-   up xong thì chúng ta sẽ move nó từ vị trí storage sang public to. Thêm thành công thì chạy lệnh
+
+```bash
+php artisan storage:link
+```
+
+-   c2:
+
+```php
+$get_name_image = $get_image->getClientOriginalName();
+$new_name_image = current(explode('.', $get_name_image));
+$new_image = $new_name_image . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
+$get_image->move('uploads/products', $new_image);
+```
+
+-  `current`: lấy phần tử đầu tiên của mảng
+
+## Lỗi
+
+```php
+Unable to guess the MIME type as no guessers are available (have you enabled the php_fileinfo extension?)
+```
+
+-   Cách fix: vào file `php.ini` và tìm đến dòng `;extension=php_fileinfo.dll` và bỏ dấu `;` ở đầu dòng. Sau đó restart lại server.
