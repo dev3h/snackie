@@ -2,7 +2,7 @@
 @section('admin_content')
 <div class="table-agile-info">
 <div class="panel panel-default">
-    <div class="panel-heading">Liệt kê danh mục sản phẩm</div>
+    <div class="panel-heading">Liệt kê {{$messageName}}</div>
     <div class="row w3-res-tb">
       <div class="col-sm-5 m-b-xs">
         <select class="input-sm form-control w-sm inline v-middle">
@@ -52,20 +52,20 @@
                 <td>{{$each->name}}</td>
                 <td>
                     @if ($each->status == 1)
-                        <a href="{{route('category_product.inactive', $each->id)}}" class='btn btn-success'><span class='fa fa-eye'></span></a>
+                        <a href="{{route($asRoute . '.inactive', $each->id)}}" class='btn btn-success'><span class='fa fa-eye'></span></a>
                     @else
-                        <a href="{{route('category_product.active', $each->id)}}" class='btn btn-danger'><span class='fa fa-eye-slash'></span></a>
+                        <a href="{{route($asRoute . '.active', $each->id)}}" class='btn btn-danger'><span class='fa fa-eye-slash'></span></a>
                     @endif
                 </td>
                 <td>
                     <div class="button-group">
-                        <a href="{{route('category_product.edit', $each)}}" class="active table-button" ui-toggle-class="">
+                        <a href="{{route($asRoute . '.edit', $each)}}" class="active table-button" ui-toggle-class="">
                             <i class="fa fa-pencil-square-o text-success text-active"></i>
                         </a>
-                        <form action="{{route('category_product.destroy', $each)}}" method="post">
+                        <form action="{{route($asRoute . '.destroy', $each)}}" method="post">
                             @csrf
                             @method('DELETE')
-                            <button onclick="return confirm('Bạn có chắc muốn xóa danh mục này không?')" class="active table-button" ui-toggle-class="">
+                            <button onclick="return confirm('Bạn có chắc muốn xóa {{$messageName}} này không?')" class="active table-button" ui-toggle-class="">
                                 <i class="fa fa-times text-danger text"></i>
                             </button>
                         </form>

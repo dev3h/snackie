@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-12">
             <section class="panel">
-                <header class="panel-heading">Thêm sản phẩm</header>
+                <header class="panel-heading">Thêm {{ $messageName }}</header>
                 <div class="panel-body">
                     @php
                         $message = session()->get('message');
@@ -16,31 +16,31 @@
                         <form role="form" method="post" action="{{ route('product.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Tên sản phẩm</label>
+                                <label for="exampleInputEmail1">Tên {{ $messageName }}</label>
                                 <input type="text" name="name" class="form-control" id="exampleInputEmail1"
-                                    placeholder="tên sản phẩm" />
+                                    placeholder="tên {{ $messageName }}" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Giá sản phẩm</label>
+                                <label for="exampleInputEmail1">Giá {{ $messageName }}</label>
                                 <input type="text" name="price" class="form-control" id="exampleInputEmail1"
-                                    placeholder="giá sản phẩm" />
+                                    placeholder="giá {{ $messageName }}" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Ảnh sản phẩm</label>
+                                <label for="exampleInputEmail1">Ảnh {{ $messageName }}</label>
                                 <input type="file" name="image" class="form-control" id="exampleInputEmail1" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Mô tả sản phẩm</label>
+                                <label for="exampleInputPassword1">Mô tả {{ $messageName }}</label>
                                 <textarea name="description" style="resize: none" rows="8" class="form-control" id="exampleInputPassword1"
-                                    placeholder="mô tả sản phẩm"></textarea>
+                                    placeholder="mô tả {{ $messageName }}"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Nội dung sản phẩm</label>
+                                <label for="exampleInputPassword1">Nội dung {{ $messageName }}</label>
                                 <textarea name="content" style="resize: none" rows="8" class="form-control" id="exampleInputPassword1"
-                                    placeholder="nội dung sản phẩm"></textarea>
+                                    placeholder="nội dung {{ $messageName }}"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Danh mục sản phẩm</label>
+                                <label for="exampleInputPassword1">Danh mục {{ $messageName }}</label>
                                 <select name="category_id" class="form-control input-sm m-bot15">
                                     @foreach ($categories_product as $category_product)
                                         <option value="{{ $category_product->id }}">{{ $category_product->name }}</option>
@@ -48,7 +48,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Thương hiệu sản phẩm</label>
+                                <label for="exampleInputPassword1">Thương hiệu {{ $messageName }}</label>
                                 <select name="brand_id" class="form-control input-sm m-bot15">
                                     @foreach ($brands_product as $brand_product)
                                         <option value="{{ $brand_product->id }}">{{ $brand_product->name }}</option>

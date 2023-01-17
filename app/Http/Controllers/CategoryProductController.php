@@ -4,9 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoryProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class CategoryProductController extends Controller
 {
+    private $model;
+    private $messageName = 'danh mục sản phẩm';
+    private $folderName = 'CategoriesProduct';
+    private $asRoute;
+    public function __construct()
+    {
+        $this->model = (new CategoryProduct())->query();
+        $routeName = Route::currentRouteName();
+        $arr = explode('.', $routeName);
+        $this->asRoute = $arr[0];
+        $arr = array_map('ucfirst', $arr);
+        $title = implode(' - ', $arr);
+        View::share(
+            [
+                'messageName' => $this->messageName,
+                'asRoute' => $this->asRoute,
+            ]
+        );
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,9 +36,9 @@ class CategoryProductController extends Controller
      */
     public function index()
     {
-        $data = CategoryProduct::get();
-        return view('pages.admin.CategoriesProduct.index', [
-            'data' => $data
+        $data = $this->model->orderBy('id', 'desc')->get();
+        return view('pages.admin.' . $this->folderName . '.index', [
+            'data' => $data,
         ]);
     }
 
@@ -27,7 +49,7 @@ class CategoryProductController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.CategoriesProduct.create');
+        return view('pages.admin.' . $this->folderName . '.create');
     }
 
     /**
@@ -38,29 +60,27 @@ class CategoryProductController extends Controller
      */
     public function store(Request $request)
     {
-        $object = new CategoryProduct();
-        $object->fill($request->except('_token'));
-        $object->save();
+        $this->model->create($request->except('_token'));
 
-        session()->put('message', 'thêm danh mục sản phẩm thành công');
-        return redirect()->route('category_product.create');
+        session()->put('message', 'thêm ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.create');
     }
 
     public function inactive($category_product_id)
     {
-        $object = CategoryProduct::find($category_product_id);
+        $object = $this->model->find($category_product_id);
         $object->status = 0;
         $object->save();
-        session()->put('message', 'không kích hoạt danh mục sản phẩm thành công');
-        return redirect()->route('category_product.index');
+        session()->put('message', 'không kích hoạt ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
     }
     public function active($category_product_id)
     {
-        $object = CategoryProduct::find($category_product_id);
+        $object = $this->model->find($category_product_id);
         $object->status = 1;
         $object->save();
-        session()->put('message', 'kích hoạt danh mục sản phẩm thành công');
-        return redirect()->route('category_product.index');
+        session()->put('message', 'kích hoạt ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
     }
 
     /**
@@ -82,7 +102,7 @@ class CategoryProductController extends Controller
      */
     public function edit(CategoryProduct $categoryProduct)
     {
-        return view('pages.admin.CategoriesProduct.edit', [
+        return view('pages.admin.' . $this->folderName . '.edit', [
             'each' => $categoryProduct,
         ]);
     }
@@ -99,8 +119,8 @@ class CategoryProductController extends Controller
         $categoryProduct->fill($request->except('_token'));
         $categoryProduct->save();
 
-        session()->put('message', 'sửa danh mục sản phẩm thành công');
-        return redirect()->route('category_product.index');
+        session()->put('message', 'sửa ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
     }
 
     /**
@@ -113,7 +133,7 @@ class CategoryProductController extends Controller
     {
         $categoryProduct->delete();
 
-        session()->put('message', 'xóa danh mục sản phẩm thành công');
-        return redirect()->route('category_product.index');
+        session()->put('message', 'xóa ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
     }
 }

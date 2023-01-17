@@ -6,10 +6,31 @@ use App\Models\BrandProduct;
 use App\Models\CategoryProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class ProductController extends Controller
 {
+    private $model;
+    private $messageName = 'sản phẩm';
+    private $folderName = 'Products';
+    private $asRoute;
+    public function __construct()
+    {
+        $this->model = (new Product())->query();
+        $routeName = Route::currentRouteName();
+        $arr = explode('.', $routeName);
+        $this->asRoute = $arr[0];
+        $arr = array_map('ucfirst', $arr);
+        $title = implode(' - ', $arr);
+        View::share(
+            [
+                'messageName' => $this->messageName,
+                'asRoute' => $this->asRoute,
+            ]
+        );
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,11 +38,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Product::get();
-        return view('pages.admin.Products.index', [
+        $data = $this->model->join('category_products', 'category_products.id', '=', 'category_id')
+            ->join('brand_products', 'brand_products.id', '=', 'brand_id')
+            ->select('products.*', 'category_products.name as category_name', 'brand_products.name as brand_name')
+            ->orderBy('products.id', 'desc')
+            ->get();
+
+        return view('pages.admin.' . $this->folderName . '.index', [
             'data' => $data,
         ]);
-
     }
 
     /**
@@ -31,9 +56,15 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories_product = CategoryProduct::orderBy('id', 'desc')->get();
-        $brands_product = BrandProduct::orderBy('id', 'desc')->get();
-        return view('pages.admin.Products.create', [
+        $categories_product = CategoryProduct::orderBy('id', 'desc')->get([
+            'id',
+            'name',
+        ]);
+        $brands_product = BrandProduct::orderBy('id', 'desc')->get([
+            'id',
+            'name',
+        ]);
+        return view('pages.admin.' . $this->folderName . '.create', [
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
         ]);
@@ -55,38 +86,40 @@ class ProductController extends Controller
             $new_name_image = current(explode('.', $get_name_image));
             $new_image = $new_name_image . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
             $get_image->move('uploads/products', $new_image);
-            
+
             $arr = $request->except('_token');
             $arr['image'] = $new_image;
-            Product::create($arr);
+            $this->model->create($arr);
 
-            session()->put('message', 'thêm sản phẩm thành công');
+            session()->put('message', 'thêm ' .$this->messageName. ' thành công');
         } else {
             $arr = $request->except('_token');
             $arr['image'] = '';
-            Product::create($arr);
-            session()->put('message', 'thêm sản phẩm thành công');
+            $this->model->create($arr);
+            session()->put('message', 'thêm ' .$this->messageName. ' thành công');
         }
 
-        return redirect()->route('product.create');
+        return redirect()->route($this->asRoute . '.create');
 
     }
 
     public function inactive($product_id)
     {
-        $object = Product::find($product_id);
+        $object = $this->model->find($product_id);
         $object->status = 0;
         $object->save();
-        session()->put('message', 'không kích hoạt sản phẩm thành công');
-        return redirect()->route('product.index');
+        session()->put('message', 'không kích hoạt ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
+
     }
     public function active($product_id)
     {
-        $object = Product::find($product_id);
+        $object = $this->model->find($product_id);
         $object->status = 1;
         $object->save();
-        session()->put('message', 'kích hoạt sản phẩm thành công');
-        return redirect()->route('product.index');
+        session()->put('message', 'kích hoạt ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
+
     }
 
     /**
@@ -108,8 +141,19 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('pages.admin.Products.edit', [
+        $categories_product = CategoryProduct::orderBy('id', 'desc')->get([
+            'id',
+            'name',
+        ]);
+        $brands_product = BrandProduct::orderBy('id', 'desc')->get([
+            'id',
+            'name',
+        ]);
+
+        return view('pages.admin.' . $this->folderName . '.edit', [
             'each' => $product,
+            'categories_product' => $categories_product,
+            'brands_product' => $brands_product,
         ]);
 
     }
@@ -126,7 +170,7 @@ class ProductController extends Controller
         $product->fill($request->except('_token'));
         $product->save();
 
-        session()->put('message', 'sửa sản phẩm thành công');
+        session()->put('message', 'sửa ' .$this->messageName. ' thành công');
         return redirect()->route('product.index');
 
     }
@@ -141,7 +185,7 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        session()->put('message', 'xóa sản phẩm thành công');
+        session()->put('message', 'xóa ' .$this->messageName. ' thành công');
         return redirect()->route('product.index');
 
     }

@@ -4,9 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\BrandProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class BrandProductController extends Controller
 {
+    private $model;
+    private $messageName = 'thương hiệu sản phẩm';
+    private $folderName = 'BrandsProduct';
+    private $asRoute;
+    public function __construct()
+    {
+        $this->model = (new BrandProduct())->query();
+        $routeName = Route::currentRouteName();
+        $arr = explode('.', $routeName);
+        $this->asRoute = $arr[0];
+        $arr = array_map('ucfirst', $arr);
+        $title = implode(' - ', $arr);
+        View::share(
+            [
+                'messageName' => $this->messageName,
+                'asRoute' => $this->asRoute,
+            ]
+        );
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +36,8 @@ class BrandProductController extends Controller
      */
     public function index()
     {
-        $data = BrandProduct::get();
-        return view('pages.admin.BrandsProduct.index', [
+        $data = $this->model->orderBy('id', 'desc')->get();
+        return view('pages.admin.' . $this->folderName . '.index', [
             'data' => $data,
         ]);
 
@@ -28,7 +50,7 @@ class BrandProductController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.BrandsProduct.create');
+        return view('pages.admin.' . $this->folderName . '.create');
     }
 
     /**
@@ -39,27 +61,28 @@ class BrandProductController extends Controller
      */
     public function store(Request $request)
     {
-        BrandProduct::create($request->except('_token'));
+        $this->model->create($request->except('_token'));
 
-        session()->put('message', 'thêm thương hiệu sản phẩm thành công');
-        return redirect()->route('brand_product.create');
+        session()->put('message', 'thêm ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.create');
 
     }
     public function inactive($brand_product_id)
     {
-        $object = BrandProduct::find($brand_product_id);
+        $object = $this->model->find($brand_product_id);
         $object->status = 0;
         $object->save();
-        session()->put('message', 'không kích hoạt thương hiệu sản phẩm thành công');
-        return redirect()->route('brand_product.index');
+        session()->put('message', 'không kích hoạt ' . $this->messageName . ' thành công');
+
+        return redirect()->route($this->asRoute . '.index');
     }
     public function active($brand_product_id)
     {
-        $object = BrandProduct::find($brand_product_id);
+        $object = $this->model->find($brand_product_id);
         $object->status = 1;
         $object->save();
-        session()->put('message', 'kích hoạt thương hiệu sản phẩm thành công');
-        return redirect()->route('brand_product.index');
+        session()->put('message', 'không kích hoạt ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
     }
 
     /**
@@ -81,7 +104,7 @@ class BrandProductController extends Controller
      */
     public function edit(BrandProduct $brandProduct)
     {
-        return view('pages.admin.BrandsProduct.edit', [
+        return view('pages.admin.' . $this->folderName . '.edit', [
             'each' => $brandProduct,
         ]);
 
@@ -99,8 +122,8 @@ class BrandProductController extends Controller
         $brandProduct->fill($request->except('_token'));
         $brandProduct->save();
 
-        session()->put('message', 'sửa thương hiệu sản phẩm thành công');
-        return redirect()->route('brand_product.index');
+        session()->put('message', 'sửa ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
 
     }
 
@@ -114,8 +137,8 @@ class BrandProductController extends Controller
     {
         $brandProduct->delete();
 
-        session()->put('message', 'xóa thương hiệu sản phẩm thành công');
-        return redirect()->route('brand_product.index');
+        session()->put('message', 'xóa ' . $this->messageName . ' thành công');
+        return redirect()->route($this->asRoute . '.index');
 
     }
 }
