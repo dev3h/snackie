@@ -13,7 +13,7 @@
                     }
                 @endphp
                 <div class="position-center">
-                    <form role="form" method="post" action="{{route('brand_product.update', $each)}}">
+                    <form role="form" method="post" action="{{route( $asRoute . '.update', $each)}}">
                         @csrf
                          @method('PUT')
                         <div class="form-group">

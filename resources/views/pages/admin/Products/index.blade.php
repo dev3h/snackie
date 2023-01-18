@@ -77,7 +77,7 @@
                                         <form action="{{ route( $asRoute . '.destroy', $each) }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                            <button onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?')"
+                                            <button onclick="return confirm('Bạn có chắc muốn xóa {{ $messageName }} này không?')"
                                                 class="active table-button" ui-toggle-class="">
                                                 <i class="fa fa-times text-danger text"></i>
                                             </button>

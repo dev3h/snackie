@@ -91,12 +91,12 @@ class ProductController extends Controller
             $arr['image'] = $new_image;
             $this->model->create($arr);
 
-            session()->put('message', 'thêm ' .$this->messageName. ' thành công');
+            session()->put('message', 'thêm ' . $this->messageName . ' thành công');
         } else {
             $arr = $request->except('_token');
             $arr['image'] = '';
             $this->model->create($arr);
-            session()->put('message', 'thêm ' .$this->messageName. ' thành công');
+            session()->put('message', 'thêm ' . $this->messageName . ' thành công');
         }
 
         return redirect()->route($this->asRoute . '.create');
@@ -167,11 +167,31 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $product->fill($request->except('_token'));
-        $product->save();
+        $get_image = $request->file('image');
 
-        session()->put('message', 'sửa ' .$this->messageName. ' thành công');
-        return redirect()->route('product.index');
+        if ($get_image) {
+            $get_name_image = $get_image->getClientOriginalName();
+            $new_name_image = current(explode('.', $get_name_image));
+            $new_image = $new_name_image . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
+            $get_image->move('uploads/products', $new_image);
+
+            $arr = $request->except('_token');
+            $arr['image'] = $new_image;
+            $product->fill($arr);
+            $product->save();
+
+            session()->put('message', 'sửa ' . $this->messageName . ' thành công');
+
+        } else {
+            $arr = $request->except('_token');
+            $product->fill($arr);
+            $product->save();
+
+            session()->put('message', 'sửa ' . $this->messageName . ' thành công');
+
+        }
+
+        return redirect()->route( $this->asRoute . '.index');
 
     }
 
@@ -185,8 +205,8 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        session()->put('message', 'xóa ' .$this->messageName. ' thành công');
-        return redirect()->route('product.index');
+        session()->put('message', 'xóa ' . $this->messageName . ' thành công');
+        return redirect()->route( $this->asRoute . '.index');
 
     }
 }

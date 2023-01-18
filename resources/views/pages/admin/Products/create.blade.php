@@ -13,7 +13,7 @@
                         }
                     @endphp
                     <div class="position-center">
-                        <form role="form" method="post" action="{{ route('product.store') }}" enctype="multipart/form-data">
+                        <form role="form" method="post" action="{{ route( $asRoute . '.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tên {{ $messageName }}</label>
