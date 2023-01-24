@@ -55,8 +55,8 @@
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                                 </td>
                                 <td>{{ $each->name }}</td>
-                                <td>{{ $each->price }}</td>
-                                <td><img src="{{asset('uploads/products/' . $each->image)}}" alt="" height="100"></td>
+                                <td>{{ number_format($each->price) }}</td>
+                                <td><img src="{{asset('uploads/products/' . $each->image)}}" alt="" width="50" height="50"></td>
                                 <td>{{$each->category_name}}</td>
                                 <td>{{$each->brand_name}}</td>
                                 <td>

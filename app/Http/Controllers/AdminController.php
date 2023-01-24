@@ -4,13 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class AdminController extends Controller
 {
+    private $model;
+    private $folderName = 'admin';
+    private $asRoute;
+    public function __construct()
+    {
+        $routeName = Route::currentRouteName();
+        $arr = explode('.', $routeName);
+        $this->asRoute = $arr[0];
+        $arr = array_map('ucfirst', $arr);
+        $title = implode(' - ', $arr);
+        View::share(
+            [
+                'asRoute' => $this->asRoute,
+            ]
+        );
+
+    }
     public function index()
     {
-        return view('pages.admin.admin_login');
+        return view('pages.' . $this->folderName . '.admin_login');
     }
+
     public function login(Request $request)
     {
         $email = $request->email;
@@ -21,20 +41,25 @@ class AdminController extends Controller
             session()->put('admin_name', $result->name);
             session()->put('admin_id', $result->id);
 
-            return redirect()->route('admin.dashboard');
+            return redirect()->route($this->asRoute . '.dashboard');
         } else {
             session()->put('message', 'Email hoặc mật khẩu không đúng');
-            return redirect()->route('admin.login');
+            return redirect()->route($this->asRoute . '.login');
         }
+    }
+    public function show_dashboard()
+    {
+        if (session()->get('admin_id')) {
+            return view('pages.' . $this->folderName . '.dashboard');
+        } else {
+            return redirect()->route($this->asRoute . '.index');
+        }
+
     }
     public function logout()
     {
         session()->put('admin_name', null);
         session()->put('admin_id', null);
-        return redirect()->route('admin.login');
-    }
-    public function show_dashboard()
-    {
-        return view('pages.admin.dashboard');
+        return redirect()->route($this->asRoute . '.index');
     }
 }

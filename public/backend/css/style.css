@@ -2739,6 +2739,10 @@ div#graph10,
 div#graph11 {
     width: 100%;
 }
+img {
+    object-fit: cover;
+}
+
 /*-- responsive design --*/
 @media (max-width: 1440px) {
     .w3layouts-main {

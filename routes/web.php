@@ -14,7 +14,7 @@ Route::get('/trang-chu', [HomeController::class, 'index'])->name('customer.home'
 
 // Admin route
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('', [AdminController::class, 'index']);
+    Route::get('', [AdminController::class, 'index'])->name('index');
     Route::post('', [AdminController::class, 'login'])->name('login');
     Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');
