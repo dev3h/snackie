@@ -7,7 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a href="{{URL::to('/danh-muc-san-pham/'.$category_product->id)}}">{{ $category_product->name }}</a>
+                            <a href="{{route('customer.category_product_selected', $category_product->id)}}">{{ $category_product->name }}</a>
                         </h4>
                     </div>
                 </div>
@@ -40,12 +40,5 @@
             </div>
         </div> --}}
         <!--/price-range-->
-
-        <div class="shipping text-center">
-            <!--shipping-->
-            <img src="{{ asset('frontend/images/shipping.jpg') }}" alt="" />
-        </div>
-        <!--/shipping-->
-
     </div>
 </div>

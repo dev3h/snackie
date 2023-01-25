@@ -9,7 +9,13 @@ use Illuminate\Support\Facades\Route;
 
 // custom route
 Route::get('/', [HomeController::class, 'index']);
+
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('customer.home');
+
+// get products by category selected
+Route::get('/danh-muc-san-pham/{category_product_id}', [CategoryProductController::class, 'showProductsByCategoryId'])->name('customer.category_product_selected');
+// get products by brand selected
+Route::get('/thuong-hieu-san-pham/{brand_product_id}', [BrandProductController::class, 'showProductsByBrandId'])->name('customer.brand_product_selected');
 // end customer route
 
 // Admin route

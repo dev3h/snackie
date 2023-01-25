@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\BrandProduct;
+use App\Models\CategoryProduct;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -140,5 +142,29 @@ class BrandProductController extends Controller
         session()->put('message', 'xóa ' . $this->messageName . ' thành công');
         return redirect()->route($this->asRoute . '.index');
 
+    }
+
+    // end function admin page
+
+    public function showProductsByBrandId($brand_product_id)
+    {
+        $categories_product = CategoryProduct::where('status', 1)->get([
+            'id',
+            'name',
+        ]);
+        $brands_product = BrandProduct::where('status', 1)->get([
+            'id',
+            'name',
+        ]);
+
+        $products = Product::where('brand_id', $brand_product_id)->where('status', 1)->orderBy('id', 'desc')->limit(4)->get();
+        $brand_product_name = BrandProduct::where('id', $brand_product_id)->first()->name;
+
+        return view('pages.customer.productByBrand', [
+            'categories_product' => $categories_product,
+            'brands_product' => $brands_product,
+            'products' => $products,
+            'brand_product_name' => $brand_product_name,
+        ]);
     }
 }
