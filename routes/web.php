@@ -7,15 +7,21 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-// custom route
-Route::get('/', [HomeController::class, 'index']);
+// customer route
+Route::group(['as' => 'customer.'], function () {
+    Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/trang-chu', [HomeController::class, 'index'])->name('customer.home');
+Route::get('/trang-chu', [HomeController::class, 'index'])->name('home');
 
 // get products by category selected
-Route::get('/danh-muc-san-pham/{category_product_id}', [CategoryProductController::class, 'showProductsByCategoryId'])->name('customer.category_product_selected');
+Route::get('/danh-muc-san-pham/{category_product_id}', [CategoryProductController::class, 'showProductsByCategoryId'])->name('category_product_selected');
 // get products by brand selected
-Route::get('/thuong-hieu-san-pham/{brand_product_id}', [BrandProductController::class, 'showProductsByBrandId'])->name('customer.brand_product_selected');
+Route::get('/thuong-hieu-san-pham/{brand_product_id}', [BrandProductController::class, 'showProductsByBrandId'])->name('brand_product_selected');
+
+Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
+
+});
+
 // end customer route
 
 // Admin route

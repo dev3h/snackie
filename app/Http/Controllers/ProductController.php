@@ -191,7 +191,7 @@ class ProductController extends Controller
 
         }
 
-        return redirect()->route( $this->asRoute . '.index');
+        return redirect()->route($this->asRoute . '.index');
 
     }
 
@@ -206,7 +206,26 @@ class ProductController extends Controller
         $product->delete();
 
         session()->put('message', 'xóa ' . $this->messageName . ' thành công');
-        return redirect()->route( $this->asRoute . '.index');
+        return redirect()->route($this->asRoute . '.index');
 
+    }
+
+    // end function admin page
+
+    public function detailProduct($product_id)
+    {
+        $categories_product = CategoryProduct::where('status', 1)->get([
+            'id',
+            'name',
+        ]);
+        $brands_product = BrandProduct::where('status', 1)->get([
+            'id',
+            'name',
+        ]);
+
+        return view('pages.customer.product.detail_product' , [
+            'categories_product' => $categories_product,
+            'brands_product' => $brands_product
+        ]);
     }
 }
