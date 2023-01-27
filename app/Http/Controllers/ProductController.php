@@ -222,10 +222,17 @@ class ProductController extends Controller
             'id',
             'name',
         ]);
+        $details_product = $this->model->join('category_products', 'category_products.id', '=', 'category_id')
+            ->join('brand_products', 'brand_products.id', '=', 'brand_id')
+            ->select('products.*', 'category_products.name as category_name', 'brand_products.name as brand_name')
+            ->where('products.id', $product_id)
+            ->get()
+            ->first();
 
-        return view('pages.customer.product.detail_product' , [
+        return view('pages.customer.product.detail_product', [
             'categories_product' => $categories_product,
-            'brands_product' => $brands_product
+            'brands_product' => $brands_product,
+            'details_product' => $details_product,
         ]);
     }
 }

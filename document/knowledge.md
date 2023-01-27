@@ -116,6 +116,8 @@ gọi
 ```
 
 ---
+## Hiển thị một chuỗi có những kí tự đặc biệt trong blade
+- `{{!! $each->category_product_name !!}}`
 
 ## eloquent
 
