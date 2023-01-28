@@ -114,72 +114,83 @@
         <!--recommended_items-->
         <h2 class="title text-center">Sản phẩm liên quan</h2>
 
-        <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="item active">
-                    <div class="col-sm-4">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="{{ asset('frontend/images/recommend1.jpg') }}" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
+        @if (count($related_products) > 0)
+            <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {{-- create a count when have three col in div have class is item, create new div class item  --}}
+                    @php
+                        $count = 0;
+                    @endphp
+                    @foreach ($related_products as $related)
+                        @if ($count % 3 == 0)
+                            <div class="item {{ $count == 0 ? 'active' : '' }}">
+                        @endif
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="{{ asset('uploads/products/' . $related->image) }}" alt="" />
+                                        <h2>{{ number_format($related->price) }}</h2>
+                                        <p>{{ $related->name }}</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="{{ asset('frontend/images/recommend1.jpg') }}" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="{{ asset('frontend/images/recommend1.jpg') }}" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        @if ($count % 3 == 2)
                 </div>
-                <div class="item">
-                    <div class="col-sm-4">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="{{ asset('frontend/images/recommend2.jpg') }}" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
+        @endif
+        @php
+            $count++;
+        @endphp
+        @endforeach
+    </div>
+
+    {{-- <div class="item active">
+                        @foreach ($related_products as $related)
+                            <div class="col-sm-4">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <img src="{{ asset('uploads/products/' . $related->image) }}"
+                                                alt="" />
+                                            <h2>{{ number_format($related->price) }}</h2>
+                                            <p>{{ $related->name }}</p>
+                                            <button type="button" class="btn btn-default add-to-cart"><i
+                                                    class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="item">
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="{{ asset('frontend/images/recommend2.jpg') }}" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-                <i class="fa fa-angle-left"></i>
-            </a>
-            <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-                <i class="fa fa-angle-right"></i>
-            </a>
-        </div>
+                    </div> --}}
+    </div>
+    <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+        <i class="fa fa-angle-right"></i>
+    </a>
+    </div>
+@else
+    <h3>Không có sản phẩm nào</h3>
+    @endif
     </div>
     <!--/recommended_items-->
 @endsection

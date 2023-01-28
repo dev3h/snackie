@@ -229,10 +229,19 @@ class ProductController extends Controller
             ->get()
             ->first();
 
+        $category_id = $details_product->category_id;
+
+        // get related product by category id
+        $related_products = Product
+            ::whereNotIn('id', [$product_id])
+            ->where('category_id', $category_id)
+            ->get();
+
         return view('pages.customer.product.detail_product', [
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
             'details_product' => $details_product,
+            'related_products' => $related_products,
         ]);
     }
 }
