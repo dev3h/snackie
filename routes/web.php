@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -19,6 +20,8 @@ Route::get('/danh-muc-san-pham/{category_product_id}', [CategoryProductControlle
 Route::get('/thuong-hieu-san-pham/{brand_product_id}', [BrandProductController::class, 'showProductsByBrandId'])->name('brand_product_selected');
 
 Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
+
+Route::post('/save-cart', [CartController::class, 'saveCart'])->name('save_cart');
 
 });
 

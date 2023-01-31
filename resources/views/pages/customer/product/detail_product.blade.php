@@ -40,15 +40,19 @@
                 <h2>{{ $details_product->name }}</h2>
                 <p>Mã sản phẩm: {{ $details_product->id }}</p>
                 <img src="{{ asset('frontend/images/rating.png') }}" alt="" />
-                <span>
-                    <span>{{ number_format($details_product->price) }}đ</span>
-                    <label>Số lượng:</label>
-                    <input type="number" min="1" value="1" />
-                    <button type="button" class="btn btn-fefault cart">
-                        <i class="fa fa-shopping-cart"></i>
-                        Thêm giỏ hàng
-                    </button>
-                </span>
+                <form action="{{route('customer.save_cart')}}" method="post">
+                    @csrf
+                    <span>
+                        <span>{{ number_format($details_product->price) }}đ</span>
+                        <label>Số lượng:</label>
+                        <input name="product_id" type="hidden" value="{{$details_product->id}}" />
+                        <input name="qty" type="number" min="1" value="1" />
+                        <button type="submit" class="btn btn-fefault cart">
+                            <i class="fa fa-shopping-cart"></i>
+                            Thêm giỏ hàng
+                        </button>
+                    </span>
+                </form>
                 <p><b>Tình trạng:</b> Còn hàng</p>
                 <p><b>Điều kiện:</b> Mới 100%</p>
                 <p><b>Thương hiệu:</b> {{ $details_product->brand_name }}</p>
