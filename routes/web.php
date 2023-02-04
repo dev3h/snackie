@@ -6,22 +6,25 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Middleware\CheckLoginAminPageMiddleware;
 use Illuminate\Support\Facades\Route;
 
 // customer route
 Route::group(['as' => 'customer.'], function () {
     Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/trang-chu', [HomeController::class, 'index'])->name('home');
+    Route::get('/trang-chu', [HomeController::class, 'index'])->name('home');
 
-// get products by category selected
-Route::get('/danh-muc-san-pham/{category_product_id}', [CategoryProductController::class, 'showProductsByCategoryId'])->name('category_product_selected');
-// get products by brand selected
-Route::get('/thuong-hieu-san-pham/{brand_product_id}', [BrandProductController::class, 'showProductsByBrandId'])->name('brand_product_selected');
+    // get products by category selected
+    Route::get('/danh-muc-san-pham/{category_product_id}', [CategoryProductController::class, 'showProductsByCategoryId'])->name('category_product_selected');
+    // get products by brand selected
+    Route::get('/thuong-hieu-san-pham/{brand_product_id}', [BrandProductController::class, 'showProductsByBrandId'])->name('brand_product_selected');
 
-Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
+    Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
 
-Route::post('/save-cart', [CartController::class, 'saveCart'])->name('save_cart');
+    // cart
+    Route::post('/save-cart', [CartController::class, 'store'])->name('save_cart');
+    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
 
 });
 
@@ -30,60 +33,67 @@ Route::post('/save-cart', [CartController::class, 'saveCart'])->name('save_cart'
 // Admin route
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('', [AdminController::class, 'index'])->name('index');
-    Route::post('', [AdminController::class, 'login'])->name('login');
-    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');
+    Route::post('', [AdminController::class, 'login'])->name('process_login');
 });
+
+Route::group([
+    'middleware' => CheckLoginAminPageMiddleware::class,
+], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+        Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+        Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');
+    });
 
 // Category Product route
-Route::group(['prefix' => 'admin/categories-product', 'as' => 'category_product.'], function () {
-    Route::get('', [CategoryProductController::class, 'index'])->name('index');
+    Route::group(['prefix' => 'admin/categories-product', 'as' => 'category_product.'], function () {
+        Route::get('', [CategoryProductController::class, 'index'])->name('index');
 
-    Route::get('/inactive/{category_product_id}', [CategoryProductController::class, 'inactive'])->name('inactive');
-    Route::get('/active/{category_product_id}', [CategoryProductController::class, 'active'])->name('active');
+        Route::get('/inactive/{category_product_id}', [CategoryProductController::class, 'inactive'])->name('inactive');
+        Route::get('/active/{category_product_id}', [CategoryProductController::class, 'active'])->name('active');
 
-    Route::get('/create', [CategoryProductController::class, 'create'])->name('create');
-    Route::post('/create', [CategoryProductController::class, 'store'])->name('store');
+        Route::get('/create', [CategoryProductController::class, 'create'])->name('create');
+        Route::post('/create', [CategoryProductController::class, 'store'])->name('store');
 
-    Route::get('/edit/{category_product}', [CategoryProductController::class, 'edit'])->name('edit');
-    Route::put('/edit/{category_product}', [CategoryProductController::class, 'update'])->name('update');
+        Route::get('/edit/{category_product}', [CategoryProductController::class, 'edit'])->name('edit');
+        Route::put('/edit/{category_product}', [CategoryProductController::class, 'update'])->name('update');
 
-    Route::delete('/destroy/{category_product}', [CategoryProductController::class, 'destroy'])->name('destroy');
+        Route::delete('/destroy/{category_product}', [CategoryProductController::class, 'destroy'])->name('destroy');
 
-});
+    });
 
 // Brand Product route
-Route::group(['prefix' => 'admin/brand-product', 'as' => 'brand_product.'], function () {
-    Route::get('', [BrandProductController::class, 'index'])->name('index');
+    Route::group(['prefix' => 'admin/brand-product', 'as' => 'brand_product.'], function () {
+        Route::get('', [BrandProductController::class, 'index'])->name('index');
 
-    Route::get('/inactive/{brand_product_id}', [BrandProductController::class, 'inactive'])->name('inactive');
-    Route::get('/active/{brand_product_id}', [BrandProductController::class, 'active'])->name('active');
+        Route::get('/inactive/{brand_product_id}', [BrandProductController::class, 'inactive'])->name('inactive');
+        Route::get('/active/{brand_product_id}', [BrandProductController::class, 'active'])->name('active');
 
-    Route::get('/create', [BrandProductController::class, 'create'])->name('create');
-    Route::post('/create', [BrandProductController::class, 'store'])->name('store');
+        Route::get('/create', [BrandProductController::class, 'create'])->name('create');
+        Route::post('/create', [BrandProductController::class, 'store'])->name('store');
 
-    Route::get('/edit/{brand_product}', [BrandProductController::class, 'edit'])->name('edit');
-    Route::put('/edit/{brand_product}', [BrandProductController::class, 'update'])->name('update');
+        Route::get('/edit/{brand_product}', [BrandProductController::class, 'edit'])->name('edit');
+        Route::put('/edit/{brand_product}', [BrandProductController::class, 'update'])->name('update');
 
-    Route::delete('/destroy/{brand_product}', [BrandProductController::class, 'destroy'])->name('destroy');
+        Route::delete('/destroy/{brand_product}', [BrandProductController::class, 'destroy'])->name('destroy');
 
-});
+    });
 
 // Product route
-Route::group(['prefix' => 'admin/product', 'as' => 'product.'], function () {
-    Route::get('', [ProductController::class, 'index'])->name('index');
+    Route::group(['prefix' => 'admin/product', 'as' => 'product.'], function () {
+        Route::get('', [ProductController::class, 'index'])->name('index');
 
-    Route::get('/inactive/{product_id}', [ProductController::class, 'inactive'])->name('inactive');
-    Route::get('/active/{product_id}', [ProductController::class, 'active'])->name('active');
+        Route::get('/inactive/{product_id}', [ProductController::class, 'inactive'])->name('inactive');
+        Route::get('/active/{product_id}', [ProductController::class, 'active'])->name('active');
 
-    Route::get('/create', [ProductController::class, 'create'])->name('create');
-    Route::post('/create', [ProductController::class, 'store'])->name('store');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/create', [ProductController::class, 'store'])->name('store');
 
-    Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
-    Route::put('/edit/{product}', [ProductController::class, 'update'])->name('update');
+        Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
+        Route::put('/edit/{product}', [ProductController::class, 'update'])->name('update');
 
-    Route::delete('/destroy/{product}', [ProductController::class, 'destroy'])->name('destroy');
+        Route::delete('/destroy/{product}', [ProductController::class, 'destroy'])->name('destroy');
 
+    });
 });
 
 // end Amin route

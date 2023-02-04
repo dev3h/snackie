@@ -49,12 +49,7 @@ class AdminController extends Controller
     }
     public function show_dashboard()
     {
-        if (session()->get('admin_id')) {
-            return view('pages.' . $this->folderName . '.dashboard');
-        } else {
-            return redirect()->route($this->asRoute . '.index');
-        }
-
+        return view('pages.' . $this->folderName . '.dashboard');
     }
     public function logout()
     {
