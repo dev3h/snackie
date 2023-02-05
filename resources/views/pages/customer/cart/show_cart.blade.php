@@ -35,7 +35,7 @@
                                     <p>ID: {{ $cart->id }}</p>
                                 </td>
                                 <td class="cart_price">
-                                    <p>{{ number_format($cart->price) }}</p>
+                                    <p>{{ number_format($cart->price, 0, ',', '.') }}</p>
                                 </td>
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
@@ -55,7 +55,7 @@
                                     </div>
                                 </td>
                                 <td class="cart_total">
-                                    <p class="cart_total_price">{{ number_format($cart->price * $cart->qty) }}</p>
+                                    <p class="cart_total_price">{{ number_format($cart->price * $cart->qty, 0, ',', '.') }}</p>
                                 </td>
                                 <td class="cart_delete">
                                     <a class="cart_quantity_delete"
@@ -136,10 +136,10 @@
                 <div class="col-sm-6">
                     <div class="total_area">
                         <ul>
-                            <li>Tạm tính <span>{{ Cart::subtotal() }}</span></li>
-                            <li>Thuế <span>{{ Cart::tax() }}</span></li>
+                            <li>Tạm tính <span>{{ Cart::subtotal(0, ',', '.') }}</span></li>
+                            <li>Thuế <span>{{ Cart::tax(0, ',', '.') }}</span></li>
                             <li>Phí vận chuyển <span>Miễn phí</span></li>
-                            <li>Tổng thanh toán <span>{{ Cart::total() }}</span></li>
+                            <li>Tổng thanh toán <span>{{ Cart::total(0, ',', '.') }}</span></li>
                         </ul>
                         <a class="btn btn-default update" href="">Update</a>
                         <a class="btn btn-default check_out" href="">Check Out</a>

@@ -63,6 +63,9 @@ class CartController extends Controller
         $data['weight'] = '0';
         $data['options']['image'] = $product_data->image;
         Cart::add($data);
+        // set tax 10%
+        Cart::setGlobalTax(10);
+
 
         return redirect()->route('customer.cart');
 
