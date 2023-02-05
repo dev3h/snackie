@@ -39,17 +39,28 @@
                                 </td>
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
-                                        <a class="cart_quantity_down" href=""> - </a>
+                                        {{-- <a class="cart_quantity_down" href="{{}}"> - </a>
                                         <input class="cart_quantity_input" type="text" name="quantity"
                                             value="{{ $cart->qty }}" autocomplete="off" size="2">
-                                        <a class="cart_quantity_up" href=""> + </a>
+                                        <a class="cart_quantity_up" href=""> + </a> --}}
+
+                                        <form method="post" action="{{ route('customer.update_qty_cart') }}">
+                                            @csrf
+                                            <input type="hidden" name="rowId" value="{{ $cart->rowId }}">
+                                            <input class="cart_quantity_input" type="number" name="qty"
+                                                value="{{ $cart->qty }}" min="1">
+                                            <input type="submit" value="Cập nhập" class="btn btn-default btn-sm">
+                                        </form>
+
                                     </div>
                                 </td>
                                 <td class="cart_total">
-                                    <p class="cart_total_price">{{number_format($cart->price * $cart->qty) }}</p>
+                                    <p class="cart_total_price">{{ number_format($cart->price * $cart->qty) }}</p>
                                 </td>
                                 <td class="cart_delete">
-                                    <a class="cart_quantity_delete" href="{{route('customer.delete__item_cart', $cart->rowId)}}"><i class="fa fa-times"></i></a>
+                                    <a class="cart_quantity_delete"
+                                        href="{{ route('customer.delete__item_cart', $cart->rowId) }}"><i
+                                            class="fa fa-times"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -125,10 +136,10 @@
                 <div class="col-sm-6">
                     <div class="total_area">
                         <ul>
-                            <li>Tạm tính <span>{{Cart::subtotal()}}</span></li>
-                            <li>Thuế <span>{{Cart::tax()}}</span></li>
+                            <li>Tạm tính <span>{{ Cart::subtotal() }}</span></li>
+                            <li>Thuế <span>{{ Cart::tax() }}</span></li>
                             <li>Phí vận chuyển <span>Miễn phí</span></li>
-                            <li>Tổng thanh toán <span>{{Cart::total()}}</span></li>
+                            <li>Tổng thanh toán <span>{{ Cart::total() }}</span></li>
                         </ul>
                         <a class="btn btn-default update" href="">Update</a>
                         <a class="btn btn-default check_out" href="">Check Out</a>

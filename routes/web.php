@@ -26,6 +26,7 @@ Route::group(['as' => 'customer.'], function () {
     Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
     Route::post('/save-cart', [CartController::class, 'store'])->name('save_cart');
     Route::get('/delete-item-cart/{rowId}', [CartController::class, 'delete'])->name('delete__item_cart');
+    Route::post('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
 
 });
 
