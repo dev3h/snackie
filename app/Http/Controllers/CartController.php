@@ -67,4 +67,9 @@ class CartController extends Controller
         return redirect()->route('customer.cart');
 
     }
+    public function delete($rowId)
+    {
+        Cart::remove($rowId);
+        return redirect()->route('customer.cart');
+    }
 }

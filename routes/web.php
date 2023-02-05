@@ -23,8 +23,9 @@ Route::group(['as' => 'customer.'], function () {
     Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
 
     // cart
-    Route::post('/save-cart', [CartController::class, 'store'])->name('save_cart');
     Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
+    Route::post('/save-cart', [CartController::class, 'store'])->name('save_cart');
+    Route::get('/delete-item-cart/{rowId}', [CartController::class, 'delete'])->name('delete__item_cart');
 
 });
 
