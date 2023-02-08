@@ -4,12 +4,21 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryProductController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckLoginAminPageMiddleware;
 use Illuminate\Support\Facades\Route;
 
 // customer route
+
+// customer auth route
+Route::group(['as' => 'customer.'], function () {
+    Route::get('/login', [CustomerAuthController::class, 'login'])->name('login');
+    Route::post('/login', [CustomerAuthController::class, 'processLogin'])->name('process_login');
+});
+
 Route::group(['as' => 'customer.'], function () {
     Route::get('/', [HomeController::class, 'index']);
 
@@ -28,11 +37,16 @@ Route::group(['as' => 'customer.'], function () {
     Route::get('/delete-item-cart/{rowId}', [CartController::class, 'delete'])->name('delete__item_cart');
     Route::post('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
 
+    // checkout
+    Route::get('/thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
+
 });
 
 // end customer route
 
 // Admin route
+
+// admin auth route
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('', [AdminController::class, 'index'])->name('index');
     Route::post('', [AdminController::class, 'login'])->name('process_login');

@@ -1,4 +1,7 @@
 @extends('customer_layout')
+@push('sidebar')
+    @include('layouts.customer.sidebar')
+@endpush
 @section('content')
     <div class="features_items">
         <!--features_items-->

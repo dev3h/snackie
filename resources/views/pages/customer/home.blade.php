@@ -1,10 +1,16 @@
 @extends('customer_layout')
+@push('carousel')
+    @include('layouts.customer.carousel')
+@endpush
+@push('sidebar')
+    @include('layouts.customer.sidebar')
+@endpush
 @section('content')
     <div class="features_items">
         <!--features_items-->
         <h2 class="title text-center">Sản phẩm mới nhất</h2>
         @foreach ($products as $product)
-            <a href="{{route('customer.product_detail', $product->id)}}">
+            <a href="{{ route('customer.product_detail', $product->id) }}">
                 <div class="col-sm-4">
                     <div class="product-image-wrapper">
                         <div class="single-products">

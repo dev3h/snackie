@@ -24,13 +24,14 @@
     @include('layouts.customer.header')
 
 	{{-- carousel --}}
-    @include('layouts.customer.carousel')
+    @stack('carousel')
+    
 
 	<section>
 		<div class="container">
 			<div class="row">
 				{{-- sidebar --}}
-                @include('layouts.customer.sidebar')
+                @stack('sidebar')
 
                 {{-- content --}}
                 <div class="col-sm-9 padding-right">

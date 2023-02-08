@@ -1522,11 +1522,6 @@ h2.title {
     border-color: transparent transparent transparent #fe980f;
     position: absolute;
     top: 11px;
-    left: 48px;
-}
-
-.breadcrumbs .breadcrumb > li + li:before {
-    content: " ";
 }
 
 #cart_items .cart_info {
@@ -1742,7 +1737,10 @@ textarea {
 }
 
 .check_out {
-    margin-left: 20px;
+    display: block;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /*************************
