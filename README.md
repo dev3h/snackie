@@ -1,4 +1,3 @@
--   Đây là project bán hàng
--   **Công nghệ sử dụng**:
-    -   Laravel 8
-    -   PHP 7.4
+## Introduce
+
+This is a project e-commerce write with **laravel framework version 8** and **php version 7.4**

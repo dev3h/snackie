@@ -9,6 +9,7 @@ use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckLoginAminPageMiddleware;
+use App\Http\Middleware\CheckLoginCustomerPageMiddleware;
 use Illuminate\Support\Facades\Route;
 
 // customer route
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['as' => 'customer.'], function () {
     Route::get('/login', [CustomerAuthController::class, 'login'])->name('login');
     Route::post('/login', [CustomerAuthController::class, 'processLogin'])->name('process_login');
+
+    Route::get('/register', [CustomerAuthController::class, 'register'])->name('register');
+    Route::post('/register', [CustomerAuthController::class, 'processRegister'])->name('process_register');
 });
 
 Route::group(['as' => 'customer.'], function () {
@@ -31,15 +35,19 @@ Route::group(['as' => 'customer.'], function () {
 
     Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
 
-    // cart
-    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
-    Route::post('/save-cart', [CartController::class, 'store'])->name('save_cart');
-    Route::get('/delete-item-cart/{rowId}', [CartController::class, 'delete'])->name('delete__item_cart');
-    Route::post('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
+    // customer is signed in
+    Route::group([
+        'middleware' => CheckLoginCustomerPageMiddleware::class,
+    ], function () {
+        // cart
+        Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
+        Route::post('/save-cart', [CartController::class, 'store'])->name('save_cart');
+        Route::get('/delete-item-cart/{rowId}', [CartController::class, 'delete'])->name('delete__item_cart');
+        Route::post('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
 
-    // checkout
-    Route::get('/thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
-
+        // checkout
+        Route::get('/thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
+    });
 });
 
 // end customer route
