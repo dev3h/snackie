@@ -1840,12 +1840,6 @@ textarea {
     margin-top: 20px;
 }
 
-.form-two,
-.form-one {
-    float: left;
-    width: 47%;
-}
-
 .shopper-info > form > input,
 .form-two > form > select,
 .form-two > form > input,
@@ -2416,4 +2410,7 @@ textarea {
 }
 img {
     object-fit: cover;
+}
+.checkout-group {
+    margin: 20px;
 }

@@ -43,7 +43,7 @@ class CartController extends Controller
             'name',
         ]);
 
-        return view($this->folderName .'show_cart', [
+        return view($this->folderName .'index', [
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
         ]);

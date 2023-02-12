@@ -47,6 +47,8 @@ Route::group(['as' => 'customer.'], function () {
 
         // checkout
         Route::get('/thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::post('/thanh-toan', [CheckoutController::class, 'process_checkout'])->name('process_checkout');
+
     });
 });
 
