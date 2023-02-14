@@ -68,11 +68,17 @@
                              <li><a href="{{ route('customer.cart') }}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a>
                              </li>
                              {{-- <li><a href="#"><i class="fa fa-user"></i> Account</a></li> --}}
-                             @if (session('customer_id'))
+                             @if (session()->get('customer_id'))
                                  {{-- <li><a href="{{ route('customer.logout') }}"><i class="fa fa-user"></i> Đăng xuất</a> --}}
-                                 <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+                                 @if (session()->get('order_id'))
+                                     <li><a href="{{ route('customer.payment') }}"><i
+                                                 class="fa fa-crosshairs"></i>Thanh toán</a></li>
+                                 @else
+                                     <li><a href="{{ route('customer.checkout') }}"><i
+                                                 class="fa fa-crosshairs"></i>Thông tin thanh toán</a></li>
+                                 @endif
                                  </li>
-                                 <li><a href=""><i class="fa fa-user"></i> Đăng xuất</a>
+                                 <li><a href="{{ route('customer.logout') }}"><i class="fa fa-user"></i> Đăng xuất</a>
                                  @else
                                  <li><a href="{{ route('customer.login') }}"><i class="fa fa-user"></i> Đăng nhập</a>
                                  </li>
@@ -120,7 +126,9 @@
                  </div>
                  <div class="col-sm-3">
                      <div class="search_box pull-right">
-                         <input type="text" placeholder="Search" />
+                         <form><input type="search" placeholder="tìm kiếm sản phẩm" name="q"
+                                 value="{{ ucfirst($search ?? '') }}" />
+                         </form>
                      </div>
                  </div>
              </div>

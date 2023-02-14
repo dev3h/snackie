@@ -155,7 +155,7 @@ class CategoryProductController extends Controller
         $products = Product::where('category_id', $category_product_id)->where('status', 1)->orderBy('id', 'desc')->limit(4)->get();
         $category_product_name = CategoryProduct::where('id', $category_product_id)->first()->name;
 
-        return view('pages.customer.productByCategory', [
+        return view('pages.customer.product.productByCategory', [
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
             'products' => $products,

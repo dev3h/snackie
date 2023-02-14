@@ -1,4 +1,7 @@
 @extends('customer_layout')
+@push('sidebar')
+    @include('layouts.customer.sidebar')
+@endpush
 @section('content')
     <div class="product-details">
         <!--product-details-->
@@ -40,12 +43,12 @@
                 <h2>{{ $details_product->name }}</h2>
                 <p>Mã sản phẩm: {{ $details_product->id }}</p>
                 <img src="{{ asset('frontend/images/rating.png') }}" alt="" />
-                <form action="{{route('customer.save_cart')}}" method="post">
+                <form action="{{ route('customer.save_cart') }}" method="post">
                     @csrf
                     <span>
                         <span>{{ number_format($details_product->price) }}đ</span>
                         <label>Số lượng:</label>
-                        <input name="product_id" type="hidden" value="{{$details_product->id}}" />
+                        <input name="product_id" type="hidden" value="{{ $details_product->id }}" />
                         <input name="qty" type="number" min="1" value="1" />
                         <button type="submit" class="btn btn-fefault cart">
                             <i class="fa fa-shopping-cart"></i>
@@ -152,39 +155,39 @@
     </div>
 
     {{-- <div class="item active">
-                        @foreach ($related_products as $related)
-                            <div class="col-sm-4">
-                                <div class="product-image-wrapper">
-                                    <div class="single-products">
-                                        <div class="productinfo text-center">
-                                            <img src="{{ asset('uploads/products/' . $related->image) }}"
-                                                alt="" />
-                                            <h2>{{ number_format($related->price) }}</h2>
-                                            <p>{{ $related->name }}</p>
-                                            <button type="button" class="btn btn-default add-to-cart"><i
-                                                    class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="item">
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{ asset('frontend/images/recommend2.jpg') }}" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
-                                    </div>
-                                </div>
+            @foreach ($related_products as $related)
+                <div class="col-sm-4">
+                    <div class="product-image-wrapper">
+                        <div class="single-products">
+                            <div class="productinfo text-center">
+                                <img src="{{ asset('uploads/products/' . $related->image) }}"
+                                    alt="" />
+                                <h2>{{ number_format($related->price) }}</h2>
+                                <p>{{ $related->name }}</p>
+                                <button type="button" class="btn btn-default add-to-cart"><i
+                                        class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
                             </div>
                         </div>
-                    </div> --}}
-    </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <div class="item">
+            <div class="col-sm-4">
+                <div class="product-image-wrapper">
+                    <div class="single-products">
+                        <div class="productinfo text-center">
+                            <img src="{{ asset('frontend/images/recommend2.jpg') }}" alt="" />
+                            <h2>$56</h2>
+                            <p>Easy Polo Black Edition</p>
+                            <button type="button" class="btn btn-default add-to-cart"><i
+                                    class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+    {{-- </div> --}}
     <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
         <i class="fa fa-angle-left"></i>
     </a>

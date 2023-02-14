@@ -10,10 +10,17 @@ class CustomerAuthController extends Controller
 {
     public function login()
     {
+        if (session()->has('customer_id')) {
+            return redirect()->back();
+        }
         return view('pages.customer.auth.auth');
     }
     public function register()
     {
+        if (session()->has('customer_id')) {
+            return redirect()->back();
+        }
+
         return view('pages.customer.auth.auth');
     }
     public function processLogin(Request $request)
@@ -29,21 +36,18 @@ class CustomerAuthController extends Controller
             session()->put('customer_id', $user->id);
             session()->put('customer_name', $user->name);
 
-            $postData = session('route_waiting_to_login_data');
-            $postRoute = session('route_waiting_to_login');
+            $postData = session()->get('route_waiting_to_login_data');
+            $postRoute = session()->get('route_waiting_to_login');
 
-
-            if (session()->has($postRoute)) {
-                return redirect()->route('$postRoute');
-                if (session()->has($postData)) {
-
+            if ($postRoute) {
+                if ($postData) {
                     session()->forget(['route_waiting_to_login_data', 'route_waiting_to_login']);
                     return redirect()->to($postRoute)->withInput($postData)->withMethod('post');
                 }
             }
+            return redirect()->route('customer.home');
 
         } catch (\Throwable $e) {
-            dd($e->getMessage());
             return redirect()->route('customer.login')->with('error', $e->getMessage());
         }
 
@@ -71,5 +75,10 @@ class CustomerAuthController extends Controller
             }
         }
 
+    }
+    public function logout()
+    {
+        session()->forget(['customer_id', 'customer_name']);
+        return redirect()->route('customer.home');
     }
 }

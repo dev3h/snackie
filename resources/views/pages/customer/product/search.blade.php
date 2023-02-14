@@ -1,6 +1,4 @@
-@extends('customer_layout', [
-    'search' => $search
-])
+@extends('customer_layout')
 @push('carousel')
     @include('layouts.customer.carousel')
 @endpush
@@ -10,7 +8,7 @@
 @section('content')
     <div class="features_items">
         <!--features_items-->
-        <h2 class="title text-center">Sản phẩm mới nhất</h2>
+        <h2 class="title text-center">Kết quả tìm kiếm</h2>
         @foreach ($products as $product)
             <a href="{{ route('customer.product_detail', $product->id) }}">
                 <div class="col-sm-4">

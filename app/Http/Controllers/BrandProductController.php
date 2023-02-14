@@ -160,7 +160,7 @@ class BrandProductController extends Controller
         $products = Product::where('brand_id', $brand_product_id)->where('status', 1)->orderBy('id', 'desc')->limit(4)->get();
         $brand_product_name = BrandProduct::where('id', $brand_product_id)->first()->name;
 
-        return view('pages.customer.productByBrand', [
+        return view('pages.customer.product.productByBrand', [
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
             'products' => $products,

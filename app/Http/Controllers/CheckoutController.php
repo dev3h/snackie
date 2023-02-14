@@ -27,6 +27,11 @@ class CheckoutController extends Controller
                 'quantity' => $item->qty,
             ]);
         }
+        return redirect()->route('customer.payment');
 
+    }
+
+    public function payment() {
+        return view('pages.customer.checkout.payment');
     }
 }

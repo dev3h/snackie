@@ -46,8 +46,12 @@ Route::group(['as' => 'customer.'], function () {
         Route::post('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
 
         // checkout
-        Route::get('/thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
-        Route::post('/thanh-toan', [CheckoutController::class, 'process_checkout'])->name('process_checkout');
+        Route::get('/thong-tin-thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::post('/thong-tin-thanh-toan', [CheckoutController::class, 'process_checkout'])->name('process_checkout');
+        Route::get('/thanh-toan', [CheckoutController::class, 'payment'])->name('payment');
+        
+        Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
+
 
     });
 });

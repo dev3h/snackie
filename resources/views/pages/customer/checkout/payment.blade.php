@@ -5,7 +5,7 @@
             <div class="breadcrumbs">
                 <ol class="breadcrumb">
                     <li><a href="{{ route('customer.home') }}">Trang chủ</a></li>
-                    <li class="active">Thông tin thanh toán</li>
+                    <li class="active">Thanh toán</li>
                 </ol>
             </div>
             <!--/breadcrums-->
@@ -15,35 +15,7 @@
                     $carts = Cart::content();
                 @endphp
                 <div class="row">
-                    <div class="col-sm-12 col-md-5 clearfix">
-                        <div class="bill-to">
-                            <p>Thông tin gửi hàng</p>
-                            <div class="form-one">
-                                <form method="post" action="{{ route('customer.process_checkout') }}">
-                                    @csrf
-                                    <input type="hidden" name="customer_id" value="{{ session()->get('customer_id') }}">
-                                    <div class="checkout-group">
-                                        <label for="">Tên người nhận</label>
-                                        <input type="text" name="name_receive" class="form-control"
-                                            placeholder="Họ và tên người nhận">
-                                    </div>
-                                    <div class="checkout-group">
-                                        <label for="">Sđt người nhận</label>
-                                        <input type="text" name="phone_receive" class="form-control"
-                                            placeholder="Số điện thoại người nhận">
-                                    </div>
-                                    <div class="checkout-group">
-                                        <label for="">Địa chỉ người nhận</label>
-                                        <input type="text" name="address_receive" class="form-control"
-                                            placeholder="Địa chỉ người nhận">
-                                    </div>
-                                    <input type="hidden" name="total_price" value="{{ Cart::total() }}">
-                                    <input type="submit" value="Thanh toán" class="btn btn-primary btn-sm">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
+                    <div class="col-sm-12">
                         <div class="review-payment">
                             <h2>Xem lại giỏ hàng</h2>
                         </div>
@@ -113,14 +85,14 @@
 
             <div class="payment-options">
                 <span>
-                    <label><input type="checkbox"> Direct Bank Transfer</label>
+                    <label><input type="radio" name="payment-option" value="1">Trả bằng thẻ ATM</label>
                 </span>
                 <span>
-                    <label><input type="checkbox"> Check Payment</label>
+                    <label><input type="radio" name="payment-option" value="2">Thanh toán khi nhận hàng</label>
                 </span>
-                <span>
-                    <label><input type="checkbox"> Paypal</label>
-                </span>
+                {{-- <span>
+                    <label><input type="radio" name="payment-option"> Paypal</label>
+                </span> --}}
             </div>
         </div>
     </section>
