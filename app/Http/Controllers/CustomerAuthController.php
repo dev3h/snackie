@@ -75,7 +75,6 @@ class CustomerAuthController extends Controller
                 return redirect($postRoute)->withInput($postData);
             }
         }
-
     }
     public function logout()
     {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentsTable extends Migration
+class AlterChangeColumnStatusInPaymentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreatePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->smallInteger('method')->comment('PaymentMethodEnum')->index();
-            $table->boolean('status')->default(0);
-            $table->timestamps();
+        Schema::table('payments', function (Blueprint $table) {
+            $table->smallInteger('status')->default(0)->change();
         });
     }
 
@@ -28,6 +25,8 @@ class CreatePaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::table('payment', function (Blueprint $table) {
+            //
+        });
     }
 }
