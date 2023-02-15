@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Shipping extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone',
-        'shipping_id'
-        // 'avatar'
+        'name_receiver',
+        'phone_receiver',
+        'address_receiver',
+        'note',
     ];
 }

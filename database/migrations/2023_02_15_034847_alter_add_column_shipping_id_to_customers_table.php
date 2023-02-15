@@ -4,21 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterAddColumnNameToProductsTable extends Migration
+class AlterAddColumnShippingIdToCustomersTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    private $table_name = 'products';
-    private $column = 'name';
-
+    private $table_name = 'customers';
+    private $column = 'shipping_id';
     public function up()
     {
         if (!Schema::hasColumn($this->table_name, $this->column)) {
             Schema::table($this->table_name, function (Blueprint $table) {
-                $table->string($this->column)->after('id');
+                $table->string($this->column)->nullable()->after('phone');
             });
         }
 

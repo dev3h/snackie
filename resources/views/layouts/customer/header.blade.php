@@ -70,9 +70,9 @@
                              {{-- <li><a href="#"><i class="fa fa-user"></i> Account</a></li> --}}
                              @if (session()->get('customer_id'))
                                  {{-- <li><a href="{{ route('customer.logout') }}"><i class="fa fa-user"></i> Đăng xuất</a> --}}
-                                 @if (session()->get('order_id'))
-                                     <li><a href="{{ route('customer.payment') }}"><i
-                                                 class="fa fa-crosshairs"></i>Thanh toán</a></li>
+                                 @if (session()->get('shipping_id'))
+                                     <li><a href="{{ route('customer.payment') }}"><i class="fa fa-crosshairs"></i>Thanh
+                                             toán</a></li>
                                  @else
                                      <li><a href="{{ route('customer.checkout') }}"><i
                                                  class="fa fa-crosshairs"></i>Thông tin thanh toán</a></li>

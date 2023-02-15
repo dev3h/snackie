@@ -83,16 +83,23 @@
                 </div>
             </div>
 
-            <div class="payment-options">
-                <span>
-                    <label><input type="radio" name="payment-option" value="1">Trả bằng thẻ ATM</label>
-                </span>
-                <span>
-                    <label><input type="radio" name="payment-option" value="2">Thanh toán khi nhận hàng</label>
-                </span>
-                {{-- <span>
-                    <label><input type="radio" name="payment-option"> Paypal</label>
-                </span> --}}
+            <div>
+                <h3>Phương thức thanh toán</h3>
+               <form action="{{route('customer.order')}}" method="post">
+                @csrf
+                    <div class="payment-options">
+                        <span>
+                            <label><input type="radio" name="method" value="1">Thẻ tín dụng</label>
+                        </span>
+                        <span>
+                            <label><input type="radio" name="method" value="2">Thanh toán khi nhận hàng</label>
+                        </span>
+                        <span>
+                            <label><input type="radio" name="method">Thẻ ghi nợ</label>
+                        </span>
+                    </div>
+                     <input type="submit" value="Đặt hàng" class="btn btn-primary btn-sm">
+               </form >
             </div>
         </div>
     </section>

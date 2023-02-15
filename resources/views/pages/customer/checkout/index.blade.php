@@ -17,27 +17,30 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-5 clearfix">
                         <div class="bill-to">
-                            <p>Thông tin gửi hàng</p>
+                            <p>Địa chỉ nhận hàng</p>
                             <div class="form-one">
                                 <form method="post" action="{{ route('customer.process_checkout') }}">
                                     @csrf
-                                    <input type="hidden" name="customer_id" value="{{ session()->get('customer_id') }}">
                                     <div class="checkout-group">
                                         <label for="">Tên người nhận</label>
-                                        <input type="text" name="name_receive" class="form-control"
-                                            placeholder="Họ và tên người nhận">
+                                        <input type="text" name="name_receiver" class="form-control"
+                                            placeholder="Họ và tên người nhận" value="{{$shipping_info->name_receiver ?? null}}">
                                     </div>
                                     <div class="checkout-group">
                                         <label for="">Sđt người nhận</label>
-                                        <input type="text" name="phone_receive" class="form-control"
-                                            placeholder="Số điện thoại người nhận">
+                                        <input type="text" name="phone_receiver" class="form-control"
+                                            placeholder="Số điện thoại người nhận" value="{{$shipping_info->phone_receiver ?? null}}">
                                     </div>
                                     <div class="checkout-group">
                                         <label for="">Địa chỉ người nhận</label>
-                                        <input type="text" name="address_receive" class="form-control"
-                                            placeholder="Địa chỉ người nhận">
+                                        <input type="text" name="address_receiver" class="form-control"
+                                            placeholder="Địa chỉ người nhận" value="{{$shipping_info->address_receiver ?? null}}">
                                     </div>
-                                    <input type="hidden" name="total_price" value="{{ Cart::total() }}">
+                                    <div class="checkout-group">
+                                        <label for="">Lời nhắn</label>
+                                        <input type="text" name="note" class="form-control"
+                                            placeholder="Lưu ý Người bán">
+                                    </div>
                                     <input type="submit" value="Thanh toán" class="btn btn-primary btn-sm">
                                 </form>
                             </div>
@@ -109,18 +112,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="payment-options">
-                <span>
-                    <label><input type="checkbox"> Direct Bank Transfer</label>
-                </span>
-                <span>
-                    <label><input type="checkbox"> Check Payment</label>
-                </span>
-                <span>
-                    <label><input type="checkbox"> Paypal</label>
-                </span>
             </div>
         </div>
     </section>

@@ -83,7 +83,7 @@
                             <li>Phí vận chuyển <span>Miễn phí</span></li>
                             <li>Tổng thanh toán <span>{{ Cart::total(0, ',', '.') }}</span></li>
                         </ul>
-                        <a class="btn btn-default check_out" href="{{route('customer.checkout')}}">Thanh toán</a>
+                        <a class="btn btn-default check_out" href="{{route('customer.checkout')}}">Mua hàng</a>
                     </div>
                 </div>
             </div>

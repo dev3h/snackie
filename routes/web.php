@@ -49,7 +49,7 @@ Route::group(['as' => 'customer.'], function () {
         Route::get('/thong-tin-thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
         Route::post('/thong-tin-thanh-toan', [CheckoutController::class, 'process_checkout'])->name('process_checkout');
         Route::get('/thanh-toan', [CheckoutController::class, 'payment'])->name('payment');
-        
+        Route::post('/dat-hang', [CheckoutController::class, 'order'])->name('order');
         Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
 
 

@@ -39,10 +39,11 @@ class CustomerAuthController extends Controller
             $postData = session()->get('route_waiting_to_login_data');
             $postRoute = session()->get('route_waiting_to_login');
 
+
             if ($postRoute) {
                 if ($postData) {
                     session()->forget(['route_waiting_to_login_data', 'route_waiting_to_login']);
-                    return redirect()->to($postRoute)->withInput($postData)->withMethod('post');
+                    return redirect($postRoute)->withInput($postData)->withMethod('POST');
                 }
             }
             return redirect()->route('customer.home');
@@ -71,7 +72,7 @@ class CustomerAuthController extends Controller
             if (session()->has($postData)) {
                 // redirect route with data and method is post
                 session()->forget(['route_waiting_to_login_data', 'route_waiting_to_login']);
-                return redirect()->to($postRoute)->withInput($postData)->withMethod('post');
+                return redirect($postRoute)->withInput($postData);
             }
         }
 
