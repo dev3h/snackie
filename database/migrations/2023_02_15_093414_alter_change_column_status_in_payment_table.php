@@ -14,7 +14,7 @@ class AlterChangeColumnStatusInPaymentTable extends Migration
     public function up()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->smallInteger('status')->default(0)->change();
+            $table->smallInteger('status')->comment('PaymentStatusEnum')->default(0)->change();
         });
     }
 

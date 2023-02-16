@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\View;
 
 class CartController extends Controller
 {
-     private $folderName = 'pages.customer.cart.';
+    private $folderName = 'pages.customer.cart.';
     // private $model;
     // private $messageName = 'danh mục sản phẩm';
     // private $folderName = 'CategoriesProduct';
@@ -43,7 +43,7 @@ class CartController extends Controller
             'name',
         ]);
 
-        return view($this->folderName .'index', [
+        return view($this->folderName . 'index', [
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
         ]);
@@ -65,7 +65,6 @@ class CartController extends Controller
         Cart::add($data);
         // set tax 10%
         Cart::setGlobalTax(10);
-
 
         return redirect()->route('customer.cart');
 

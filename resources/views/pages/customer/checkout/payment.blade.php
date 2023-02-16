@@ -85,21 +85,17 @@
 
             <div>
                 <h3>Phương thức thanh toán</h3>
-               <form action="{{route('customer.order')}}" method="post">
-                @csrf
+                <form action="{{ route('customer.order') }}" method="post">
+                    @csrf
                     <div class="payment-options">
-                        <span>
-                            <label><input type="radio" name="method" value="1">Thẻ tín dụng</label>
-                        </span>
-                        <span>
-                            <label><input type="radio" name="method" value="2">Thanh toán khi nhận hàng</label>
-                        </span>
-                        <span>
-                            <label><input type="radio" name="method">Thẻ ghi nợ</label>
-                        </span>
+                        @foreach ($arrPaymentMethod as $option => $value)
+                            <span>
+                                <label><input type="radio" name="method" value="{{$value}}"> {{$option}}</label>
+                            </span>
+                        @endforeach
                     </div>
-                     <input type="submit" value="Đặt hàng" class="btn btn-primary btn-sm">
-               </form >
+                    <input type="submit" value="Đặt hàng" class="btn btn-primary btn-sm">
+                </form>
             </div>
         </div>
     </section>

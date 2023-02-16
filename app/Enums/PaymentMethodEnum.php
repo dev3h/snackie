@@ -11,15 +11,15 @@ use BenSampo\Enum\Enum;
  */
 final class PaymentMethodEnum extends Enum
 {
-    public const DANG_CHO_XU_LY = 0;
-    public const BO_HOC = 1;
-    public const BAO_LUU = 2;
+    public const THE_TIN_DUNG = 0;
+    public const THANH_TOAN_KHI_NHAN_HANG = 1;
+    public const THE_GHI_NO = 2;
 
     public static function getArrayView() {
         return [
-            'Đang chờ xử lý' => self::DANG_CHO_XU_LY,
-            'Bỏ học' => self::BO_HOC,
-            'Bảo lưu' => self::BAO_LUU,
+            'Thẻ tín dụng' => self::THE_TIN_DUNG,
+            'Thanh toán khi nhận hàng' => self::THANH_TOAN_KHI_NHAN_HANG,
+            'Thẻ ghi nợ' => self::THE_GHI_NO,
         ];
     }
 

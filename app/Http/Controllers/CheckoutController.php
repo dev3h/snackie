@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentMethodEnum;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -46,7 +47,11 @@ class CheckoutController extends Controller
 
     public function payment()
     {
-        return view('pages.customer.checkout.payment');
+        $arrPaymentMethod = PaymentMethodEnum::getArrayView();
+
+        return view('pages.customer.checkout.payment', [
+            'arrPaymentMethod' => $arrPaymentMethod,
+        ]);
     }
 
     public function order(Request $request)
@@ -59,7 +64,7 @@ class CheckoutController extends Controller
         // insert order
         $customer_id = session()->get('customer_id');
         $shipping_id = session()->get('shipping_id');
-        $total_price = Cart::total();
+        $total_price = Cart::total(0, '.', '');
         $order = Order::create([
             'customer_id' => $customer_id,
             'shipping_id' => $shipping_id,
@@ -67,7 +72,6 @@ class CheckoutController extends Controller
             'total_price' => $total_price,
         ]);
         $order_id = $order->id;
-
 
         // insert order detail
         $cart = Cart::content();
@@ -78,6 +82,14 @@ class CheckoutController extends Controller
                 'quantity' => $item->qty,
             ]);
         }
-        // return redirect()->route('customer.payment');
+
+        if ($payment->method == 0) {
+            echo "Thanh toán bằng thẻ tín dụng";
+        } else if ($payment->method == 1) {
+            Cart::destroy();
+            return view('pages.customer.checkout.cash_payment');
+        } else {
+            echo "Thanh toán bằng thẻ ghi nợ";
+        }
     }
 }
