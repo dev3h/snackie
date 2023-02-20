@@ -10,9 +10,30 @@ use App\Models\Payment;
 use App\Models\Shipping;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class CheckoutController extends Controller
 {
+    private $model;
+    private $messageName = 'đơn hàng';
+    private $folderName = 'Orders';
+    private $asRoute;
+    public function __construct()
+    {
+        $this->model = (new Order())->query();
+        $routeName = Route::currentRouteName();
+        $arr = explode('.', $routeName);
+        $this->asRoute = $arr[0] . '.' . $arr[1];
+        $arr = array_map('ucfirst', $arr);
+        $title = implode(' - ', $arr);
+        View::share(
+            [
+                'messageName' => $this->messageName,
+                'asRoute' => $this->asRoute,
+            ]
+        );
+    }
     public function checkout()
     {
         $customer_id = session()->get('customer_id');
@@ -91,5 +112,51 @@ class CheckoutController extends Controller
         } else {
             echo "Thanh toán bằng thẻ ghi nợ";
         }
+    }
+
+    // admin function
+    public function index()
+    {
+        $orders = Order::query()->join('customers', 'customers.id', '=', 'customer_id')
+            ->select('orders.*', 'customers.name as customer_name')
+            ->orderBy('orders.id', 'desc')
+            ->get();
+
+        return view('pages.admin.' . $this->folderName . '.index', [
+            'orders' => $orders,
+        ]);
+    }
+    public function show(Order $order)
+    {
+        $order_by_id = Order::query()->join('customers', 'customers.id', '=', 'customer_id')
+        ->join('shippings', 'shippings.id', '=', 'orders.shipping_id')
+        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->select('orders.*', 'customers.name as customer_name', 'customers.phone as customer_phone', 'shippings.*')
+            ->where('orders.id', $order->id)
+            ->get()
+            ->first();
+            
+        $order_products = OrderDetail::query()->join('products', 'products.id', '=', 'product_id')
+            ->select('products.*', 'order_details.quantity')
+            ->where('order_id', $order->id)
+            ->get();
+        
+
+        return view('pages.admin.' . $this->folderName . '.show', [
+            'order_by_id' => $order_by_id,
+            'order_products' => $order_products,
+        ]);
+
+    }
+    public function destroy()
+    {
+        $orders = Order::query()->join('customers', 'customers.id', '=', 'customer_id')
+            ->select('orders.*', 'customers.name as customer_name')
+            ->orderBy('orders.id', 'desc')
+            ->get();
+
+        return view('pages.admin.' . $this->folderName . '.index', [
+            'orders' => $orders,
+        ]);
     }
 }

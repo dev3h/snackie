@@ -44,7 +44,7 @@ class AdminController extends Controller
             return redirect()->route($this->asRoute . '.dashboard');
         } else {
             session()->put('message', 'Email hoặc mật khẩu không đúng');
-            return redirect()->route($this->asRoute . '.login');
+            return redirect()->route($this->asRoute . '.index');
         }
     }
     public function show_dashboard()

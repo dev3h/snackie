@@ -52,20 +52,20 @@
                 <td>{{$each->name}}</td>
                 <td>
                     @if ($each->status == 1)
-                        <a href="{{route( $asRoute . '.inactive', $each->id)}}" class='btn btn-success'><span class='fa fa-eye'></span></a>
+                        <a href="{{route( $asRoute . '.inactive', $each->id)}}" class='btn btn-success' title="hiện"><span class='fa fa-eye'></span></a>
                     @else
-                        <a href="{{route( $asRoute . '.active', $each->id)}}" class='btn btn-danger'><span class='fa fa-eye-slash'></span></a>
+                        <a href="{{route( $asRoute . '.active', $each->id)}}" class='btn btn-danger' title="ẩn"><span class='fa fa-eye-slash'></span></a>
                     @endif
                 </td>
                 <td>
                     <div class="button-group">
-                        <a href="{{route( $asRoute . '.edit', $each)}}" class="active table-button" ui-toggle-class="">
+                        <a href="{{route( $asRoute . '.edit', $each)}}" class="active table-button" ui-toggle-class="" title="sửa">
                             <i class="fa fa-pencil-square-o text-success text-active"></i>
                         </a>
                         <form action="{{route( $asRoute . '.destroy', $each)}}" method="post">
                             @csrf
                             @method('DELETE')
-                            <button onclick="return confirm('Bạn có chắc muốn xóa {{ $messageName }} này không?')" class="active table-button" ui-toggle-class="">
+                            <button onclick="return confirm('Bạn có chắc muốn xóa {{ $messageName }} này không?')" class="active table-button" ui-toggle-class="" title="xóa">
                                 <i class="fa fa-times text-danger text"></i>
                             </button>
                         </form>

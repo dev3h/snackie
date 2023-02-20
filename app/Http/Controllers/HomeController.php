@@ -9,25 +9,6 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    // private $model;
-    // private $messageName = 'sản phẩm';
-    // private $folderName = 'Products';
-    // private $asRoute;
-    // public function __construct()
-    // {
-    //     $this->model = (new Product())->query();
-    //     $routeName = Route::currentRouteName();
-    //     $arr = explode('.', $routeName);
-    //     $this->asRoute = $arr[0];
-    //     $arr = array_map('ucfirst', $arr);
-    //     $title = implode(' - ', $arr);
-    //     View::share(
-    //         [
-    //             'messageName' => $this->messageName,
-    //             'asRoute' => $this->asRoute,
-    //         ]
-    //     );
-    // }
 
     // return home page
     public function index(Request $request)

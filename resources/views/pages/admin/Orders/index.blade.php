@@ -40,41 +40,28 @@
                                     <input type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>Tên sản phẩm</th>
-                            <th>Giá</th>
-                            <th>Ảnh</th>
-                            <th>Danh mục</th>
-                            <th>Thương hiệu</th>
-                            <th>Hiển thị</th>
+                            <th>Tên người đặt</th>
+                            <th>Tổng đơn hàng</th>
+                            <th>Tình trạng</th>
                             <th style="width:30px;"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $each)
+                        @foreach ($orders as $order)
                             <tr>
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                                 </td>
-                                <td>{{ $each->name }}</td>
-                                <td>{{ number_format($each->price) }}</td>
-                                <td><img src="{{asset('uploads/products/' . $each->image)}}" alt="" width="50" height="50"></td>
-                                <td>{{$each->category_name}}</td>
-                                <td>{{$each->brand_name}}</td>
-                                <td>
-                                    @if ($each->status == 1)
-                                        <a href="{{ route( $asRoute . '.inactive', $each->id) }}"
-                                            class='btn btn-success' title="hiện"><span class='fa fa-eye' ></span></a>
-                                    @else
-                                        <a href="{{ route( $asRoute . '.active', $each->id) }}"
-                                            class='btn btn-danger' title="ẩn"><span class='fa fa-eye-slash'></span></a>
-                                    @endif
-                                </td>
+                                <td>{{ $order->customer_name }}</td>
+                                <td>{{ number_format($order->total_price) }}</td>
+                                <td>{{$order->status_name}}</td>
+                                <td></td>
                                 <td>
                                     <div class="button-group">
-                                        <a href="{{ route( $asRoute . '.edit', $each) }}" class="active table-button"
-                                            ui-toggle-class="" title="sửa">
-                                            <i class="fa fa-pencil-square-o text-success text-active"></i>
+                                        <a href="{{ route( $asRoute . '.show', $order) }}" class="active table-button"
+                                            ui-toggle-class="" title="xem">
+                                            <i class="fa fa-eye text-success text-active"></i>
                                         </a>
-                                        <form action="{{ route( $asRoute . '.destroy', $each) }}" method="post">
+                                        <form action="{{ route( $asRoute . '.destroy', $order) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button onclick="return confirm('Bạn có chắc muốn xóa {{ $messageName }} này không?')"

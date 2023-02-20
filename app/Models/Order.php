@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,4 +17,9 @@ class Order extends Model
         'total_price',
         'status'
     ];
+
+     public function getStatusNameAttribute()
+    {
+        return OrderStatusEnum::getKeyByValue($this->status);
+    }
 }

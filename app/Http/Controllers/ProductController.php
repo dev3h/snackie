@@ -21,7 +21,7 @@ class ProductController extends Controller
         $this->model = (new Product())->query();
         $routeName = Route::currentRouteName();
         $arr = explode('.', $routeName);
-        $this->asRoute = $arr[0];
+        $this->asRoute = $arr[0] . '.' . $arr[1];
         $arr = array_map('ucfirst', $arr);
         $title = implode(' - ', $arr);
         View::share(

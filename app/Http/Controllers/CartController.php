@@ -12,26 +12,7 @@ use Illuminate\Support\Facades\View;
 class CartController extends Controller
 {
     private $folderName = 'pages.customer.cart.';
-    // private $model;
-    // private $messageName = 'danh mục sản phẩm';
-    // private $folderName = 'CategoriesProduct';
-    // private $asRoute;
-    // public function __construct()
-    // {
-    //     $this->model = (new Cart())->query();
-    //     $routeName = Route::currentRouteName();
-    //     $arr = explode('.', $routeName);
-    //     $this->asRoute = $arr[0];
-    //     $arr = array_map('ucfirst', $arr);
-    //     $title = implode(' - ', $arr);
-    //     View::share(
-    //         [
-    //             'messageName' => $this->messageName,
-    //             'asRoute' => $this->asRoute,
-    //         ]
-    //     );
 
-    // }
     public function index()
     {
         $categories_product = CategoryProduct::where('status', 1)->get([
