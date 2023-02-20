@@ -22,7 +22,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mô tả {{ $messageName }}</label>
-                            <textarea name="description" style="resize: none" rows="8" class="form-control" id="exampleInputPassword1" placeholder="mô tả {{ $messageName }}">{{$each->description}}</textarea>
+                            <textarea class="ckeditor" name="description" style="resize: none" rows="8" class="form-control" id="exampleInputPassword1" placeholder="mô tả {{ $messageName }}">{{$each->description}}</textarea>
                         </div>
                         <button type="submit" class="btn btn-info">Cập nhập</button>
                     </form>
@@ -31,5 +31,12 @@
         </section>
     </div>
 </div>
+ @push('ckeditor_js')
+      <script type="text/javascript" src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
+      <script>
+        CKEDITOR.replaceClass = 'ckeditor'
+        CKEDITOR.config.height = 200;
+      </script>
+    @endpush
 @endsection
 
