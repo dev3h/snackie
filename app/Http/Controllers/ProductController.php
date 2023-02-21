@@ -18,6 +18,8 @@ class ProductController extends Controller
     private $asRoute;
     public function __construct()
     {
+        parent::__construct();
+
         $this->model = (new Product())->query();
         $routeName = Route::currentRouteName();
         $arr = explode('.', $routeName);
@@ -229,6 +231,11 @@ class ProductController extends Controller
             ->get()
             ->first();
 
+        $facebook_share_img = $details_product->image;
+        $facebook_share_title = $details_product->name;
+        $facebook_share_description = $details_product->description;
+        $facebook_share_url = url()->current();
+
         $category_id = $details_product->category_id;
 
         // get related product by category id
@@ -242,6 +249,11 @@ class ProductController extends Controller
             'brands_product' => $brands_product,
             'details_product' => $details_product,
             'related_products' => $related_products,
+
+            'facebook_share_img' => $facebook_share_img,
+            'facebook_share_title' => $facebook_share_title,
+            'facebook_share_description' => $facebook_share_description,
+            'facebook_share_url' => $facebook_share_url,
         ]);
     }
 }

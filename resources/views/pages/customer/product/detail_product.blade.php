@@ -1,4 +1,12 @@
 @extends('customer_layout')
+@push('share_facebook')
+    <meta property="og:image" content="{{ $facebook_share_img }}" />
+    <meta property="og:site_name" content="http://127.0.0.1:8000/" />
+    <meta property="og:description" content="{{ $facebook_share_description }}" />
+    <meta property="og:title" content="{{ $facebook_share_title }}" />
+    <meta property="og:url" content="{{ $facebook_share_url }}" />
+    <meta property="og:type" content="website" />
+@endpush
 @push('sidebar')
     @include('layouts.customer.sidebar')
 @endpush
@@ -60,8 +68,12 @@
                 <p><b>Điều kiện:</b> Mới 100%</p>
                 <p><b>Thương hiệu:</b> {{ $details_product->brand_name }}</p>
                 <p><b>Danh mục:</b> {{ $details_product->category_name }}</p>
-                <a href=""><img src="{{ asset('frontend/images/share.png') }}" class="share img-responsive"
-                        alt="" /></a>
+                {{-- <a href=""><img src="{{ asset('frontend/images/share.png') }}" class="share img-responsive"
+                        alt="" /></a> --}}
+                <div class="fb-share-button" data-href="http://127.0.0.1:8000/" data-layout="" data-size=""><a
+                        target="_blank"
+                        href="https://www.facebook.com/sharer/sharer.php?u={{ $url_canonical }}&amp;src=sdkpreparse"
+                        class="fb-xfbml-parse-ignore">Chia sẻ</a></div>
             </div>
             <!--/product-information-->
         </div>

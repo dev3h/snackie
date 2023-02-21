@@ -52,9 +52,4 @@ class HomeController extends Controller
         //     'products' => $products,
         // ]);
     }
-
-    public function search(Request $request)
-    {
-
-    }
 }
