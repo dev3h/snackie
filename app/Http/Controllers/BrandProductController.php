@@ -17,6 +17,8 @@ class BrandProductController extends Controller
     private $asRoute;
     public function __construct()
     {
+        parent::__construct();
+
         $this->model = (new BrandProduct())->query();
         $routeName = Route::currentRouteName();
         $arr = explode('.', $routeName);

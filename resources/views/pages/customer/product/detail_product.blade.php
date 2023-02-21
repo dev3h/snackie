@@ -70,10 +70,14 @@
                 <p><b>Danh mục:</b> {{ $details_product->category_name }}</p>
                 {{-- <a href=""><img src="{{ asset('frontend/images/share.png') }}" class="share img-responsive"
                         alt="" /></a> --}}
-                <div class="fb-share-button" data-href="http://127.0.0.1:8000/" data-layout="" data-size=""><a
-                        target="_blank"
-                        href="https://www.facebook.com/sharer/sharer.php?u={{ $url_canonical }}&amp;src=sdkpreparse"
-                        class="fb-xfbml-parse-ignore">Chia sẻ</a></div>
+                <div class="flex-row">
+                    <div class="fb-share-button" data-href="{{ $url_canonical }}" data-layout="" data-size=""><a
+                            target="_blank"
+                            href="https://www.facebook.com/sharer/sharer.php?u={{ $url_canonical }}&amp;src=sdkpreparse"
+                            class="fb-xfbml-parse-ignore">Chia sẻ</a></div>
+                    <div class="fb-like" data-href="{{ $url_canonical }}" data-width="" data-layout="" data-action=""
+                        data-size="" data-share="false"></div>
+                </div>
             </div>
             <!--/product-information-->
         </div>
@@ -100,7 +104,7 @@
 
             <div class="tab-pane fade" id="reviews">
                 <div class="col-sm-12">
-                    <ul>
+                    {{-- <ul>
                         <li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
                         <li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
                         <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
@@ -121,7 +125,8 @@
                         <button type="button" class="btn btn-default pull-right">
                             Submit
                         </button>
-                    </form>
+                    </form> --}}
+                    <div class="fb-comments" data-href="{{ $url_canonical }}" data-width="" data-numposts="5"></div>
                 </div>
             </div>
 

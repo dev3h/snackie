@@ -17,10 +17,12 @@ class CategoryProductController extends Controller
     private $asRoute;
     public function __construct()
     {
+        parent::__construct();
+
         $this->model = (new CategoryProduct())->query();
         $routeName = Route::currentRouteName();
         $arr = explode('.', $routeName);
-       $this->asRoute = $arr[0] . '.' . $arr[1];
+        $this->asRoute = $arr[0] . '.' . $arr[1];
         $arr = array_map('ucfirst', $arr);
         $title = implode(' - ', $arr);
         View::share(
@@ -151,7 +153,7 @@ class CategoryProductController extends Controller
             'id',
             'name',
         ]);
-        
+
         $products = Product::where('category_id', $category_product_id)->where('status', 1)->orderBy('id', 'desc')->limit(4)->get();
         $category_product_name = CategoryProduct::where('id', $category_product_id)->first()->name;
 
