@@ -14,4 +14,5 @@ class BrandProduct extends Model
         'description',
         'status',
     ];
+
 }

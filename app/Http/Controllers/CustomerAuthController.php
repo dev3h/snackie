@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserRegisteredEvent;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -39,7 +40,6 @@ class CustomerAuthController extends Controller
             $postData = session()->get('route_waiting_to_login_data');
             $postRoute = session()->get('route_waiting_to_login');
 
-
             if ($postRoute) {
                 if ($postData) {
                     session()->forget(['route_waiting_to_login_data', 'route_waiting_to_login']);
@@ -65,16 +65,20 @@ class CustomerAuthController extends Controller
         session()->put('customer_id', $customer->id);
         session()->put('customer_name', $customer->name);
 
-        $postData = session('route_waiting_to_login_data');
-        $postRoute = session('route_waiting_to_login');
+        $postData = session()->get('route_waiting_to_login_data');
+        $postRoute = session()->get('route_waiting_to_login');
 
-        if (session()->has($postRoute)) {
-            if (session()->has($postData)) {
+        if ($postRoute != null) {
+            if ($postData != null) {
                 // redirect route with data and method is post
                 session()->forget(['route_waiting_to_login_data', 'route_waiting_to_login']);
                 return redirect($postRoute)->withInput($postData);
             }
+        } else {
+            UserRegisteredEvent::dispatch($customer);
+            return redirect()->route('customer.home');
         }
+
     }
     public function logout()
     {
