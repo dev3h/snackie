@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckLoginAminPageMiddleware;
 use App\Http\Middleware\CheckLoginCustomerPageMiddleware;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 // customer route
 
@@ -21,6 +22,14 @@ Route::group(['as' => 'customer.'], function () {
 
     Route::get('/register', [CustomerAuthController::class, 'register'])->name('register');
     Route::post('/register', [CustomerAuthController::class, 'processRegister'])->name('process_register');
+
+    // socialite
+    Route::get('/auth/redirect/{provider}', function ($provider) {
+        return Socialite::driver($provider)->redirect();
+    })->name('socialite_redirect');
+
+    Route::get('/auth/callback/{provider}', [CustomerAuthController::class, 'callback'] )->name('socialite_callback');
+
 });
 
 Route::group(['as' => 'customer.'], function () {

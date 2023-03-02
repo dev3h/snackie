@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\UserRegisteredEvent;
 use App\Models\Customer;
+use App\Models\Social;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash; //sử dụng model Login
+use Laravel\Socialite\Facades\Socialite;
 
 class CustomerAuthController extends Controller
 {
@@ -55,12 +58,18 @@ class CustomerAuthController extends Controller
     }
     public function processRegister(Request $request)
     {
-        $customer = Customer::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-        ]);
+        if (auth()->check()) {
+            $customer = Customer::query()->where('id', auth()->id())->update([
+                'password' => Hash::make($request->password),
+            ]);
+        } else {
+            $customer = Customer::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+            ]);
+        }
 
         session()->put('customer_id', $customer->id);
         session()->put('customer_name', $customer->name);
@@ -84,5 +93,65 @@ class CustomerAuthController extends Controller
     {
         session()->forget(['customer_id', 'customer_name']);
         return redirect()->route('customer.home');
+    }
+    public function callback($provider)
+    {
+        // login thành công thì trả lại user của github
+        $data = Socialite::driver($provider)->user();
+        // dd($data->getId());
+        // $user = Customer::firstOrCreate([
+        //     'email' => $data->getEmail(),
+        // ], [
+        //     'name' => $data->getName(),
+        //     'email' => $data->getEmail(),
+        //     // 'avatar' => $data->getAvatar(),
+        // ]
+        // );
+
+        // Auth::login($user);
+
+        $account = Social::where('provider_user_id', $data->getId())->first();
+
+        if ($account) {
+            $user = $account->customer;
+
+            Auth::login($user);
+
+            session()->put('customer_id', $user->id);
+            session()->put('customer_name', $user->name);
+
+            return redirect()->route('customer.home');
+        } else {
+            // $user = Customer::create([
+            //     'name' => $data->getName(),
+            //     'email' => $data->getEmail(),
+            //     // 'avatar' => $data->getAvatar(),
+            // ]);
+            // Auth::login($user);
+
+            $customer = Customer::where('email', $data->getEmail())->first();
+
+            if (!$customer) {
+                $user = Customer::create([
+                    'name' => $data->getName(),
+                    'email' => $data->getEmail(),
+                    // 'avatar' => $data->getAvatar(),
+                    'password' => Hash::make($data->getId()),
+                ]);
+                Social::create([
+                    'provider_user_id' => $data->getId(),
+                    'provider' => $provider,
+                    'customer_id' => $user->id,
+                ]);
+                Auth::login($user);
+
+            } else {
+                Auth::login($customer);
+            }
+            session()->put('customer_id', $user->id);
+            session()->put('customer_name', $user->name);
+
+            return redirect()->route('customer.home');
+        }
     }
 }

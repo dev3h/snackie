@@ -15,5 +15,12 @@
         </span>
         <button type="submit" class="btn btn-default">Đăng nhập</button>
     </form>
+    <p>hoặc</p>
+
+    <div style="display: flex; gap: 20px">
+        <a href="{{ route('customer.socialite_redirect', 'github') }}"><i class="fa fa-github"></i></a>
+        <a href="{{ route('customer.socialite_redirect', 'facebook') }}"><i class="fa fa-facebook"></i></a>
+    </div>
+    </ul>
 </div>
 <!--/login form-->

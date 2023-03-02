@@ -116,8 +116,10 @@ gọi
 ```
 
 ---
+
 ## Hiển thị một chuỗi có những kí tự đặc biệt trong blade
-- `{{!! $each->category_product_name !!}}`
+
+-   `{{!! $each->category_product_name !!}}`
 
 ## eloquent
 
@@ -154,7 +156,7 @@ $new_image = $new_name_image . rand(0, 9999) . '.' . $get_image->getClientOrigin
 $get_image->move('uploads/products', $new_image);
 ```
 
--  `current`: lấy phần tử đầu tiên của mảng
+-   `current`: lấy phần tử đầu tiên của mảng
 
 ## Lỗi
 
@@ -163,3 +165,13 @@ Unable to guess the MIME type as no guessers are available (have you enabled the
 ```
 
 -   Cách fix: vào file `php.ini` và tìm đến dòng `;extension=php_fileinfo.dll` và bỏ dấu `;` ở đầu dòng. Sau đó restart lại server.
+
+---
+
+## with
+
+-   `->with()` là session flash, nó sẽ tự động xóa sau khi hiển thị 1 lần
+-   muốn lấy giá trị khi truyền trong with thì dùng `session()->get('key')`
+
+## firstOrCreate
+- Dùng để tìm kiếm, nếu không có thì tạo mới
