@@ -94,6 +94,8 @@ class CustomerAuthController extends Controller
         session()->forget(['customer_id', 'customer_name']);
         return redirect()->route('customer.home');
     }
+
+    // ! phần này học bài authen bài 99 sẽ quay lại bài 58 để sửa lại cái belongsTo
     public function callback($provider)
     {
         // login thành công thì trả lại user của github

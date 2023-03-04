@@ -56,6 +56,8 @@ Route::get('/auth/callback/{provider}', function ($provider) {
 -   Chúng ta sẽ viết 1 hàm `callback()` trong controller `CustomerAuth`
 -   Trong hàm `callback()`: Nếu không có thì sẽ tạo mới, tuy nhiên khi tạo mới thì nó chưa có password nên phải sửa lại database cho cái password đó là `nullable`
 
+---
+
 ## Thêm vào model `Customer`
 
 ```php
@@ -66,9 +68,39 @@ class Customer extends Model implements AuthenticatableContract {
     use Authenticatable;
 }
 ```
-- Thêm những cái này thì mới có thể login bằng social
+
+-   Thêm những cái này thì mới có thể login bằng social
+
+---
 
 ## facebook
-- [facebook graph api]
-- Bấm vào tạo ứng dụng
-- Sau khi nhập xong thông tin thì nó sẽ trả về `App ID` và `App Secret`. Xem ở mục cài đặt ở sidebar bên trái
+
+-   [facebook graph api]
+-   Bấm vào tạo ứng dụng
+-   Sau khi nhập xong thông tin thì nó sẽ trả về `App ID` và `App Secret`. Xem ở mục cài đặt ở sidebar bên trái
+
+---
+
+# fix lỗi đăng nhập facebook
+
+-   Phải có https -> tạo một tên miền ảo trong xampp
+
+1. Đầu tiên vào `C:\Windows\System32\drivers\etc` -> mở file `hosts` lên
+
+-   chuột phải -> properties -> security -> Users -> edit -> cấp quyền full control -> apply (việc này để cho phép sửa file hosts và save được)
+-   Thêm tên miền ảo vào file hosts
+
+```txt
+127.0.0.1 namecommerce.com
+```
+
+2. Vào `C:\xampp\apache\conf\extra` -> mở file `httpd-vhosts.conf` lên
+
+```txt
+<VirtualHost *:8000>
+   DocumentRoot "C:/xampp/htdocs"
+	ServerName namecommerce.com
+</VirtualHost>
+```
+- Cái server name phải trùng với cái tên miền ảo ở trên
+- Sau đó restart lại apache
