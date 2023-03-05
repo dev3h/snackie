@@ -75,10 +75,10 @@ class Customer extends Model implements AuthenticatableContract {
 
 ## facebook
 
--   [facebook graph api]
+-   [facebook graph api](https://developers.facebook.com/docs/graph-api/)
 -   Bấm vào tạo ứng dụng
 -   Sau khi nhập xong thông tin thì nó sẽ trả về `App ID` và `App Secret`. Xem ở mục cài đặt ở sidebar bên trái
-
+- Sau đó ở mục Sản phẩm -> cài đặt -> uri chuyển hướng oauth hợp lệ -> thêm
 ---
 
 # fix lỗi đăng nhập facebook
@@ -104,3 +104,21 @@ class Customer extends Model implements AuthenticatableContract {
 ```
 - Cái server name phải trùng với cái tên miền ảo ở trên
 - Sau đó restart lại apache
+
+## đưa index ra ngoài public
+- Hiện tại là khi chúng ta chạy code thì sẽ có 2 cách:
+    1 là chạy `php artisan serve` 
+    2 là vô localhost/project/Ecommerce/public
+- Đổi tên file `server.php` thành `index.php`
+
+## google
+- [google console api]
+- bấm vào create new project
+- chọn `enabled apis & services` ở sidebar bên trái -> + enable apis & services -> chọn `google+ api` -> enable
+### tạo oauth consent screen
+- Sau đó chọn `credentials` ở sidebar bên trái -> + create credentials -> chọn `OAuth client ID` -> `configure consent screen` -> `external` -> `create`
+- Nhập những cái cần thiết.
+- ở phần scopes chọn `add or remove scopes` -> thêm email, profile, openid -> update
+
+### tạo oauth client id
+- Sau đó chọn `credentials` ở sidebar bên trái -> + create credentials -> chọn `OAuth client ID` -> `web application` -> nhập tên ứng dụng -> nhập `Authorized redirect URIs` -> save

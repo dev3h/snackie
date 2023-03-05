@@ -20,6 +20,7 @@
     <div style="display: flex; gap: 20px">
         <a href="{{ route('customer.socialite_redirect', 'github') }}"><i class="fa fa-github"></i></a>
         <a href="{{ route('customer.socialite_redirect', 'facebook') }}"><i class="fa fa-facebook"></i></a>
+        <a href="{{ route('customer.socialite_redirect', 'google') }}"><i class="fa fa-google-plus"></i></a>
     </div>
     </ul>
 </div>
