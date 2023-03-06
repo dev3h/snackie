@@ -12,8 +12,8 @@
     <link rel="icon" type="image/x-icon" href="" />
 
     {{-- share facebook --}}
-     @stack('share_facebook')
-   
+    @stack('share_facebook')
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Home | E-Shopper</title>
@@ -28,7 +28,6 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
-
 </head>
 <!--/head-->
 
@@ -64,6 +63,7 @@
 
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0"
         nonce="IHHnoIB0"></script>
+    @stack('capcha')
 </body>
 
 </html>

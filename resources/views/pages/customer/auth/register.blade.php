@@ -21,6 +21,16 @@
         <input type="text" name="phone" placeholder="Số điện thoại" />
         <label for="">Mật khẩu</label>
         <input type="password" name="password" placeholder="mật khẩu" />
+
+        {{-- captcha --}}
+        <div class="g-recaptcha" data-sitekey="{!! env('CAPTCHA_KEY','NO-KEY-FOUND') !!}"></div>
+        <br />
+        @if ($errors->has('g-recaptcha-response'))
+            <span class="invalid-feedback" style="display:block">
+                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+            </span>
+        @endif
+        {{-- end --}}
         <button type="submit" class="btn btn-default">Đăng ký</button>
     </form>
 </div>

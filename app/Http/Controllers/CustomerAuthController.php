@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\UserRegisteredEvent;
 use App\Models\Customer;
 use App\Models\Social;
+use App\Rules\CapchaRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //sử dụng model Login
@@ -63,6 +64,11 @@ class CustomerAuthController extends Controller
                 'password' => Hash::make($request->password),
             ]);
         } else {
+            // check captcha
+            $request->validate([
+                'g-recaptcha-response' => new CapchaRule(),
+            ]);
+
             $customer = Customer::create([
                 'name' => $request->name,
                 'email' => $request->email,
