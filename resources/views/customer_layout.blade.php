@@ -24,6 +24,8 @@
     <link href="{{ asset('frontend/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/responsive.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/sweetalert2.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/toastr.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -54,16 +56,18 @@
 
     @include('layouts.customer.footer')
 
-    <script src="{{ asset('frontend/js/jquery.js') }}"></script>
+    <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
     <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('frontend/js/jquery.scrollUp.min.js') }}"></script>
     <script src="{{ asset('frontend/js/price-range.js') }}"></script>
     <script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
-
+    <script src="{{ asset('frontend/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/sweetalert2.min.js') }}"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0"
         nonce="IHHnoIB0"></script>
     @stack('capcha')
+    @stack('add-to-cart')
 </body>
 
 </html>

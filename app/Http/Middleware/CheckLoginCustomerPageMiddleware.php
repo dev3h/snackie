@@ -17,14 +17,26 @@ class CheckLoginCustomerPageMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!session()->has('customer_id') ) {
-            if($request->isMethod('post')) {
-                session()->put('route_waiting_to_login_data', $request->all());
+        if (session()->has('customer_id')) {
+            return $next($request);
+        } else {
+            if ($request->ajax()) {
+                if ($request->isMethod('post')) {
+                    session()->put('route_waiting_to_login_data', $request->all());
+                }
+                session()->put('route_waiting_to_login', url()->current());
+                // redirect to login page with json response
+
+                return response()->json([
+                    'status' => '401',
+                    'message' => 'Bạn chưa đăng nhập',
+                    'redirect' => route('customer.login'),
+                ]);
+            } else {
+                return redirect()->route('login');
             }
-            session()->put('route_waiting_to_login', url()->current());
-            return redirect()->route('customer.login');
+
         }
 
-        return $next($request);
     }
 }

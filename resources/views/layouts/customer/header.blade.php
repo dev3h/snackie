@@ -64,8 +64,23 @@
                  <div class="col-sm-8">
                      <div class="shop-menu pull-right">
                          <ul class="nav navbar-nav">
-                             <li><a href="#"><i class="fa fa-star"></i> Yêu thích</a></li>
-                             <li><a href="{{ route('customer.cart') }}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a>
+                             <li title="yêu thích"><a href="#"><i class="fa fa-star"></i></a></li>
+                             <li title="giỏ hàng">
+                                 <a class="cart-customer" href="{{ route('customer.cart') }}">
+                                     <i class="fa fa-shopping-cart"></i>
+                                     <span class="cart-qty">
+                                         @php
+                                             $customer_id = session()->get('customer_id');
+                                             $cart = session()->get('cart') ?? [];
+                                             if (sizeof($cart) > 0) {
+                                                 $cart_customer = $cart[$customer_id];
+                                                 echo sizeof($cart_customer);
+                                             } else {
+                                                 echo 0;
+                                             }
+                                         @endphp
+                                     </span>
+                                 </a>
                              </li>
                              {{-- <li><a href="#"><i class="fa fa-user"></i> Account</a></li> --}}
                              @if (session()->get('customer_id'))
@@ -119,7 +134,6 @@
                                      <li><a href="blog.html">Blog List</a></li>
                                  </ul>
                              </li>
-                             <li><a href="404.html">Giỏ hàng</a></li>
                              <li><a href="contact-us.html">Liên hệ</a></li>
                          </ul>
                      </div>

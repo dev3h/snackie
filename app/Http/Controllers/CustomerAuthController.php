@@ -65,9 +65,9 @@ class CustomerAuthController extends Controller
             ]);
         } else {
             // check captcha
-            $request->validate([
-                'g-recaptcha-response' => new CapchaRule(),
-            ]);
+            // $request->validate([
+            //     'g-recaptcha-response' => new CapchaRule(),
+            // ]);
 
             $customer = Customer::create([
                 'name' => $request->name,

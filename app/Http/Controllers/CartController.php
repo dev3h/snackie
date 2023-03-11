@@ -30,25 +30,41 @@ class CartController extends Controller
         ]);
 
     }
+    // 
     public function store(Request $request)
     {
-        $product_id = $request->product_id;
-        $quantity = $request->qty;
+        $product_qnt = $request->quantity ?? 1;
+        $product_id = $request->id;
+        $customer_id = session()->get('customer_id');
+        $product = Product::find($product_id);
 
-        $product_data = Product::where('id', $product_id)->first();
+        $cart = session()->get('cart');
+        if (isset($cart[$customer_id][$product_id])) {
+            $cart[$customer_id][$product_id]['quantity'] += $product_qnt;
+            session()->put('cart', $cart);
+            $res = [
+                'status' => 200,
+                'message' => 'Tăng số lượng ' . $product->name . ' thành công',
+            ];
 
-        $data['id'] = $product_data->id;
-        $data['qty'] = $quantity;
-        $data['name'] = $product_data->name;
-        $data['price'] = $product_data->price;
-        $data['weight'] = '0';
-        $data['options']['image'] = $product_data->image;
-        Cart::add($data);
-        // set tax 10%
-        Cart::setGlobalTax(10);
+        } else {
+            $cart[$customer_id][$product_id] = [
+                'id' => $product_id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => $product_qnt,
+                'image' => $product->image,
+            ];
+            session()->put('cart', $cart);
+            $res = [
+                'status' => 200,
+                'message' => "Thêm thành công " . $product->name . ' vào giỏ hàng',
+                'data' => sizeof($cart[$customer_id]),
+            ];
 
-        return redirect()->route('customer.cart');
-
+        }
+        echo json_encode($res);
+        return false;
     }
 
     public function update(Request $request)
