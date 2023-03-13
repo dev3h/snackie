@@ -30,17 +30,17 @@ class CartController extends Controller
         ]);
 
     }
-    // 
+    //
     public function store(Request $request)
     {
-        $product_qnt = $request->quantity ?? 1;
+        $product_qty = $request->quantity;
         $product_id = $request->id;
         $customer_id = session()->get('customer_id');
         $product = Product::find($product_id);
 
         $cart = session()->get('cart');
         if (isset($cart[$customer_id][$product_id])) {
-            $cart[$customer_id][$product_id]['quantity'] += $product_qnt;
+            $cart[$customer_id][$product_id]['quantity'] += $product_qty;
             session()->put('cart', $cart);
             $res = [
                 'status' => 200,
@@ -52,7 +52,7 @@ class CartController extends Controller
                 'id' => $product_id,
                 'name' => $product->name,
                 'price' => $product->price,
-                'quantity' => $product_qnt,
+                'quantity' => $product_qty,
                 'image' => $product->image,
             ];
             session()->put('cart', $cart);
@@ -63,20 +63,48 @@ class CartController extends Controller
             ];
 
         }
-        echo json_encode($res);
-        return false;
+        return response()->json($res);
     }
 
-    public function update(Request $request)
+    public function update_old(Request $request)
     {
         $rowId = $request->rowId;
         $qty = $request->qty;
         Cart::update($rowId, $qty);
         return redirect()->route('customer.cart');
     }
-    public function delete($rowId)
+    public function update(Request $request)
     {
-        Cart::remove($rowId);
-        return redirect()->route('customer.cart');
+        $id = $request->id;
+        $type = $request->type;
+        $customer_id = session()->get('customer_id');
+        $carts = session()->get('cart');
+
+        if ($type == '0') {
+
+            if ($carts[$customer_id][$id]['quantity'] > 1) {
+                $carts[$customer_id][$id]['quantity']--;
+            } else {
+                unset($carts[$customer_id][$id]);
+            }
+        } else {
+            $carts[$customer_id][$id]['quantity']++;
+        }
+        $res = [
+            'data' => sizeof($carts[$customer_id]),
+        ];
+        return response()->json($res);
+    }
+    public function delete(Request $request)
+    {
+        $customer_id = session()->get('customer_id');
+        $id = $request->id;
+        
+        $carts = session()->get('cart');
+        unset($carts[$customer_id][$id]);
+         $res = [
+            'data' => sizeof($carts[$customer_id]),
+        ];
+        return response()->json($res);
     }
 }

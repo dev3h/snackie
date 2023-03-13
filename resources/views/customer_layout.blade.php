@@ -68,6 +68,7 @@
         nonce="IHHnoIB0"></script>
     @stack('capcha')
     @stack('add-to-cart')
+    @stack('update-quantity-cart')
 </body>
 
 </html>

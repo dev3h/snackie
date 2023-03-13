@@ -51,8 +51,8 @@ Route::group(['as' => 'customer.'], function () {
         // cart
         Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
         Route::get('/save-cart', [CartController::class, 'store'])->name('save_cart');
-        Route::get('/delete-item-cart/{rowId}', [CartController::class, 'delete'])->name('delete__item_cart');
-        Route::post('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
+        Route::get('/delete-item-cart', [CartController::class, 'delete'])->name('delete__item_cart');
+        Route::get('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
 
         // checkout
         Route::get('/thong-tin-thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');

@@ -51,19 +51,18 @@
                 <h2>{{ $details_product->name }}</h2>
                 <p>Mã sản phẩm: {{ $details_product->id }}</p>
                 <img src="{{ asset('frontend/images/rating.png') }}" alt="" />
-                <form action="{{ route('customer.save_cart') }}" method="post">
-                    @csrf
-                    <span>
-                        <span>{{ number_format($details_product->price) }}đ</span>
-                        <label>Số lượng:</label>
-                        <input name="product_id" type="hidden" value="{{ $details_product->id }}" />
-                        <input name="qty" type="number" min="1" value="1" />
-                        <button type="submit" class="btn btn-fefault cart">
+                <span>
+                    <span>{{ number_format($details_product->price) }}đ</span>
+                    <label>Số lượng:</label>
+                    {{-- <input name="product_id" type="hidden" value="{{ $details_product->id }}" /> --}}
+                    <form class="add-to-cart-form">
+                        <input name="qty" class="cart_quantity_input" type="number" min="1" value="1" />
+                        <button class="btn btn-fefault cart add-to-cart" value="{{ $details_product->id }}">
                             <i class="fa fa-shopping-cart"></i>
                             Thêm giỏ hàng
                         </button>
-                    </span>
-                </form>
+                    </form>
+                </span>
                 <p><b>Tình trạng:</b> Còn hàng</p>
                 <p><b>Điều kiện:</b> Mới 100%</p>
                 <p><b>Thương hiệu:</b> {{ $details_product->brand_name }}</p>
@@ -217,4 +216,9 @@
     @endif
     </div>
     <!--/recommended_items-->
+
+    @push('add-to-cart')
+        {{-- <script src="{{ asset('frontend/js/ajax/addToCart.js') }}"></script> --}}
+        @include('pages.customer.ajaxBlade.addToCart')
+    @endpush
 @endsection

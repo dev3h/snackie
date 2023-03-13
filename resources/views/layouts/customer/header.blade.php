@@ -68,18 +68,22 @@
                              <li title="giỏ hàng">
                                  <a class="cart-customer" href="{{ route('customer.cart') }}">
                                      <i class="fa fa-shopping-cart"></i>
-                                     <span class="cart-qty">
-                                         @php
-                                             $customer_id = session()->get('customer_id');
-                                             $cart = session()->get('cart') ?? [];
-                                             if (sizeof($cart) > 0) {
-                                                 $cart_customer = $cart[$customer_id];
-                                                 echo sizeof($cart_customer);
-                                             } else {
-                                                 echo 0;
-                                             }
-                                         @endphp
-                                     </span>
+                                     @php
+                                         $customer_id = session()->get('customer_id') ?? null;
+                                     @endphp
+                                     @if ($customer_id)
+                                         <span id="cart-quantity">
+                                             @php
+                                                 $cart = session()->get('cart') ?? [];
+                                                 if (sizeof($cart) > 0) {
+                                                     $cart_customer = $cart[$customer_id];
+                                                     echo sizeof($cart_customer);
+                                                 } else {
+                                                     echo 0;
+                                                 }
+                                             @endphp
+                                         </span>
+                                     @endif
                                  </a>
                              </li>
                              {{-- <li><a href="#"><i class="fa fa-user"></i> Account</a></li> --}}

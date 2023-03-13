@@ -32,11 +32,11 @@
                                 $subtotal = 0;
                             @endphp
                             @foreach ($cart_customer as $id => $each)
-                            @php
-                            
-                                $price_products = $each['price'] * $each['quantity'];
-                                $subtotal += $price_products;
-                            @endphp
+                                @php
+                                    
+                                    $price_products = $each['price'] * $each['quantity'];
+                                    $subtotal += $price_products;
+                                @endphp
                                 <tr>
                                     <td class="cart_product">
                                         <a href=""><img src="{{ asset('uploads/products/' . $each['image']) }}"
@@ -51,10 +51,14 @@
                                     </td>
                                     <td class="cart_quantity">
                                         <div class="cart_quantity_button">
-                                            {{-- <a class="cart_quantity_down" href="{{}}"> - </a>
-                                        <input class="cart_quantity_input" type="text" name="quantity"
-                                            value="{{ $cart->qty }}" autocomplete="off" size="2">
-                                        <a class="cart_quantity_up" href=""> + </a> --}}
+                                            <form>
+                                                <button type="button" class="cart_quantity_down btn-update-quantity"
+                                                    data-id="<?php echo $id; ?>" data-type='0'> - </button>
+                                                <input class="cart_quantity_input span-quantity" type="text" name="quantity"
+                                                    value="{{ $each['quantity'] }}" autocomplete="off" size="2">
+                                                <button type='button' class="cart_quantity_up btn-update-quantity"
+                                                    data-id="<?php echo $id; ?>" data-type='1'> + </button>
+                                            </form>
 
                                             {{-- <form method="post" action="{{ route('customer.update_qty_cart') }}">
                                                 @csrf
@@ -68,10 +72,11 @@
                                     </td>
                                     <td class="cart_total">
                                         <p class="cart_total_price">
-                                            {{ number_format( $price_products, 0, ',', '.') }}
+                                            {{ number_format($price_products, 0, ',', '.') }}
                                         </p>
                                     </td>
                                     <td class="cart_delete">
+                                        <button class="cart_quantity_delete btn-delete" data-id="<?php echo $id ?>"><i class="fa fa-times"></i></button>
                                         {{-- <a class="cart_quantity_delete"
                                             href="{{ route('customer.delete__item_cart', $cart->rowId) }}"><i
                                                 class="fa fa-times"></i></a> --}}
@@ -87,12 +92,13 @@
                             <div class="col-sm-6">
                                 <div class="total_area">
                                     <ul>
-                                        <li>Tạm tính <span>{{number_format( $subtotal, 0, ',', '.')}}</span></li>
+                                        <li>Tạm tính <span>{{ number_format($subtotal, 0, ',', '.') }}</span></li>
                                         <li>Thuế <span></span></li>
                                         <li>Phí vận chuyển <span>Miễn phí</span></li>
                                         <li>Tổng thanh toán <span></span></li>
                                     </ul>
-                                    <a class="btn btn-default check_out" href="{{ route('customer.checkout') }}">Tính mã giảm giá</a>
+                                    <a class="btn btn-default check_out" href="{{ route('customer.checkout') }}">Tính mã
+                                        giảm giá</a>
                                     <a class="btn btn-default check_out" href="{{ route('customer.checkout') }}">Mua
                                         hàng</a>
                                 </div>
@@ -107,6 +113,95 @@
         </div>
     </section>
     <!--/#cart_items-->
+    @push('update-quantity-cart')
+        <script>
+            $(document).ready(function() {
+                $(".btn-update-quantity").click(function() {
+                    let btn = $(this);
+                    let id = btn.data("id");
+                    let type = parseInt(btn.data("type"));
+                    $.ajax({
+                        url: "{{ route('customer.update_qty_cart') }}",
+                        type: "get",
+                        data: {
+                            id,
+                            type,
+                        },
+                    }).done(function(res) {
+                        const cartQuantity = $("#cart-quantity");
+                        let parent_tr = btn.parents("tr");
+                        let price = parent_tr.find(".span-price").text();
 
+                        price = price.replace(".", "");
+                        let quantity = parent_tr.find(".span-quantity").val();
+                        if (type == 1) {
+                            quantity++;
+                        } else {
+                            quantity--;
+                        }
+
+                        if (quantity === 0) {
+                            parent_tr.remove();
+                        } else {
+                            parent_tr.find(".span-quantity").val(quantity);
+                            let sum = price * quantity;
+
+                            sum = sum.toLocaleString("vi-VN", {
+                                currency: "VND",
+                            });
+
+                            parent_tr.find(".span-sum").text(sum);
+                        }
+                        getTotal();
+                        if (res.data != null) {
+                            $.trim(cartQuantity.text(res.data));
+                        }
+                    });
+                });
+                $(".btn-delete").click(function() {
+                    let btn = $(this);
+                    let id = btn.data("id");
+                    $.ajax({
+                        url: "{{route('customer.delete__item_cart')}}",
+                        type: "get",
+                        data: {
+                            id,
+                        },
+                    }).done(function(res) {
+                        const cartQuantity = $("#cart-quantity");
+                        btn.parents("tr").remove();
+                        getTotal();
+                        if (res.data != null) {
+                            $.trim(cartQuantity.text(res.data));
+                        }
+                    });
+                });
+            });
+
+            function getTotal() {
+                let total = 0;
+                let payment = 0;
+                let shipping = 20000;
+
+                $(".span-sum").each(function() {
+                    let sum = $(this).text();
+                    sum = sum.replaceAll(".", "");
+                    console.log("sum", sum);
+                    total += parseInt(sum);
+                });
+                payment = total + shipping;
+
+                total = total.toLocaleString("vi-VN", {
+                    currency: "VND",
+                });
+
+                payment = payment.toLocaleString("vi-VN", {
+                    currency: "VND",
+                });
+                $("#span-total").text(total);
+                $("#span-payment").text(payment);
+            }
+        </script>
+    @endpush
 
 @endsection

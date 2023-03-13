@@ -23,8 +23,8 @@
                             <p>{{ $product->name }}</p>
                             {{-- <a href="#" class="btn btn-default add-to-cart">
                                     <i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</a> --}}
-                            <form>
-                                <button type="button" class="btn btn-default add-to-cart" name="add-to-cart"
+                            <form class="add-to-cart-form">
+                                <button class="btn btn-default add-to-cart" name="add-to-cart"
                                     value="{{ $product->id }}">Thêm vào giỏ hàng</button>
                             </form>
                         </div>
@@ -43,53 +43,6 @@
     <!--features_items-->
     @push('add-to-cart')
         {{-- <script src="{{ asset('frontend/js/ajax/addToCart.js') }}"></script> --}}
-        <script>
-            $(document).ready(function() {
-                $(".add-to-cart").click(function() {
-                    let id = $(this).val();
-                    $.ajax({
-                        url: '{{ route('customer.save_cart') }}',
-                        type: "GET",
-                        data: {
-                            id,
-                        },
-                        success: function(response) {
-                            const res = JSON.parse(response);
-                            const cartQuantity = $("#cart-quantity");
-                            if (Number(res.status) === 200) {
-                                if (res.data != null) {
-                                    $.trim(cartQuantity.text(res.data));
-                                }
-                                Swal.fire("Thành công", res.message, "success");
-                            } else if (Number(res.status) === 401) {
-                                location.href = res.redirect;
-                            } else {
-                                toastr.options.escapeHtml = true;
-
-                                Command: toastr["error"](res.message, "Lỗi");
-
-                                toastr.options = {
-                                    closeButton: true,
-                                    debug: false,
-                                    newestOnTop: false,
-                                    progressBar: false,
-                                    positionClass: "toast-top-right",
-                                    preventDuplicates: false,
-                                    onclick: null,
-                                    showDuration: "300",
-                                    hideDuration: "1000",
-                                    timeOut: "5000",
-                                    extendedTimeOut: "1000",
-                                    showEasing: "swing",
-                                    hideEasing: "linear",
-                                    showMethod: "fadeIn",
-                                    hideMethod: "fadeOut",
-                                };
-                            }
-                        },
-                    });
-                });
-            });
-        </script>
+        @include('pages.customer.ajaxBlade.addToCart')
     @endpush
 @endsection

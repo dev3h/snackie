@@ -1591,7 +1591,7 @@ h2.title {
     margin: 15px -70px 10px 25px;
 }
 
-.cart_quantity_button a {
+.cart_quantity_button button {
     background: #f0f0e9;
     color: #696763;
     display: inline-block;
@@ -1601,6 +1601,8 @@ h2.title {
     text-align: center;
     width: 35px;
     float: left;
+    outline: none;
+    border: none;
 }
 
 .cart_quantity_input {
@@ -1617,15 +1619,17 @@ h2.title {
     overflow: hidden;
 }
 
-.cart_delete a {
-    background: #f0f0e9;
+.cart_delete button {
+    background: var(--primary-color);
     color: #ffffff;
     padding: 5px 7px;
     font-size: 16px;
+    border: none;
+    outline: none;
 }
 
-.cart_delete a:hover {
-    background: var(--primary-color);
+.cart_delete button:hover {
+    opacity: 0.8;
 }
 
 .bg h2.title {
@@ -2412,7 +2416,7 @@ textarea {
 .cart-customer {
     position: relative;
 }
-.cart-qty {
+#cart-quantity {
     position: absolute;
     width: 20px;
     height: 20px;
