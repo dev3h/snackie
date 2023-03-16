@@ -90,5 +90,13 @@
                 },
             });
         });
+
+        $('.cart_quantity_input').on("input", function() {
+            regex = /^\d+$/;
+            value = $(this).val();
+            if (!regex.test(value) || value == '') {
+                $(this).val('');
+            }
+        })
     });
 </script>

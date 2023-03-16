@@ -18,6 +18,7 @@
                     <table class="table table-condensed">
                         <thead>
                             <tr class="cart_menu">
+                                <td></td>
                                 <td class="image">Hình ảnh</td>
                                 <td class="description">Tên sản phẩm</td>
                                 <td class="price">Giá</td>
@@ -38,6 +39,7 @@
                                     $subtotal += $price_products;
                                 @endphp
                                 <tr>
+                                    <td><input value="{{$id}}" type="checkbox" name="cart-checkbox" class="cart-checkbox"></td>
                                     <td class="cart_product">
                                         <a href=""><img src="{{ asset('uploads/products/' . $each['image']) }}"
                                                 alt="" width="50" height="50"></a>
@@ -47,7 +49,7 @@
                                         <p>ID: {{ $each['id'] }}</p>
                                     </td>
                                     <td class="cart_price">
-                                        <p>{{ number_format($each['price'], 0, ',', '.') }}</p>
+                                        <p class="span-price">{{ number_format($each['price'], 0, ',', '.') }}</p>
                                     </td>
                                     <td class="cart_quantity">
                                         <div class="cart_quantity_button">
@@ -59,32 +61,22 @@
                                                 <button type='button' class="cart_quantity_up btn-update-quantity"
                                                     data-id="<?php echo $id; ?>" data-type='1'> + </button>
                                             </form>
-
-                                            {{-- <form method="post" action="{{ route('customer.update_qty_cart') }}">
-                                                @csrf
-                                                <input type="hidden" name="rowId" value="{{ $cart->rowId }}">
-                                                <input class="cart_quantity_input" type="number" name="qty"
-                                                    value="{{ $cart->qty }}" min="1">
-                                                <input type="submit" value="Cập nhập" class="btn btn-default btn-sm">
-                                            </form> --}}
-
                                         </div>
                                     </td>
                                     <td class="cart_total">
-                                        <p class="cart_total_price">
+                                        <p class="cart_total_price span-sum">
                                             {{ number_format($price_products, 0, ',', '.') }}
                                         </p>
                                     </td>
                                     <td class="cart_delete">
-                                        <button class="cart_quantity_delete btn-delete" data-id="<?php echo $id ?>"><i class="fa fa-times"></i></button>
-                                        {{-- <a class="cart_quantity_delete"
-                                            href="{{ route('customer.delete__item_cart', $cart->rowId) }}"><i
-                                                class="fa fa-times"></i></a> --}}
+                                        <button class="cart_quantity_delete btn-delete" data-id="{{$id}}"><i class="fa fa-times"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <button class="btn-delete-by-nums-checkbox">Xóa (<span class="delete-num-rows">0</span>)</button>
+                    <button>Xóa tất cả</button>
                 </div>
                 <section id="do_action">
                     <div class="container">
@@ -92,7 +84,7 @@
                             <div class="col-sm-6">
                                 <div class="total_area">
                                     <ul>
-                                        <li>Tạm tính <span>{{ number_format($subtotal, 0, ',', '.') }}</span></li>
+                                        <li>Tạm tính <span class="span-total">{{ number_format($subtotal, 0, ',', '.') }}</span></li>
                                         <li>Thuế <span></span></li>
                                         <li>Phí vận chuyển <span>Miễn phí</span></li>
                                         <li>Tổng thanh toán <span></span></li>
@@ -114,94 +106,7 @@
     </section>
     <!--/#cart_items-->
     @push('update-quantity-cart')
-        <script>
-            $(document).ready(function() {
-                $(".btn-update-quantity").click(function() {
-                    let btn = $(this);
-                    let id = btn.data("id");
-                    let type = parseInt(btn.data("type"));
-                    $.ajax({
-                        url: "{{ route('customer.update_qty_cart') }}",
-                        type: "get",
-                        data: {
-                            id,
-                            type,
-                        },
-                    }).done(function(res) {
-                        const cartQuantity = $("#cart-quantity");
-                        let parent_tr = btn.parents("tr");
-                        let price = parent_tr.find(".span-price").text();
-
-                        price = price.replace(".", "");
-                        let quantity = parent_tr.find(".span-quantity").val();
-                        if (type == 1) {
-                            quantity++;
-                        } else {
-                            quantity--;
-                        }
-
-                        if (quantity === 0) {
-                            parent_tr.remove();
-                        } else {
-                            parent_tr.find(".span-quantity").val(quantity);
-                            let sum = price * quantity;
-
-                            sum = sum.toLocaleString("vi-VN", {
-                                currency: "VND",
-                            });
-
-                            parent_tr.find(".span-sum").text(sum);
-                        }
-                        getTotal();
-                        if (res.data != null) {
-                            $.trim(cartQuantity.text(res.data));
-                        }
-                    });
-                });
-                $(".btn-delete").click(function() {
-                    let btn = $(this);
-                    let id = btn.data("id");
-                    $.ajax({
-                        url: "{{route('customer.delete__item_cart')}}",
-                        type: "get",
-                        data: {
-                            id,
-                        },
-                    }).done(function(res) {
-                        const cartQuantity = $("#cart-quantity");
-                        btn.parents("tr").remove();
-                        getTotal();
-                        if (res.data != null) {
-                            $.trim(cartQuantity.text(res.data));
-                        }
-                    });
-                });
-            });
-
-            function getTotal() {
-                let total = 0;
-                let payment = 0;
-                let shipping = 20000;
-
-                $(".span-sum").each(function() {
-                    let sum = $(this).text();
-                    sum = sum.replaceAll(".", "");
-                    console.log("sum", sum);
-                    total += parseInt(sum);
-                });
-                payment = total + shipping;
-
-                total = total.toLocaleString("vi-VN", {
-                    currency: "VND",
-                });
-
-                payment = payment.toLocaleString("vi-VN", {
-                    currency: "VND",
-                });
-                $("#span-total").text(total);
-                $("#span-payment").text(payment);
-            }
-        </script>
+       @include('pages.customer.ajaxBlade.CartHandler')
     @endpush
 
 @endsection

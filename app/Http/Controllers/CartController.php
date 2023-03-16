@@ -85,11 +85,12 @@ class CartController extends Controller
             if ($carts[$customer_id][$id]['quantity'] > 1) {
                 $carts[$customer_id][$id]['quantity']--;
             } else {
-                unset($carts[$customer_id][$id]);
+                session()->forget('cart.' . $customer_id . '.' . $id);
             }
         } else {
             $carts[$customer_id][$id]['quantity']++;
         }
+        session()->put('cart', $carts);
         $res = [
             'data' => sizeof($carts[$customer_id]),
         ];
@@ -99,10 +100,27 @@ class CartController extends Controller
     {
         $customer_id = session()->get('customer_id');
         $id = $request->id;
-        
+
         $carts = session()->get('cart');
-        unset($carts[$customer_id][$id]);
-         $res = [
+        session()->forget('cart.' . $customer_id . '.' . $id);
+        
+        $res = [
+            'data' => sizeof($carts[$customer_id]),
+        ];
+        return response()->json($res);
+    }
+
+    public function deleteItemCartChecked(Request $request)
+    {
+        $customer_id = session()->get('customer_id');
+        $ids = $request->ids;
+
+        $carts = session()->get('cart');
+        foreach ($ids as $id) {
+            session()->forget('cart.' . $customer_id . '.' . $id);
+        }
+
+        $res = [
             'data' => sizeof($carts[$customer_id]),
         ];
         return response()->json($res);
