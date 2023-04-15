@@ -15,10 +15,10 @@ class Order extends Model
         'shipping_id',
         'payment_id',
         'total_price',
-        'status'
+        'status',
     ];
 
-     public function getStatusNameAttribute()
+    public function getStatusNameAttribute()
     {
         return OrderStatusEnum::getKeyByValue($this->status);
     }

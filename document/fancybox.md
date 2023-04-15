@@ -1,0 +1,3 @@
+-   to zoom img
+-   [install](http://fancybox.net/home)
+-   [document](https://fancyapps.com/)

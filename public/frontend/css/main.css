@@ -17,6 +17,9 @@ body {
 ul li {
     list-style: none;
 }
+li.nav-item {
+    list-style: none;
+}
 
 a:hover {
     outline: none;
@@ -33,6 +36,7 @@ a {
     -moz-transition: 300ms;
     -o-transition: 300ms;
     transition: 300ms;
+    text-decoration: none;
 }
 
 h1,
@@ -72,8 +76,8 @@ a#scrollUp i {
 *******Header CSS******
 **************************/
 
-.header_top {
-    background: none repeat scroll 0 0 #f0f0e9;
+#header {
+    background-color: var(--primary-color);
 }
 
 .contactinfo ul li:first-child {
@@ -567,6 +571,18 @@ ul.sub-menu {
     background: var(--primary-color);
 }
 
+.carousel .carousel-item {
+    height: 300px;
+}
+
+.carousel-item img {
+    position: absolute;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    max-height: 100%;
+}
+
 .item {
     padding-left: 100px;
 }
@@ -640,9 +656,10 @@ ul.sub-menu {
 
 .category-products {
     border: 1px solid #f7f7f0;
-    margin-bottom: 35px;
-    padding-bottom: 20px;
-    padding-top: 15px;
+    margin-bottom: 10px;
+}
+.left-sidebar {
+    border: 1px solid #ccc;
 }
 .left-sidebar h2,
 .brands_products h2 {
@@ -650,23 +667,24 @@ ul.sub-menu {
     font-family: "Roboto", sans-serif;
     font-size: 18px;
     font-weight: 700;
-    margin: 0 auto 30px;
     text-align: center;
     text-transform: uppercase;
     position: relative;
     z-index: 3;
 }
-
+.left-sidebar h2 {
+    padding: 10px 5px;
+}
 .left-sidebar h2:after,
 h2.title:after {
-    content: " ";
+    content: "";
     position: absolute;
-    border: 1px solid #f5f5f5;
-    bottom: 8px;
-    left: 0;
     width: 100%;
-    height: 0;
-    z-index: -2;
+    height: 1px;
+    background: #ccc;
+    top: 50%;
+    left: 0;
+    z-index: -1;
 }
 
 .left-sidebar h2:before {
@@ -701,19 +719,19 @@ h2.title:before {
     margin-bottom: 0px;
 }
 
-.category-products .panel-default .panel-heading {
-    background-color: #ffffff;
+:is(.category-products, .brands-name) .panel-default .panel-heading {
+    background-color: var(--primary-color);
     border: 0 none;
     color: #ffffff;
     padding: 5px 20px;
-}
-
-.category-products .panel-default .panel-heading .panel-title a {
-    color: #696763;
+    margin-bottom: 5px;
+    display: inline-block;
+    width: 100%;
     font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    text-decoration: none;
     text-transform: uppercase;
+}
+:is(.category-products, .brands-name) .panel-default .panel-heading:hover {
+    opacity: 0.8;
 }
 
 .panel-group .panel-heading + .panel-collapse .panel-body {
@@ -923,20 +941,17 @@ h2.title {
 }
 
 .add-to-cart {
-    background: #f5f5ed;
+    background: var(--primary-color);
     border: 0 none;
     border-radius: 0;
-    color: #696763;
+    color: #ffffff;
     font-family: "Roboto", sans-serif;
     font-size: 15px;
     margin-bottom: 25px;
 }
 
 .add-to-cart:hover {
-    background: var(--primary-color);
-    border: 0 none;
-    border-radius: 0;
-    color: #ffffff;
+    opacity: 0.8;
 }
 
 .add-to {
@@ -1405,15 +1420,8 @@ h2.title {
 
 #form {
     display: block;
-    margin-bottom: 185px;
-    margin-top: 185px;
+    margin: 20px 0;
     overflow: hidden;
-}
-
-.login-form {
-}
-
-.signup-form {
 }
 
 .login-form h2,
@@ -1423,22 +1431,6 @@ h2.title {
     font-size: 20px;
     font-weight: 300;
     margin-bottom: 30px;
-}
-
-.login-form form input,
-.signup-form form input {
-    background: #f0f0e9;
-    border: medium none;
-    color: #696763;
-    display: block;
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    height: 40px;
-    margin-bottom: 10px;
-    outline: medium none;
-    padding-left: 10px;
-    width: 100%;
 }
 
 .login-form form span {
@@ -1456,8 +1448,7 @@ h2.title {
     margin-top: 23px;
 }
 
-.login-form form button,
-.signup-form form button {
+:is(.login-form, .signup-form) form button {
     background: var(--primary-color);
     border: medium none;
     border-radius: 0;
@@ -1467,7 +1458,9 @@ h2.title {
     padding: 6px 25px;
 }
 
-.login-form label {
+:is(.login-form, .signup-form) form button:hover {
+    background: var(--primary-color);
+    opacity: 0.8;
 }
 
 .login-form label input {
@@ -2426,4 +2419,112 @@ textarea {
     top: -10px;
     left: 10px;
     border-radius: 100rem;
+}
+.coupon-input-group {
+    position: relative;
+}
+.btn-delete-coupon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: none;
+    cursor: pointer;
+}
+.logo-link {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--primary-color);
+    border-radius: 30% 70% 70% 30% / 38% 41% 59% 62%;
+}
+.logo-link img {
+    width: 100%;
+    height: 100%;
+}
+
+/* carousel */
+.carousel-img {
+    aspect-ratio: 3/1;
+    object-fit: cover;
+}
+
+/* switch light/dark mode */
+.toggle-theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    margin-bottom: 0;
+}
+
+.toggle-theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-theme-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.toggle-theme-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2.5px;
+    bottom: 2.5px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+input:checked + .toggle-theme-slider {
+    background-color: #2196f3;
+}
+
+input:checked + .toggle-theme-slider:before {
+    -webkit-transform: translateX(25px);
+    -ms-transform: translateX(25px);
+    transform: translateX(25px);
+}
+.dark {
+    background-color: #333;
+    color: white;
+}
+
+.light {
+    background-color: white;
+    color: black;
+}
+
+.btn-light {
+    background-color: var(--primary-color) !important;
+    color: #fff;
+}
+.btn-dark {
+    background-color: black;
+    color: white;
+}
+.btn-dark:hover {
+    opacity: 0.8;
+}
+
+/* nav bar */
+.navbar-nav .nav-item .nav-link {
+    color: #fff;
+    transition: 0.2s ease-in-out;
+}
+.navbar-nav .nav-item .nav-link:hover {
+    background-color: #fff;
+    color: #000;
 }

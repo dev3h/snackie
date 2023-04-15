@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BrandProduct;
 use App\Models\CategoryProduct;
+use App\Models\Coupon;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -103,7 +104,7 @@ class CartController extends Controller
 
         $carts = session()->get('cart');
         session()->forget('cart.' . $customer_id . '.' . $id);
-        
+
         $res = [
             'data' => sizeof($carts[$customer_id]),
         ];
@@ -122,6 +123,98 @@ class CartController extends Controller
 
         $res = [
             'data' => sizeof($carts[$customer_id]),
+        ];
+        return response()->json($res);
+    }
+
+    public function deleteAllCart()
+    {
+        $customer_id = session()->get('customer_id');
+        $carts = session()->get('cart');
+        session()->forget('cart.' . $customer_id);
+        $customer_id = session()->get('customer_id');
+        // delete session coupon with customer
+        $coupon_session = session()->get('coupon');
+        if ($coupon_session) {
+            session()->forget('coupon' . $customer_id);
+        }
+        $res = [
+            'data' => sizeof($carts[$customer_id]),
+        ];
+        return response()->json($res);
+    }
+
+    public function checkCoupon(Request $request)
+    {
+        $customer_id = session()->get('customer_id');
+        $coupon_session = session()->get('coupon' . $customer_id);
+
+        $coupon_code = $request->coupon;
+        $coupon = Coupon::where('code', $coupon_code)->first();
+
+        if ($coupon) {
+            $count_coupon = $coupon->count();
+            if ($count_coupon > 0) {
+                // coupon voi customer
+                if ($coupon_session == true) {
+                    if ($coupon_session[$customer_id]['coupon_code'] != $coupon_code) {
+                        // forget session coupon with customer and add new coupon
+                        session()->forget('coupon' . $customer_id);
+                        $coupon_session[$customer_id] = [
+                            'coupon_code' => $coupon->code,
+                            'coupon_type' => $coupon->type,
+                            'coupon_detail' => $coupon->detail,
+                        ];
+                        session()->put('coupon', $coupon_session);
+                    }
+                } else {
+                    $coupon_session[$customer_id] = [
+                        'coupon_code' => $coupon->code,
+                        'coupon_type' => $coupon->type,
+                        'coupon_detail' => $coupon->detail,
+                    ];
+                    session()->put('coupon', $coupon_session);
+                }
+
+                $res = [
+                    'status' => 200,
+                    'message' => 'Mã giảm giá thành công',
+                    'data' => $coupon->detail,
+                ];
+            }
+        } else {
+            $res = [
+                'status' => 400,
+                'message' => 'Mã giảm giá không đúng',
+                'data' => 0,
+            ];
+        }
+        // $customer_id = session()->get('customer_id');
+        // $carts = session()->get('cart');
+        // $total = 0;
+        // foreach ($carts[$customer_id] as $cart) {
+        //     $total += $cart['price'] * $cart['quantity'];
+        // }
+        // if ($coupon) {
+        //     $res = [
+        //         'status' => 200,
+        //         'message' => 'Mã giảm giá thành công',
+        //         'data' => $total * 0.1,
+        //     ];
+        // }
+        return response()->json($res);
+    }
+
+    public function unsetCoupon()
+    {
+        $customer_id = session()->get('customer_id');
+        $coupon_session = session()->get('coupon');
+        if ($coupon_session) {
+            session()->forget('coupon' . $customer_id);
+        }
+        $res = [
+            'status' => 200,
+            'message' => 'Xóa mã giảm giá thành công',
         ];
         return response()->json($res);
     }

@@ -5,6 +5,7 @@ use App\Http\Controllers\BrandProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -12,6 +13,18 @@ use App\Http\Middleware\CheckLoginAminPageMiddleware;
 use App\Http\Middleware\CheckLoginCustomerPageMiddleware;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+
+// lang route
+Route::get('/lang/{locale}', function ($locale) {
+    $available_locales = config('app.locales', []);
+
+    if (!in_array($locale, $available_locales)) {
+        $locale = config('app.fallback_locale');
+    }
+    session()->put('locale', $locale);
+
+    return redirect()->back();
+})->name('lang');
 
 // customer route
 
@@ -28,7 +41,7 @@ Route::group(['as' => 'customer.'], function () {
         return Socialite::driver($provider)->redirect();
     })->name('socialite_redirect');
 
-    Route::get('/auth/callback/{provider}', [CustomerAuthController::class, 'callback'] )->name('socialite_callback');
+    Route::get('/auth/callback/{provider}', [CustomerAuthController::class, 'callback'])->name('socialite_callback');
 
 });
 
@@ -53,7 +66,12 @@ Route::group(['as' => 'customer.'], function () {
         Route::get('/save-cart', [CartController::class, 'store'])->name('save_cart');
         Route::get('/delete-item-cart', [CartController::class, 'delete'])->name('delete__item_cart');
         Route::get('/delete-item-cart-checked', [CartController::class, 'deleteItemCartChecked'])->name('delete__item_cart_checked');
+        Route::get('/delete-all-cart', [CartController::class, 'deleteAllCart'])->name('delete__all_cart');
         Route::get('/update_cart_qty', [CartController::class, 'update'])->name('update_qty_cart');
+
+        //coupon
+        Route::post('/check-coupon', [CartController::class, 'checkCoupon'])->name('check_coupon');
+        Route::get('/unset-coupon', [CartController::class, 'unsetCoupon'])->name('unset_coupon');
 
         // checkout
         Route::get('/thong-tin-thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
@@ -115,7 +133,7 @@ Route::group([
 
         });
 
-// Product route
+        // Product route
         Route::group(['prefix' => '/product', 'as' => 'product.'], function () {
             Route::get('', [ProductController::class, 'index'])->name('index');
 
@@ -132,7 +150,24 @@ Route::group([
 
         });
 
-// Order route
+        // Coupon route
+        Route::group(['prefix' => '/coupon', 'as' => 'coupon.'], function () {
+            Route::get('', [CouponController::class, 'index'])->name('index');
+
+            Route::get('/inactive/{coupon_id}', [CouponController::class, 'inactive'])->name('inactive');
+            Route::get('/active/{coupon_id}', [CouponController::class, 'active'])->name('active');
+
+            Route::get('/create', [CouponController::class, 'create'])->name('create');
+            Route::post('/create', [CouponController::class, 'store'])->name('store');
+
+            Route::get('/edit/{coupon}', [CouponController::class, 'edit'])->name('edit');
+            Route::put('/edit/{coupon}', [CouponController::class, 'update'])->name('update');
+
+            Route::delete('/destroy/{coupon}', [CouponController::class, 'destroy'])->name('destroy');
+
+        });
+
+        // Order route
         Route::group(['prefix' => '/order', 'as' => 'order.'], function () {
             Route::get('', [CheckoutController::class, 'index'])->name('index');
 

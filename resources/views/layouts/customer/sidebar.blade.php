@@ -1,15 +1,11 @@
-<div class="col-sm-3">
+<div class="col-sm-12 col-md-3">
     <div class="left-sidebar">
         <h2>Danh mục sản phẩm</h2>
         <div class="panel-group category-products" id="accordian">
             <!--category-productsr-->
             @foreach ($categories_product as $category_product)
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a href="{{route('customer.category_product_selected', $category_product->id)}}">{{ $category_product->name }}</a>
-                        </h4>
-                    </div>
+                            <a href="{{route('customer.category_product_selected', $category_product->id)}}" class="panel-heading">{{ $category_product->name }}</a>
                 </div>
             @endforeach
         </div>
@@ -20,12 +16,9 @@
             <h2>Thương hiệu sản phẩm</h2>
 
             <div class="brands-name">
-                <ul class="nav nav-pills nav-stacked">
                     @foreach ($brands_product as $brand_product)
-                        <li><a href="{{URL::to('/thuong-hieu-san-pham/'.$brand_product->id)}}"> <span class="pull-right">(50)</span>{{$brand_product->name}}</a></li>
+                        <div class="panel-default"><a href="{{URL::to('/thuong-hieu-san-pham/'.$brand_product->id)}}" class="panel-heading">{{$brand_product->name}}</a></div>
                     @endforeach
-                    
-                </ul>
             </div>
         </div>
         <!--/brands_products-->

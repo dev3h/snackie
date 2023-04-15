@@ -41,6 +41,16 @@
                     </ul>
                 </li>
                 <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Mã giảm giá</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{route('admin.coupon.create')}}">Thêm</a></li>
+                        <li><a href="{{route('admin.coupon.index')}}">Liệt kê</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
                     <a href="{{route('admin.order.index')}}">
                         <i class="fa fa-book"></i>
                         <span>Đơn hàng</span>

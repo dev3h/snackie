@@ -1,14 +1,15 @@
 <div class="login-form">
     <!--login form-->
-    <h2>Đăng nhập</h2>
     <form action="{{ route('customer.process_login') }}" method="post">
         @csrf
-        <label for="">Email</label>
-        <br>
-        <input type="email" name="email" placeholder="email" />
-        <label for="">Mật khẩu</label>
-        <br>
-        <input type="password" name="password" placeholder="mật khẩu" />
+        <div>
+            <label class="form-label" for="email-login" >Email</label>
+            <input class="form-control" type="email" name="email" id="email-login" placeholder="email" />
+        </div>
+        <div class="mt-4">
+            <label class="form-label" for="password-login" >Mật khẩu</label>
+            <input class="form-control" type="password" name="password" id="password-login" placeholder="mật khẩu" />
+        </div>
         <span>
             <input type="checkbox" class="checkbox">
             Ghi nhớ đăng nhập

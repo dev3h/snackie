@@ -23,10 +23,6 @@
              $("#span-payment").text(payment);
          }
 
-         function getTotalPrice() {
-
-         }
-
          $(".btn-update-quantity").click(function() {
              let btn = $(this);
              let id = btn.data("id");
@@ -131,10 +127,111 @@
              });
          })
 
+         $('.btn-delete-all-cart').click(function() {
+             $.ajax({
+                 url: "{{ route('customer.delete__all_cart') }}",
+                 type: "get",
+             }).done(function(res) {
+                 const cartQuantity = $("#cart-quantity");
+                 $('.cart-checkbox').each(function() {
+                     $(this).parents("tr").remove();
+                 });
+                 $('.coupon-container').remove();
+                 $('.delete-num-rows').text(0);
+                 getPayment();
+                 if (res.data != null) {
+                     $.trim(cartQuantity.text(res.data));
+                 }
+             });
+         })
+
          $('.cart-checkbox').change(function() {
              const rowChecks = $('.cart-checkbox:checked');
              const numCheckbox = rowChecks.length;
              $('.delete-num-rows').text(numCheckbox);
          })
+
+         $('.coupon-form').submit(function(e) {
+             e.preventDefault();
+             let coupon = $(this).find('.coupon-product').val();
+             let _token = $(this).find('input[name=_token]').val();
+             if (coupon == '') {
+                 alert('Bạn chưa nhập mã giảm giá');
+                 return;
+             }
+
+             $.ajax({
+                 url: "{{ route('customer.check_coupon') }}",
+                 type: "post",
+                 data: {
+                     coupon,
+                     _token
+                 },
+             }).done(function(res) {
+                 if (res.status == 400) {
+                     toastr.options.escapeHtml = true;
+
+                     Command: toastr["error"](res.message, "Lỗi");
+
+                     toastr.options = {
+                         closeButton: true,
+                         debug: false,
+                         newestOnTop: false,
+                         progressBar: false,
+                         positionClass: "toast-top-right",
+                         preventDuplicates: true,
+                         onclick: null,
+                         showDuration: "300",
+                         hideDuration: "1000",
+                         timeOut: "5000",
+                         extendedTimeOut: "1000",
+                         showEasing: "swing",
+                         hideEasing: "linear",
+                         showMethod: "fadeIn",
+                         hideMethod: "fadeOut",
+                     };
+                 } else {
+                     Swal.fire("Thành công", res.message, "success");
+                 }
+
+                 //  $(".span-sum").each(function() {
+                 //      let sum = $(this).text();
+                 //      sum = sum.replaceAll(".", "").trim();
+                 //      total += parseInt(sum);
+                 //  });
+                 //  if (coupon_type == 1) {
+                 //      payment = total + shipping - coupon_value;
+                 //  } else {
+                 //      payment = total + shipping - (total * coupon_value / 100);
+                 //  }
+                 //  if (payment < 0) {
+                 //      payment = 0;
+                 //  }
+                 //  total = total.toLocaleString("vi-VN", {
+                 //      currency: "VND",
+                 //  });
+
+                 //  payment = payment.toLocaleString("vi-VN", {
+                 //      currency: "VND",
+                 //  });
+                 //  $(".span-total").text(total);
+                 //  $("#span-payment").text(payment);
+             })
+
+         })
+
+         $('.coupon-product').on('input', function(e) {
+             let coupon = $(this).val();
+             if (coupon == '') {
+                 $('.btn-delete-coupon').hide();
+             } else {
+                 $('.btn-delete-coupon').show();
+             }
+         })
+
+         $('.btn-delete-coupon').click(function() {
+             $('.coupon-product').val('');
+         })
+
      });
  </script>

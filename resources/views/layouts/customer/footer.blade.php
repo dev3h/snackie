@@ -80,13 +80,13 @@
         </div>
     </div> --}}
 
-    <div class="footer-widget">
+    <div class="footer-widget p-2">
         <div class="container">
             <div class="row">
                 <div class="col-sm-2">
                     <div class="single-widget">
                         <h2>Service</h2>
-                        <ul class="nav nav-pills nav-stacked">
+                        <ul class="nav nav-pills nav-stacked flex-column">
                             <li><a href="#">Online Help</a></li>
                             <li><a href="#">Contact Us</a></li>
                             <li><a href="#">Order Status</a></li>
@@ -98,7 +98,7 @@
                 <div class="col-sm-2">
                     <div class="single-widget">
                         <h2>Quock Shop</h2>
-                        <ul class="nav nav-pills nav-stacked">
+                        <ul class="nav nav-pills nav-stacked flex-column">
                             <li><a href="#">T-Shirt</a></li>
                             <li><a href="#">Mens</a></li>
                             <li><a href="#">Womens</a></li>
@@ -110,7 +110,7 @@
                 <div class="col-sm-2">
                     <div class="single-widget">
                         <h2>Policies</h2>
-                        <ul class="nav nav-pills nav-stacked">
+                        <ul class="nav nav-pills nav-stacked flex-column">
                             <li><a href="#">Terms of Use</a></li>
                             <li><a href="#">Privecy Policy</a></li>
                             <li><a href="#">Refund Policy</a></li>
@@ -122,7 +122,7 @@
                 <div class="col-sm-2">
                     <div class="single-widget">
                         <h2>About Shopper</h2>
-                        <ul class="nav nav-pills nav-stacked">
+                        <ul class="nav nav-pills nav-stacked flex-column">
                             <li><a href="#">Company Information</a></li>
                             <li><a href="#">Careers</a></li>
                             <li><a href="#">Store Location</a></li>
@@ -142,7 +142,6 @@
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

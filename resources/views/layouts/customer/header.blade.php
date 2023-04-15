@@ -1,157 +1,130 @@
- <header id="header">
-     <!--header-->
-     <div class="header_top">
-         <!--header_top-->
-         <div class="container">
-             <div class="row">
-                 <div class="col-sm-6">
-                     <div class="contactinfo">
-                         <ul class="nav nav-pills">
-                             <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-                             <li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+ <header id="header" class="sticky-top">
+     <div class="container pt-1">
+         <div class="row">
+             <div class="col-sm-12 col-lg-3"></div>
+             <div class="col-sm-12 col-lg-9">
+                 <div class="d-flex justify-content-end align-items-center">
+
+                     {{-- switch lang --}}
+                     <div class="dropdown">
+                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                             aria-expanded="false">
+                             Ngôn ngữ
+                         </button>
+                         <ul class="dropdown-menu">
+                             <li><a class="dropdown-item" href="{{ route('lang', 'vi') }}">Tiếng việt</a></li>
+                             <li><a class="dropdown-item" href="{{ route('lang', 'en') }}">Tiếng anh</a></li>
                          </ul>
                      </div>
-                 </div>
-                 <div class="col-sm-6">
-                     <div class="social-icons pull-right">
-                         <ul class="nav navbar-nav">
-                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                             <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                             <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                         </ul>
+                     <label class="toggle-theme-switch ms-5">
+                         <input type="checkbox" id="toggle-theme-input">
+                         <span class="toggle-theme-slider"></span>
+                     </label>
+                     <div class="ms-5">
+                         @if (session()->get('customer_id'))
+                             <div><a class="link-underline-opacity-0" href="{{ route('customer.logout') }}">Đăng
+                                     xuất</a>
+                             </div>
+                         @else
+                             <div><a class="link-offset-2 link-underline link-underline-opacity-0"
+                                     href="{{ route('customer.login') }}">Đăng nhập</a>
+                             </div>
+                         @endif
                      </div>
                  </div>
              </div>
          </div>
-     </div>
-     <!--/header_top-->
 
-     <div class="header-middle">
-         <!--header-middle-->
-         <div class="container">
-             <div class="row">
-                 <div class="col-sm-4">
-                     <div class="logo pull-left">
-                         <a href="{{ route('customer.home') }}"><img src="{{ 'frontend/images/logo.png' }}"
-                                 alt="" /></a>
-                     </div>
-                     <div class="btn-group pull-right">
-                         <div class="btn-group">
-                             <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                 USA
-                                 <span class="caret"></span>
-                             </button>
-                             <ul class="dropdown-menu">
-                                 <li><a href="#">Canada</a></li>
-                                 <li><a href="#">UK</a></li>
-                             </ul>
-                         </div>
-
-                         <div class="btn-group">
-                             <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                 DOLLAR
-                                 <span class="caret"></span>
-                             </button>
-                             <ul class="dropdown-menu">
-                                 <li><a href="#">Canadian Dollar</a></li>
-                                 <li><a href="#">Pound</a></li>
-                             </ul>
-                         </div>
-                     </div>
-                 </div>
-                 <div class="col-sm-8">
-                     <div class="shop-menu pull-right">
-                         <ul class="nav navbar-nav">
-                             <li title="yêu thích"><a href="#"><i class="fa fa-star"></i></a></li>
-                             <li title="giỏ hàng">
-                                 <a class="cart-customer" href="{{ route('customer.cart') }}">
-                                     <i class="fa fa-shopping-cart"></i>
-                                     @php
-                                         $customer_id = session()->get('customer_id') ?? null;
-                                     @endphp
-                                     @if ($customer_id)
-                                         <span id="cart-quantity">
-                                             @php
-                                                 $cart = session()->get('cart') ?? [];
-                                                 if (sizeof($cart) > 0) {
-                                                     $cart_customer = $cart[$customer_id];
-                                                     echo sizeof($cart_customer);
-                                                 } else {
-                                                     echo 0;
-                                                 }
-                                             @endphp
-                                         </span>
-                                     @endif
-                                 </a>
+         <div class="row">
+             <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                 <div class="container-fluid">
+                     <a class="navbar-brand" href="{{ route('customer.home') }}">
+                         <img src="{{ asset('frontend/images/logo.png') }}" alt=""
+                             style="width: 100px; height: 100px" class="bg-white rounded-circle" />
+                     </a>
+                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                         aria-expanded="false" aria-label="Toggle navigation">
+                         <span class="navbar-toggler-icon"></span>
+                     </button>
+                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                         <ul
+                             class="navbar-nav me-auto mb-2 mb-lg-0 mx-sm-auto align-items-sm-center justify-content-md-between w-sm-100 w-lg-75">
+                             <li class="nav-item">
+                                 <a class="nav-link active" aria-current="page"
+                                     href="{{ route('customer.home') }}">{{ __('frontpage.home') }}</a>
                              </li>
-                             {{-- <li><a href="#"><i class="fa fa-user"></i> Account</a></li> --}}
+                             <li class="nav-item">
+                                 <a class="nav-link" aria-current="page" href="#">Cửa hàng</a>
+                             </li>
+                             <li class="nav-item">
+                                 <a class="nav-link" aria-current="page" href="#">Tin tức</a>
+                             </li>
+                             <li class="nav-item">
+                                 <a class="nav-link" aria-current="page" href="#">{{ __('about') }}</a>
+                             </li>
+                             <li class="nav-item">
+                                 <a class="nav-link" aria-current="page" href="#">{{ __('contact') }}</a>
+                             </li>
+
                              @if (session()->get('customer_id'))
                                  {{-- <li><a href="{{ route('customer.logout') }}"><i class="fa fa-user"></i> Đăng xuất</a> --}}
                                  @if (session()->get('shipping_id'))
-                                     <li><a href="{{ route('customer.payment') }}"><i class="fa fa-crosshairs"></i>Thanh
+                                     <li class="nav-item"><a href="{{ route('customer.payment') }}"><i
+                                                 class="fa fa-crosshairs"></i>Thanh
                                              toán</a></li>
                                  @else
-                                     <li><a href="{{ route('customer.checkout') }}"><i
+                                     <li class="nav-item"><a href="{{ route('customer.checkout') }}"><i
                                                  class="fa fa-crosshairs"></i>Thông tin thanh toán</a></li>
                                  @endif
-                                 </li>
-                                 <li><a href="{{ route('customer.logout') }}"><i class="fa fa-user"></i> Đăng xuất</a>
-                                 @else
-                                 <li><a href="{{ route('customer.login') }}"><i class="fa fa-user"></i> Đăng nhập</a>
-                                 </li>
                              @endif
-
                          </ul>
+                         <button type="button" id="search-btn" class="btn" data-bs-toggle="modal"
+                             data-bs-target="#exampleModal"><i class="fa fa-search"></i></button>
+
+                         <li class="nav-item">
+                             <a class="cart-customer" href="{{ route('customer.cart') }}">
+                                 <i class="fa fa-shopping-cart"></i>
+                                 @php
+                                     $customer_id = session()->get('customer_id') ?? null;
+                                 @endphp
+                                 @if ($customer_id)
+                                     <span id="cart-quantity">
+                                         @php
+                                             $cart = session()->get('cart') ?? [];
+                                             if (sizeof($cart) > 0) {
+                                                 $cart_customer = $cart[$customer_id];
+                                                 echo sizeof($cart_customer);
+                                             } else {
+                                                 echo 0;
+                                             }
+                                         @endphp
+                                     </span>
+                                 @endif
+                             </a>
+                         </li>
                      </div>
                  </div>
-             </div>
+             </nav>
          </div>
      </div>
-     <!--/header-middle-->
-
-     <div class="header-bottom">
-         <!--header-bottom-->
-         <div class="container">
-             <div class="row">
-                 <div class="col-sm-9">
-                     <div class="navbar-header">
-                         <button type="button" class="navbar-toggle" data-toggle="collapse"
-                             data-target=".navbar-collapse">
-                             <span class="sr-only">Toggle navigation</span>
-                             <span class="icon-bar"></span>
-                             <span class="icon-bar"></span>
-                             <span class="icon-bar"></span>
-                         </button>
-                     </div>
-                     <div class="mainmenu pull-left">
-                         <ul class="nav navbar-nav collapse navbar-collapse">
-                             <li><a href="{{ route('customer.home') }}" class="active">Trang chủ</a></li>
-                             <li class="dropdown"><a href="#">Sản phẩm<i class="fa fa-angle-down"></i></a>
-                                 <ul role="menu" class="sub-menu">
-                                     <li><a href="shop.html">Sản phẩm</a></li>
-                                 </ul>
-                             </li>
-                             <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                 <ul role="menu" class="sub-menu">
-                                     <li><a href="blog.html">Blog List</a></li>
-                                 </ul>
-                             </li>
-                             <li><a href="contact-us.html">Liên hệ</a></li>
-                         </ul>
-                     </div>
-                 </div>
-                 <div class="col-sm-3">
-                     <div class="search_box pull-right">
-                         <form><input type="search" placeholder="tìm kiếm sản phẩm" name="q"
-                                 value="{{ ucfirst($search ?? '') }}" />
-                         </form>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-     <!--/header-bottom-->
  </header>
- <!--/header-->
+ <div div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+                 <form class="d-flex flex-grow-1 search-form" role="search">
+                     <input class="form-control me-2" type="search" name="q" value="{{ $search ?? '' }}"
+                         placeholder="nhập tên sản phẩm" aria-label="Search">
+                     <button class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+                 </form>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+             </div>
+         </div>
+     </div>
+ </div>
