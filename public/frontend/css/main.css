@@ -2522,9 +2522,22 @@ input:checked + .toggle-theme-slider:before {
 /* nav bar */
 .navbar-nav .nav-item .nav-link {
     color: #fff;
+    text-transform: uppercase;
     transition: 0.2s ease-in-out;
 }
 .navbar-nav .nav-item .nav-link:hover {
     background-color: #fff;
     color: #000;
+}
+
+/* product card */
+.product-card:hover {
+    border-color: var(--primary-color);
+}
+.card-product-title {
+    overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+           line-clamp: 2; 
+   -webkit-box-orient: vertical; 
 }

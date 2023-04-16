@@ -55,16 +55,16 @@
                                      href="{{ route('customer.home') }}">{{ __('frontpage.home') }}</a>
                              </li>
                              <li class="nav-item">
-                                 <a class="nav-link" aria-current="page" href="#">Cửa hàng</a>
+                                 <a class="nav-link" aria-current="page" href="#">{{__('frontpage.shop')}}</a>
                              </li>
                              <li class="nav-item">
-                                 <a class="nav-link" aria-current="page" href="#">Tin tức</a>
+                                 <a class="nav-link" aria-current="page" href="#">{{__('frontpage.news')}}</a>
                              </li>
                              <li class="nav-item">
-                                 <a class="nav-link" aria-current="page" href="#">{{ __('about') }}</a>
+                                 <a class="nav-link" aria-current="page" href="#">{{ __('frontpage.about') }}</a>
                              </li>
                              <li class="nav-item">
-                                 <a class="nav-link" aria-current="page" href="#">{{ __('contact') }}</a>
+                                 <a class="nav-link" aria-current="page" href="#">{{ __('frontpage.contact') }}</a>
                              </li>
 
                              @if (session()->get('customer_id'))

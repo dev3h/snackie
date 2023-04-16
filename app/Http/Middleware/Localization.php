@@ -17,9 +17,18 @@ class Localization
      */
     public function handle(Request $request, Closure $next)
     {
-        if (session()->has('locale')) {
-            app()->setLocale(session()->get('locale'));
+        $locale = session()->get('locale');
+        if (empty($locale)) {
+            $locale = $request->cookie('locale');
         }
+        $available_locales = config('app.locales', []);
+        if (!in_array($locale, $available_locales)) {
+            $locale = config('app.fallback_locale');
+        }
+
+        app()->setLocale(session()->get('locale'));
+        cookie('locale', $locale, time() + (86400 * 30));
+
 
         return $next($request);
     }

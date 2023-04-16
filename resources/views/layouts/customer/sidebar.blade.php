@@ -5,7 +5,8 @@
             <!--category-productsr-->
             @foreach ($categories_product as $category_product)
                 <div class="panel panel-default">
-                            <a href="{{route('customer.category_product_selected', $category_product->id)}}" class="panel-heading">{{ $category_product->name }}</a>
+                    <a href="{{ route('customer.category_product_selected', $category_product->slug) }}"
+                        class="panel-heading">{{ $category_product->name }}</a>
                 </div>
             @endforeach
         </div>
@@ -16,9 +17,11 @@
             <h2>Thương hiệu sản phẩm</h2>
 
             <div class="brands-name">
-                    @foreach ($brands_product as $brand_product)
-                        <div class="panel-default"><a href="{{URL::to('/thuong-hieu-san-pham/'.$brand_product->id)}}" class="panel-heading">{{$brand_product->name}}</a></div>
-                    @endforeach
+                @foreach ($brands_product as $brand_product)
+                    <div class="panel-default"><a
+                            href="{{ route('customer.brand_product_selected', $brand_product->slug) }}"
+                            class="panel-heading">{{ $brand_product->name }}</a></div>
+                @endforeach
             </div>
         </div>
         <!--/brands_products-->

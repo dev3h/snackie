@@ -51,9 +51,9 @@ Route::group(['as' => 'customer.'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     // get products by category selected
-    Route::get('/danh-muc-san-pham/{category_product_id}', [CategoryProductController::class, 'showProductsByCategoryId'])->name('category_product_selected');
+    Route::get('/danh-muc-san-pham/{slug?}', [HomeController::class, 'index'])->name('category_product_selected');
     // get products by brand selected
-    Route::get('/thuong-hieu-san-pham/{brand_product_id}', [BrandProductController::class, 'showProductsByBrandId'])->name('brand_product_selected');
+    Route::get('/thuong-hieu-san-pham/{slug?}', [HomeController::class, 'index'])->name('brand_product_selected');
 
     Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
 
