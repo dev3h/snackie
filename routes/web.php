@@ -55,7 +55,7 @@ Route::group(['as' => 'customer.'], function () {
     // get products by brand selected
     Route::get('/thuong-hieu-san-pham/{slug?}', [HomeController::class, 'index'])->name('brand_product_selected');
 
-    Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'detailProduct'])->name('product_detail');
+    Route::get('/chi-tiet-san-pham/{slug?}', [ProductController::class, 'detailProduct'])->name('product_detail');
 
     // customer is signed in
     Route::group([
@@ -77,7 +77,9 @@ Route::group(['as' => 'customer.'], function () {
         Route::get('/thong-tin-thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
         Route::post('/thong-tin-thanh-toan', [CheckoutController::class, 'process_checkout'])->name('process_checkout');
         Route::get('/thanh-toan', [CheckoutController::class, 'payment'])->name('payment');
+        Route::get('/phuong-thuc-thanh-toan/{method}', [CheckoutController::class, 'paymentMethod'])->name('payment_method');
         Route::post('/dat-hang', [CheckoutController::class, 'order'])->name('order');
+        Route::post('/process-payment-online', [CheckoutController::class, 'processPaymentOnline'])->name('processPaymentOnline');
         Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
 
     });

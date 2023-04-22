@@ -16,15 +16,15 @@
                 @foreach ($products as $product)
                     <div class="col-sm-12 col-lg-3 col-md-4">
                         <div class="card product-card">
-                            <a href="{{ route('customer.product_detail', $product->slug) }}"><img
-                                    src="{{ asset('uploads/products/' . $product->image) }}" height="180"
+                            <a href="{{ route('customer.product_detail', $product->product_slug) }}"><img
+                                    src="{{ asset('uploads/products/' . $product->product_image) }}" height="180"
                                     class="card-img-top" style='object-fit: cover' alt="..."></a>
                             <div class="card-body">
-                                <h5 class="card-title card-product-title">{{ $product->name }}</h5>
-                                <p>đ{{ number_format($product->price) }}</p>
+                                <h5 class="card-title card-product-title">{{ $product->product_name }}</h5>
+                                <p>đ{{ number_format($product->product_price) }}</p>
                                 <form class="add-to-cart-form">
                                     <button class="btn btn-default add-to-cart btn-light" name="add-to-cart"
-                                        value="{{ $product->id }}">Thêm vào giỏ hàng</button>
+                                        value="{{ $product->product_id }}">Thêm vào giỏ hàng</button>
                                 </form>
                             </div>
                         </div>

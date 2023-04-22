@@ -15,18 +15,24 @@ class CustomerAuthController extends Controller
 {
     public function login()
     {
+        $title = 'Đăng nhập';
         if (session()->has('customer_id')) {
             return redirect()->back();
         }
-        return view('pages.customer.auth.auth');
+        return view('pages.customer.auth.auth', [
+            'title' => $title,
+        ]);
     }
     public function register()
     {
+        $title = 'Đăng ký';
         if (session()->has('customer_id')) {
             return redirect()->back();
         }
 
-        return view('pages.customer.auth.auth');
+        return view('pages.customer.auth.auth', [
+            'title' => $title,
+        ]);
     }
     public function processLogin(Request $request)
     {

@@ -1,0 +1,2 @@
+- Đầu tiên ta sẽ tạo 1 tài khoản paypal trên `paypal developer` để lấy `client_id` và `client_secret` để sử dụng trong quá trình tích hợp
+- Sau khi tạo xong tài khoản

@@ -3,7 +3,7 @@
          function getPayment() {
              let total = 0;
              let payment = 0;
-             let shipping = 20000;
+             let shipping = 0;
 
              $(".span-sum").each(function() {
                  let sum = $(this).text();
@@ -19,8 +19,8 @@
              payment = payment.toLocaleString("vi-VN", {
                  currency: "VND",
              });
-             $(".span-total").text(total);
-             $("#span-payment").text(payment);
+             $(".sub-total").text(total);
+             $(".total-payment").text(payment);
          }
 
          $(".btn-update-quantity").click(function() {

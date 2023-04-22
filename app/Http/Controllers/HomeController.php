@@ -14,6 +14,7 @@ class HomeController extends Controller
     // return home page
     public function index(Request $request, $slug = null)
     {
+        $title = 'Trang chủ';
         $categories_product = CategoryProduct::where('status', 1)->get([
             'id',
             'name',
@@ -24,12 +25,14 @@ class HomeController extends Controller
             'name',
             'slug',
         ]);
+        session()->forget('cart');
 
         $search = $request->get('q');
 
         $data_filer = Product::query()
             ->join('category_products', 'category_products.id', '=', 'category_id')
             ->join('brand_products', 'brand_products.id', '=', 'brand_id')
+            ->select('products.id as product_id', 'products.name as product_name', 'products.price as product_price', 'products.image as product_image', 'products.slug as product_slug', 'category_products.name as category_name', 'category_products.slug as category_slug', 'brand_products.name as brand_name', 'brand_products.slug as brand_slug')
             ->where('products.status', 1)
             ->where('products.name', 'like', '%' . $search . '%')
             ->orderBy('products.id', 'desc');
@@ -38,14 +41,19 @@ class HomeController extends Controller
             $data = $data_filer
                 ->where('category_products.slug', $slug)
                 ->paginate(4);
+            $category_name = CategoryProduct::where('slug', $slug)->first()->name;
+            dd($category_name);
+            $title = 'Danh mục sản phẩm: ' . $category_name;
 
         } elseif (Route::currentRouteName() == 'customer.brand_product_selected') {
             $data = $data_filer
                 ->where('brand_products.slug', $slug)
                 ->paginate(4);
-
+            $brand_name = BrandProduct::where('slug', $slug)->first()->name;
+            $title = 'Thương hiệu sản phẩm: ' . $brand_name;
         } else {
             $data = Product::query()
+                ->select('products.id as product_id', 'products.name as product_name', 'products.price as product_price', 'products.image as product_image', 'products.slug as product_slug')
                 ->where('status', 1)
                 ->where('name', 'like', '%' . $search . '%')
                 ->orderBy('id', 'desc')
@@ -54,25 +62,11 @@ class HomeController extends Controller
 
         $data->appends(['q' => $search]);
         return view('pages.customer.home', [
+            'title' => $title,
             'products' => $data,
             'search' => $search,
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
         ]);
-
-        // $products = Product::join('category_products', 'category_products.id', '=', 'category_id')
-        //     ->join('brand_products', 'brand_products.id', '=', 'brand_id')
-        //     ->select('products.*', 'category_products.name as category_name', 'brand_products.name as brand_name')
-        //     ->where('products.status', 1)
-        //     ->orderBy('products.id', 'desc')
-        //     ->get();
-
-        // $products = Product::where('status', 1)->orderBy('id', 'desc')->limit(4)->get();
-
-        // return view('pages.customer.home', [
-        //     'categories_product' => $categories_product,
-        //     'brands_product' => $brands_product,
-        //     'products' => $products,
-        // ]);
     }
 }

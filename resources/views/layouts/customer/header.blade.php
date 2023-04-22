@@ -55,16 +55,17 @@
                                      href="{{ route('customer.home') }}">{{ __('frontpage.home') }}</a>
                              </li>
                              <li class="nav-item">
-                                 <a class="nav-link" aria-current="page" href="#">{{__('frontpage.shop')}}</a>
+                                 <a class="nav-link" aria-current="page" href="#">{{ __('frontpage.shop') }}</a>
                              </li>
                              <li class="nav-item">
-                                 <a class="nav-link" aria-current="page" href="#">{{__('frontpage.news')}}</a>
+                                 <a class="nav-link" aria-current="page" href="#">{{ __('frontpage.news') }}</a>
                              </li>
                              <li class="nav-item">
                                  <a class="nav-link" aria-current="page" href="#">{{ __('frontpage.about') }}</a>
                              </li>
                              <li class="nav-item">
-                                 <a class="nav-link" aria-current="page" href="#">{{ __('frontpage.contact') }}</a>
+                                 <a class="nav-link" aria-current="page"
+                                     href="#">{{ __('frontpage.contact') }}</a>
                              </li>
 
                              @if (session()->get('customer_id'))
@@ -83,13 +84,14 @@
                              data-bs-target="#exampleModal"><i class="fa fa-search"></i></button>
 
                          <li class="nav-item">
-                             <a class="cart-customer" href="{{ route('customer.cart') }}">
+                             <a type="button" href="{{route('customer.cart')}}" class="btn btn-primary position-relative">
                                  <i class="fa fa-shopping-cart"></i>
                                  @php
                                      $customer_id = session()->get('customer_id') ?? null;
                                  @endphp
                                  @if ($customer_id)
-                                     <span id="cart-quantity">
+                                     <span id="cart-quantity"
+                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                          @php
                                              $cart = session()->get('cart') ?? [];
                                              if (sizeof($cart) > 0) {
@@ -99,8 +101,10 @@
                                                  echo 0;
                                              }
                                          @endphp
+                                         <span class="visually-hidden">unread messages</span>
                                      </span>
                                  @endif
+
                              </a>
                          </li>
                      </div>

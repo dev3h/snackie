@@ -16,6 +16,7 @@ class CartController extends Controller
 
     public function index()
     {
+        $title = 'Giỏ hàng';
         $categories_product = CategoryProduct::where('status', 1)->get([
             'id',
             'name',
@@ -26,12 +27,25 @@ class CartController extends Controller
         ]);
 
         return view($this->folderName . 'index', [
+            'title' => $title,
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
         ]);
 
     }
-    //
+
+    public function handleSubTotal($cart_customer)
+    {
+        $sub_total = 0;
+        foreach ($cart_customer as $key => $value) {
+            if ($key != 'sub_total') {
+                $sub_total += $value['price'] * $value['quantity'];
+            }
+        }
+
+        $cart_customer['sub_total'] = $sub_total;
+    }
+
     public function store(Request $request)
     {
         $product_qty = $request->quantity;
@@ -40,8 +54,20 @@ class CartController extends Controller
         $product = Product::find($product_id);
 
         $cart = session()->get('cart');
+        $res = [];
         if (isset($cart[$customer_id][$product_id])) {
             $cart[$customer_id][$product_id]['quantity'] += $product_qty;
+
+            // $this->handleSubTotal($cart[$customer_id]);
+            $sub_total = 0;
+            foreach ($cart[$customer_id] as $key => $value) {
+                if ($key != 'sub_total') {
+                    $sub_total += $value['price'] * $value['quantity'];
+                }
+            }
+
+            $cart[$customer_id]['sub_total'] = $sub_total;
+
             session()->put('cart', $cart);
             $res = [
                 'status' => 200,
@@ -56,6 +82,7 @@ class CartController extends Controller
                 'quantity' => $product_qty,
                 'image' => $product->image,
             ];
+
             session()->put('cart', $cart);
             $res = [
                 'status' => 200,
@@ -91,6 +118,7 @@ class CartController extends Controller
         } else {
             $carts[$customer_id][$id]['quantity']++;
         }
+
         session()->put('cart', $carts);
         $res = [
             'data' => sizeof($carts[$customer_id]),

@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
 
-    <meta name="description" content="{{ $meta_desc }}">
-    <meta name="keywords" content="{{ $meta_keywords }}" />
+    <meta name="description" content="{{ $meta_desc ?? '' }}">
+    <meta name="keywords" content="{{ $meta_keywords ?? '' }}" />
     <meta name="robots" content="INDEX,FOLLOW" />
-    <link rel="canonical" href="{{ $url_canonical }}" />
+    <link rel="canonical" href="{{ $url_canonical ?? '' }}" />
     <meta name="author" content="">
     <link rel="icon" type="image/x-icon" href="" />
     <!-- favicon -->
@@ -18,7 +18,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Home | E-Shopper</title>
+    <title>{{$title ?? ''}}</title>
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/prettyPhoto.css') }}" rel="stylesheet">
@@ -76,6 +76,8 @@
     @stack('light-slider-js')
     @stack('add-to-cart')
     @stack('update-quantity-cart')
+    @stack('checkout')
+    @stack('payment-online')
 </body>
 
 </html>

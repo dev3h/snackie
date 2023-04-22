@@ -37,6 +37,8 @@ class CheckoutController extends Controller
     public function checkout()
     {
         $customer_id = session()->get('customer_id');
+        $arrPaymentMethod = PaymentMethodEnum::getArrayView();
+
         $shipping_info = Customer::query()
             ->join('shippings', 'shippings.id', '=', 'shipping_id')
             ->select('name_receiver', 'phone_receiver', 'address_receiver')
@@ -46,14 +48,22 @@ class CheckoutController extends Controller
         if (!$shipping_info) {
             return view('pages.customer.checkout.index');
         } else {
+            $title = 'Thông tin thanh toán';
             return view('pages.customer.checkout.index', [
+                'title' => $title,
                 'shipping_info' => $shipping_info,
+                'arrPaymentMethod' => $arrPaymentMethod,
             ]);
         }
     }
     public function process_checkout(Request $request)
     {
-        $shipping = Shipping::create($request->except('_token'));
+
+        $shipping = Shipping::create($request->except([
+            '_token',
+            'method',
+            'payment_online',
+        ]));
 
         $shipping_id = $shipping->id;
         $customer_id = session()->get('customer_id');
@@ -62,7 +72,53 @@ class CheckoutController extends Controller
         Customer::query()->where('id', $customer_id)->update([
             'shipping_id' => $shipping_id,
         ]);
-        return redirect()->route('customer.payment');
+
+        // insert payment
+        $payment = Payment::create($request->only([
+            'method',
+        ]));
+
+        $payment_id = $payment->id;
+
+// insert order
+        $carts = session()->get('cart');
+        $cart_customer = $carts[$customer_id];
+
+        $total_price = 0;
+        foreach ($cart_customer as $item => $value) {
+            $total_price += $value['price'] * $value['quantity'];
+        }
+        $order = Order::create([
+            'customer_id' => $customer_id,
+            'shipping_id' => $shipping_id,
+            'payment_id' => $payment_id,
+            'total_price' => $total_price,
+        ]);
+        $order_id = $order->id;
+
+// insert order detail
+        foreach ($cart_customer as $item => $value) {
+            OrderDetail::create([
+                'order_id' => $order_id,
+                'product_id' => $value['id'],
+                'quantity' => $value['quantity'],
+            ]);
+        }
+
+        session()->forget('cart.' . $customer_id);
+
+        if ($request->method == 0) {
+            // request get payment_online
+            if ($request->payment_online == 'vnpay') {
+                return view('pages.customer.checkout.payment_online', [
+                    'title' => 'Thanh toán online',
+                    'order_id' => $order_id,
+                    'total_price' => $total_price,
+                ]);
+            }
+        }
+
+        return view('pages.customer.checkout.cash_payment');
 
     }
 
@@ -114,6 +170,72 @@ class CheckoutController extends Controller
         }
     }
 
+    public function processPaymentOnline($request)
+    {
+        if ($request->paymentOnline && $request->paymentOnline == 'vnpay') {
+            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+            // return về trạng nào
+            $vnp_Returnurl = "https://localhost/checkout";
+            $vnp_TmnCode = "ACTZ7JV0"; //Mã website tại VNPAY
+            $vnp_HashSecret = "EYRECPPXLHLWXKRGQOVTFDIZPVSADUVT"; //Chuỗi bí mật
+
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
+            $vnp_TxnRef = $_POST['order_id']; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+            $vnp_OrderInfo = $_POST['order_desc'];
+            $vnp_OrderType = $_POST['order_type'];
+            $vnp_Amount = str_replace(',', '', $_POST['amount']) * 100;
+            $vnp_Locale = $_POST['language'];
+            $vnp_BankCode = $_POST['bank_code'];
+            $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+
+            $inputData = array(
+                "vnp_Version" => "2.0.0",
+                "vnp_TmnCode" => $vnp_TmnCode,
+                "vnp_Amount" => $vnp_Amount,
+                "vnp_Command" => "pay",
+                "vnp_CreateDate" => date('YmdHis'),
+                "vnp_CurrCode" => "VND",
+                "vnp_IpAddr" => $vnp_IpAddr,
+                "vnp_Locale" => $vnp_Locale,
+                "vnp_OrderInfo" => $vnp_OrderInfo,
+                "vnp_OrderType" => $vnp_OrderType,
+                "vnp_ReturnUrl" => $vnp_Returnurl,
+                "vnp_TxnRef" => $vnp_TxnRef,
+            );
+
+            if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+                $inputData['vnp_BankCode'] = $vnp_BankCode;
+            }
+            ksort($inputData);
+            $query = "";
+            $i = 0;
+            $hashdata = "";
+            foreach ($inputData as $key => $value) {
+                if ($i == 1) {
+                    $hashdata .= '&' . $key . "=" . $value;
+                } else {
+                    $hashdata .= $key . "=" . $value;
+                    $i = 1;
+                }
+                $query .= urlencode($key) . "=" . urlencode($value) . '&';
+            }
+
+            $vnp_Url = $vnp_Url . "?" . $query;
+            if (isset($vnp_HashSecret)) {
+                // $vnpSecureHash = md5($vnp_HashSecret . $hashdata);
+                $vnpSecureHash = hash('sha256', $vnp_HashSecret . $hashdata);
+                $vnp_Url .= 'vnp_SecureHashType=SHA256&vnp_SecureHash=' . $vnpSecureHash;
+            }
+            $returnData = array('code' => '00'
+                , 'message' => 'success'
+                , 'data' => $vnp_Url);
+            echo json_encode($returnData);
+
+        }
+
+    }
+
     // admin function
     public function index()
     {
@@ -129,18 +251,17 @@ class CheckoutController extends Controller
     public function show(Order $order)
     {
         $order_by_id = Order::query()->join('customers', 'customers.id', '=', 'customer_id')
-        ->join('shippings', 'shippings.id', '=', 'orders.shipping_id')
-        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('shippings', 'shippings.id', '=', 'orders.shipping_id')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->select('orders.*', 'customers.name as customer_name', 'customers.phone as customer_phone', 'shippings.*')
             ->where('orders.id', $order->id)
             ->get()
             ->first();
-            
+
         $order_products = OrderDetail::query()->join('products', 'products.id', '=', 'product_id')
             ->select('products.*', 'order_details.quantity')
             ->where('order_id', $order->id)
             ->get();
-        
 
         return view('pages.admin.' . $this->folderName . '.show', [
             'order_by_id' => $order_by_id,

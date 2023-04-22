@@ -214,7 +214,7 @@ class ProductController extends Controller
 
     // end function admin page
 
-    public function detailProduct($product_id)
+    public function detailProduct($slug)
     {
         $categories_product = CategoryProduct::where('status', 1)->get([
             'id',
@@ -226,34 +226,48 @@ class ProductController extends Controller
         ]);
         $details_product = $this->model->join('category_products', 'category_products.id', '=', 'category_id')
             ->join('brand_products', 'brand_products.id', '=', 'brand_id')
-            ->select('products.*', 'category_products.name as category_name', 'brand_products.name as brand_name')
-            ->where('products.id', $product_id)
+            ->select('products.id as product_id', 'products.name as product_name', 'products.price as product_price', 'products.image as product_image', 'products.slug as product_slug', 'products.description as product_des', 'products.content as product_content', 'products.category_id as product_category_id', 'products.brand_id as product_brand_id', 'category_products.name as category_name', 'brand_products.name as brand_name')
+            ->where('products.slug', $slug)
             ->get()
             ->first();
+        $title = $details_product->product_name;
 
-        $facebook_share_img = $details_product->image;
-        $facebook_share_title = $details_product->name;
-        $facebook_share_description = $details_product->description;
+        $facebook_share_img = $details_product->product_image;
+        $facebook_share_title = $details_product->product_name;
+        $facebook_share_description = $details_product->product_description;
         $facebook_share_url = url()->current();
 
-        $category_id = $details_product->category_id;
+        $category_id = $details_product->product_category_id;
+        $brand_id = $details_product->product_brand_id;
 
         // get related product by category id
-        $related_products = Product
-            ::whereNotIn('id', [$product_id])
+        $related_category_products = Product
+            ::whereNotIn('slug', [$slug])
             ->where('category_id', $category_id)
             ->get();
+        if (count($related_category_products) == 0) {
+            $related_brand_products = Product
+                ::whereNotIn('slug', [$slug])
+                ->where('brand_id', $brand_id)
+                ->get();
+        }
 
-        return view('pages.customer.product.detail_product', [
+        $arr = [
+            'title' => $title,
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
             'details_product' => $details_product,
-            'related_products' => $related_products,
 
             'facebook_share_img' => $facebook_share_img,
             'facebook_share_title' => $facebook_share_title,
             'facebook_share_description' => $facebook_share_description,
             'facebook_share_url' => $facebook_share_url,
-        ]);
+        ];
+        if (count($related_category_products) > 0) {
+            $arr['related_products'] = $related_category_products;
+        } elseif (count($related_brand_products) > 0) {
+            $arr['related_products'] = $related_brand_products;
+        }
+        return view('pages.customer.product.detail_product', $arr);
     }
 }

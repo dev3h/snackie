@@ -1,2 +1,2 @@
-- You can find the SQL in `database/placeSQL`
-- In phpMyAdmin, select the database you want to insert the data into then click on the SQL tab and paste the SQL code into the text area.
+- Xem dữ liệu để insert ở `database/placeSQL`
+- Trong phpMyAdmin, chọn tab SQL xong copy dữ liệu và bấm go. chỉ cần code dữ liệu phần insert là được
