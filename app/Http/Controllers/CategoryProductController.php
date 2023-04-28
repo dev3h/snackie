@@ -43,6 +43,7 @@ class CategoryProductController extends Controller
         $data = $this->model->orderBy('id', 'desc')->get();
         return view('pages.admin.' . $this->folderName . '.index', [
             'data' => $data,
+            'title' => 'Danh sách ' . $this->messageName,
         ]);
     }
 
@@ -53,7 +54,9 @@ class CategoryProductController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.' . $this->folderName . '.create');
+        return view('pages.admin.' . $this->folderName . '.create', [
+            'title' => 'Thêm ' . $this->messageName,
+        ]);
     }
 
     /**
@@ -108,6 +111,7 @@ class CategoryProductController extends Controller
     {
         return view('pages.admin.' . $this->folderName . '.edit', [
             'each' => $categoryProduct,
+            'title' => 'Sửa ' . $this->messageName,
         ]);
     }
 

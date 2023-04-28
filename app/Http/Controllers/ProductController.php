@@ -48,6 +48,7 @@ class ProductController extends Controller
 
         return view('pages.admin.' . $this->folderName . '.index', [
             'data' => $data,
+            'title' => 'Danh sách ' . $this->messageName,
         ]);
     }
 
@@ -69,6 +70,7 @@ class ProductController extends Controller
         return view('pages.admin.' . $this->folderName . '.create', [
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
+            'title' => 'Thêm ' . $this->messageName,
         ]);
 
     }
@@ -156,6 +158,7 @@ class ProductController extends Controller
             'each' => $product,
             'categories_product' => $categories_product,
             'brands_product' => $brands_product,
+            'title' => 'Sửa ' . $this->messageName,
         ]);
 
     }

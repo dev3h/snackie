@@ -43,6 +43,7 @@ class BrandProductController extends Controller
         $data = $this->model->orderBy('id', 'desc')->get();
         return view('pages.admin.' . $this->folderName . '.index', [
             'data' => $data,
+            'title' => 'Danh sách ' . $this->messageName,
         ]);
 
     }
@@ -54,7 +55,9 @@ class BrandProductController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.' . $this->folderName . '.create');
+        return view('pages.admin.' . $this->folderName . '.create', [
+            'title' => 'Thêm ' . $this->messageName,
+        ]);
     }
 
     /**
@@ -110,6 +113,7 @@ class BrandProductController extends Controller
     {
         return view('pages.admin.' . $this->folderName . '.edit', [
             'each' => $brandProduct,
+            'title' => 'Sửa ' . $this->messageName,
         ]);
 
     }

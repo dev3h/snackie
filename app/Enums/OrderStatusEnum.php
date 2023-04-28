@@ -12,15 +12,19 @@ use BenSampo\Enum\Enum;
 final class OrderStatusEnum extends Enum
 {
     public const DANG_CHO_XU_LY = 0;
-    public const BO_HOC = 1;
-    public const BAO_LUU = 2;
+    public const DA_XU_LY = 1;
+    public const DANG_GIAO = 2;
+    public const DA_GIAO = 3;
+    public const DA_HUY = 4;
 
     public static function getArrayView()
     {
         return [
             'Đang chờ xử lý' => self::DANG_CHO_XU_LY,
-            'Bỏ học' => self::BO_HOC,
-            'Bảo lưu' => self::BAO_LUU,
+            'Đã xử lý' => self::DA_XU_LY,
+            'Đang giao' => self::DANG_GIAO,
+            'Đã giao' => self::DA_GIAO,
+            'Đã hủy' => self::DA_HUY,
         ];
     }
 

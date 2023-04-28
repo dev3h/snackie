@@ -28,7 +28,9 @@ class AdminController extends Controller
     }
     public function index()
     {
-        return view('pages.' . $this->folderName . '.admin_login');
+        return view('pages.' . $this->folderName . '.admin_login', [
+            'title' => 'Đăng nhập quyền quản trị',
+        ]);
     }
 
     public function login(Request $request)
@@ -49,7 +51,9 @@ class AdminController extends Controller
     }
     public function show_dashboard()
     {
-        return view('pages.' . $this->folderName . '.dashboard');
+        return view('pages.' . $this->folderName . '.dashboard', [
+            'title' => 'Trang quản trị',
+        ]);
     }
     public function logout()
     {

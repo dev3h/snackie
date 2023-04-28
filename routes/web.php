@@ -174,6 +174,7 @@ Route::group([
             Route::get('', [CheckoutController::class, 'index'])->name('index');
 
             Route::get('/show/{order}', [CheckoutController::class, 'show'])->name('show');
+            Route::put('/update/{order}', [CheckoutController::class, 'update'])->name('update');
 
             Route::delete('/destroy/{order}', [CheckoutController::class, 'destroy'])->name('destroy');
 

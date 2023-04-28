@@ -41,6 +41,8 @@
                                 </label>
                             </th>
                             <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đã bán</th>
                             <th>Giá</th>
                             <th>Ảnh</th>
                             <th>Danh mục</th>
@@ -55,6 +57,8 @@
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                                 </td>
                                 <td>{{ $each->name }}</td>
+                                <td>{{ $each->quantity }}</td>
+                                <td>{{ $each->sold }}</td>
                                 <td>{{ number_format($each->price) }}</td>
                                 <td><img src="{{asset('uploads/products/' . $each->image)}}" alt="" width="50" height="50"></td>
                                 <td>{{$each->category_name}}</td>

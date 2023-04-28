@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentMethodEnum;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\Shipping;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -246,26 +248,39 @@ class CheckoutController extends Controller
 
         return view('pages.admin.' . $this->folderName . '.index', [
             'orders' => $orders,
+            'title' => 'Danh sách ' . $this->messageName,
         ]);
     }
     public function show(Order $order)
     {
         $order_by_id = Order::query()->join('customers', 'customers.id', '=', 'customer_id')
-            ->join('shippings', 'shippings.id', '=', 'orders.shipping_id')
-            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->select('orders.*', 'customers.name as customer_name', 'customers.phone as customer_phone', 'shippings.*')
+            ->select('orders.*', 'customers.name as customer_name', 'customers.phone as customer_phone')
             ->where('orders.id', $order->id)
-            ->get()
+            ->where('customers.id', $order->customer_id)
             ->first();
 
+        $order_shipping = Order::query()->join('shippings', 'shippings.id', '=', 'shipping_id')
+            ->join('payments', 'payments.id', '=', 'payment_id')
+            ->join('customers', 'customers.id', '=', 'customer_id')
+            ->select('shippings.*', 'payments.method as payment_method')
+            ->where('orders.id', $order->id)
+            ->where('customers.id', $order->customer_id)
+            ->where('shippings.id', $order->shipping_id)
+            ->first();
+        $paymentMethod = PaymentMethodEnum::getKeyByValue($order_shipping->payment_method);
+
         $order_products = OrderDetail::query()->join('products', 'products.id', '=', 'product_id')
-            ->select('products.*', 'order_details.quantity')
+            ->select('products.name as product_name', 'products.quantity as product_quantity', 'products.price as product_price', 'order_details.quantity as order_quantity')
             ->where('order_id', $order->id)
             ->get();
+        $arrOrderStatus = OrderStatusEnum::getArrayView();
 
         return view('pages.admin.' . $this->folderName . '.show', [
             'order_by_id' => $order_by_id,
             'order_products' => $order_products,
+            'arrOrderStatus' => $arrOrderStatus,
+            'paymentMethod' => $paymentMethod,
+            'order_shipping' => $order_shipping,
         ]);
 
     }
@@ -279,5 +294,23 @@ class CheckoutController extends Controller
         return view('pages.admin.' . $this->folderName . '.index', [
             'orders' => $orders,
         ]);
+    }
+    public function update(Request $request, Order $order)
+    {
+        $order->status = $request->status;
+        $order->save();
+
+        // if order status is 3, update sold in product table and minus quantity in product table
+        if ($order->status == 3) {
+            $order_details = OrderDetail::query()->where('order_id', $request->order_id)->get();
+            foreach ($order_details as $order_detail) {
+                $product = Product::query()->where('id', $order_detail->product_id)->first();
+                $product->sold = $product->sold + $order_detail->quantity;
+                $product->quantity = $product->quantity - $order_detail->quantity;
+                $product->save();
+            }
+        }
+
+        return redirect()->route('admin.order.index')->with('success', 'Cập nhật đơn hàng thành công');
     }
 }

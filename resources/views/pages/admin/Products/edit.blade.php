@@ -23,6 +23,11 @@
                                     id="exampleInputEmail1" placeholder="tên {{ $messageName }}" />
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Số lượng {{ $messageName }}</label>
+                                <input type="text" value="{{ $each->quantity }}" name="quantity" class="form-control"
+                                    id="exampleInputEmail1" placeholder="số lượng {{ $messageName }}" />
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Giá {{ $messageName }}</label>
                                 <input type="text" value="{{ $each->price }}" name="price" class="form-control"
                                     id="exampleInputEmail1" placeholder="giá {{ $messageName }}" />

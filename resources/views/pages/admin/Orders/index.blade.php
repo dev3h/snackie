@@ -26,10 +26,8 @@
             </div>
             <div class="table-responsive">
                 @php
-                    $message = session()->get('message');
-                    if ($message) {
-                        echo '<span class="text-alert">' . $message . '</span>';
-                        session()->put('message', null);
+                    if (session()->has('success')) {
+                        echo '<span class="text-alert">' . session('success') . '</span>';
                     }
                 @endphp
                 <table class="table table-striped b-t b-light">
@@ -43,6 +41,7 @@
                             <th>Tên người đặt</th>
                             <th>Tổng đơn hàng</th>
                             <th>Tình trạng</th>
+                            <th>Thời gian đặt hàng</th>
                             <th style="width:30px;"></th>
                         </tr>
                     </thead>
@@ -53,18 +52,20 @@
                                 </td>
                                 <td>{{ $order->customer_name }}</td>
                                 <td>{{ number_format($order->total_price) }}</td>
-                                <td>{{$order->status_name}}</td>
+                                <td>{{ $order->status_name }}</td>
+                                <td>{{ $order->created_at }}</td>
                                 <td></td>
                                 <td>
                                     <div class="button-group">
-                                        <a href="{{ route( $asRoute . '.show', $order) }}" class="active table-button"
+                                        <a href="{{ route($asRoute . '.show', $order) }}" class="active table-button"
                                             ui-toggle-class="" title="xem">
                                             <i class="fa fa-eye text-success text-active"></i>
                                         </a>
-                                        <form action="{{ route( $asRoute . '.destroy', $order) }}" method="post">
+                                        <form action="{{ route($asRoute . '.destroy', $order) }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                            <button onclick="return confirm('Bạn có chắc muốn xóa {{ $messageName }} này không?')"
+                                            <button
+                                                onclick="return confirm('Bạn có chắc muốn xóa {{ $messageName }} này không?')"
                                                 class="active table-button" ui-toggle-class="" title="xóa">
                                                 <i class="fa fa-times text-danger text"></i>
                                             </button>
