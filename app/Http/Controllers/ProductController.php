@@ -229,7 +229,7 @@ class ProductController extends Controller
         ]);
         $details_product = $this->model->join('category_products', 'category_products.id', '=', 'category_id')
             ->join('brand_products', 'brand_products.id', '=', 'brand_id')
-            ->select('products.id as product_id', 'products.name as product_name', 'products.price as product_price', 'products.image as product_image', 'products.slug as product_slug', 'products.description as product_des', 'products.content as product_content', 'products.category_id as product_category_id', 'products.brand_id as product_brand_id', 'category_products.name as category_name', 'brand_products.name as brand_name')
+            ->select('products.id as product_id', 'products.name as product_name','products.sold as product_sold','products.quantity as product_quantity', 'products.price as product_price', 'products.image as product_image', 'products.slug as product_slug', 'products.description as product_des', 'products.content as product_content', 'products.category_id as product_category_id', 'products.brand_id as product_brand_id', 'category_products.name as category_name', 'brand_products.name as brand_name')
             ->where('products.slug', $slug)
             ->get()
             ->first();

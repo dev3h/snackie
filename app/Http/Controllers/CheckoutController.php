@@ -10,7 +10,6 @@ use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Shipping;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -38,6 +37,8 @@ class CheckoutController extends Controller
     }
     public function checkout()
     {
+        $title = 'Thông tin thanh toán';
+
         $customer_id = session()->get('customer_id');
         $arrPaymentMethod = PaymentMethodEnum::getArrayView();
 
@@ -48,9 +49,12 @@ class CheckoutController extends Controller
             ->get()
             ->first();
         if (!$shipping_info) {
-            return view('pages.customer.checkout.index');
+            return view('pages.customer.checkout.index', [
+                'title' => $title,
+                'arrPaymentMethod' => $arrPaymentMethod,
+            ]);
         } else {
-            $title = 'Thông tin thanh toán';
+
             return view('pages.customer.checkout.index', [
                 'title' => $title,
                 'shipping_info' => $shipping_info,
@@ -60,7 +64,6 @@ class CheckoutController extends Controller
     }
     public function process_checkout(Request $request)
     {
-
         $shipping = Shipping::create($request->except([
             '_token',
             'method',
@@ -69,7 +72,6 @@ class CheckoutController extends Controller
 
         $shipping_id = $shipping->id;
         $customer_id = session()->get('customer_id');
-        session()->put('shipping_id', $shipping_id);
 
         Customer::query()->where('id', $customer_id)->update([
             'shipping_id' => $shipping_id,
@@ -124,60 +126,64 @@ class CheckoutController extends Controller
 
     }
 
-    public function payment()
-    {
-        $arrPaymentMethod = PaymentMethodEnum::getArrayView();
-
-        return view('pages.customer.checkout.payment', [
-            'arrPaymentMethod' => $arrPaymentMethod,
-        ]);
+    public function checkoutOnline() {
+        return view('pages.customer.checkout.payment_online');
     }
 
-    public function order(Request $request)
-    {
-        // insert payment
-        $payment = Payment::create($request->except('_token'));
+    // public function payment()
+    // {
+    //     $arrPaymentMethod = PaymentMethodEnum::getArrayView();
 
-        $payment_id = $payment->id;
+    //     return view('pages.customer.checkout.payment', [
+    //         'arrPaymentMethod' => $arrPaymentMethod,
+    //     ]);
+    // }
 
-        // insert order
-        $customer_id = session()->get('customer_id');
-        $shipping_id = session()->get('shipping_id');
-        $total_price = Cart::total(0, '.', '');
-        $order = Order::create([
-            'customer_id' => $customer_id,
-            'shipping_id' => $shipping_id,
-            'payment_id' => $payment_id,
-            'total_price' => $total_price,
-        ]);
-        $order_id = $order->id;
+    // public function order(Request $request)
+    // {
+    //     // insert payment
+    //     $payment = Payment::create($request->except('_token'));
 
-        // insert order detail
-        $cart = Cart::content();
-        foreach ($cart as $item) {
-            OrderDetail::create([
-                'order_id' => $order_id,
-                'product_id' => $item->id,
-                'quantity' => $item->qty,
-            ]);
-        }
+    //     $payment_id = $payment->id;
 
-        if ($payment->method == 0) {
-            echo "Thanh toán bằng thẻ tín dụng";
-        } else if ($payment->method == 1) {
-            Cart::destroy();
-            return view('pages.customer.checkout.cash_payment');
-        } else {
-            echo "Thanh toán bằng thẻ ghi nợ";
-        }
-    }
+    //     // insert order
+    //     $customer_id = session()->get('customer_id');
+    //     $shipping_id = session()->get('shipping_id');
+    //     $total_price = Cart::total(0, '.', '');
+    //     $order = Order::create([
+    //         'customer_id' => $customer_id,
+    //         'shipping_id' => $shipping_id,
+    //         'payment_id' => $payment_id,
+    //         'total_price' => $total_price,
+    //     ]);
+    //     $order_id = $order->id;
+
+    //     // insert order detail
+    //     $cart = Cart::content();
+    //     foreach ($cart as $item) {
+    //         OrderDetail::create([
+    //             'order_id' => $order_id,
+    //             'product_id' => $item->id,
+    //             'quantity' => $item->qty,
+    //         ]);
+    //     }
+
+    //     if ($payment->method == 0) {
+    //         echo "Thanh toán bằng thẻ tín dụng";
+    //     } else if ($payment->method == 1) {
+    //         Cart::destroy();
+    //         return view('pages.customer.checkout.cash_payment');
+    //     } else {
+    //         echo "Thanh toán bằng thẻ ghi nợ";
+    //     }
+    // }
 
     public function processPaymentOnline($request)
     {
         if ($request->paymentOnline && $request->paymentOnline == 'vnpay') {
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
             // return về trạng nào
-            $vnp_Returnurl = "https://localhost/checkout";
+            $vnp_Returnurl = "https://localhost/hoan-thanh";
             $vnp_TmnCode = "ACTZ7JV0"; //Mã website tại VNPAY
             $vnp_HashSecret = "EYRECPPXLHLWXKRGQOVTFDIZPVSADUVT"; //Chuỗi bí mật
 
@@ -233,9 +239,7 @@ class CheckoutController extends Controller
                 , 'message' => 'success'
                 , 'data' => $vnp_Url);
             echo json_encode($returnData);
-
         }
-
     }
 
     // admin function
@@ -312,5 +316,10 @@ class CheckoutController extends Controller
         }
 
         return redirect()->route('admin.order.index')->with('success', 'Cập nhật đơn hàng thành công');
+    }
+
+    public function complete()
+    {
+        return view('pages.customer.checkout.complete');
     }
 }

@@ -4,7 +4,7 @@
 @endpush
 @section('content')
     <div class="table-responsive">
-        <form id="create_form" method="post">
+        <form id="create_form" class="form-vnpay" method="post">
             @csrf
             <div class="form-group">
                 <label for="language">Loại hàng hóa </label>
@@ -69,15 +69,22 @@
     @push('payment-online-js')
         <script src="{{ asset('frontend/js/vnpay.js') }}"></script>
         <script type="text/javascript">
-            $("#btnPopup").click(function() {
-                var postData = $("#create_form").serialize();
-                // add attr vnpay to postData
+            $(".form-vnpay").submit(function(e) {
+                e.preventDefault();
+                var postData = new FormData(document.querySelector("#create_form"));
+                // get csrf token of input name _token in form
+                var token = $('input[name=_token]').val();
+                postData.append('_token', token);
+
                 postData.append('paymentOnline', 'vnpay');
+                console.log(postData)
                 $.ajax({
                     type: "POST",
-                    url: {{ route('customer.processPaymentOnline') }},
+                    url: "{{ route('customer.processPaymentOnline') }}",
                     data: postData,
                     dataType: 'JSON',
+                    cache: false,
+                    processData: false,
                     success: function(x) {
                         console.log(x.data)
                         if (x.code === '00') {

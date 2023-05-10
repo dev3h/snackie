@@ -76,11 +76,14 @@ Route::group(['as' => 'customer.'], function () {
         // checkout
         Route::get('/thong-tin-thanh-toan', [CheckoutController::class, 'checkout'])->name('checkout');
         Route::post('/thong-tin-thanh-toan', [CheckoutController::class, 'process_checkout'])->name('process_checkout');
-        Route::get('/thanh-toan', [CheckoutController::class, 'payment'])->name('payment');
-        Route::get('/phuong-thuc-thanh-toan/{method}', [CheckoutController::class, 'paymentMethod'])->name('payment_method');
-        Route::post('/dat-hang', [CheckoutController::class, 'order'])->name('order');
+        // Route::get('/thanh-toan', [CheckoutController::class, 'payment'])->name('payment');
+        // Route::get('/phuong-thuc-thanh-toan/{method}', [CheckoutController::class, 'paymentMethod'])->name('payment_method');
+        // Route::post('/dat-hang', [CheckoutController::class, 'order'])->name('order');
+        Route::get('thanh-toan-online', [CheckoutController::class, 'checkoutOnline'])->name('checkout_online');
         Route::post('/process-payment-online', [CheckoutController::class, 'processPaymentOnline'])->name('processPaymentOnline');
+        Route::get('/hoan-thanh', [CheckoutController::class, 'complete'])->name('complete');
         Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
+
 
     });
 });

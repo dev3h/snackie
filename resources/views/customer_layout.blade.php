@@ -30,6 +30,7 @@
     <link href="{{ asset('frontend/css/toastr.css') }}" rel="stylesheet">
     @stack('fancy-box-css')
     @stack('light-slider-css')
+    @stack('payment-online-css')
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -78,6 +79,7 @@
     @stack('update-quantity-cart')
     @stack('checkout')
     @stack('payment-online')
+    @stack('payment-online-js')
 </body>
 
 </html>

@@ -21,7 +21,10 @@
                                     class="card-img-top" style='object-fit: cover' alt="..."></a>
                             <div class="card-body">
                                 <h5 class="card-title card-product-title">{{ $product->product_name }}</h5>
-                                <p>đ{{ number_format($product->product_price) }}</p>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>đ{{ number_format($product->product_price) }}</span>
+                                    <span>đã bán {{$product->product_sold}}</span>
+                                </div>
                                 <form class="add-to-cart-form">
                                     <button class="btn btn-default add-to-cart btn-light" name="add-to-cart"
                                         value="{{ $product->product_id }}">Thêm vào giỏ hàng</button>
