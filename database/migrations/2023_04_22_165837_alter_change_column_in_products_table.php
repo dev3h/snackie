@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AlterChangeColumnInProductsTable extends Migration
 {
+    private $table_name = 'products';
+    private $column1 = 'category_id';
+    private $column2 = 'brand_id';
     /**
      * Run the migrations.
      *
@@ -13,11 +16,17 @@ class AlterChangeColumnInProductsTable extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->unsignedBigInteger('category_id')->change();
-            $table->unsignedBigInteger('brand_id')->change();
-
-
+        Schema::table($this->table_name, function (Blueprint $table) {
+            if (Schema::hasColumn($this->table_name, $this->column1)) {
+                Schema::table($this->table_name, function (Blueprint $table) {
+                    $table->unsignedBigInteger($this->column1)->change();
+                });
+            }
+            if (Schema::hasColumn($this->table_name, $this->column2)) {
+                Schema::table($this->table_name, function (Blueprint $table) {
+                    $table->unsignedBigInteger($this->column2)->change();
+                });
+            }
         });
     }
 

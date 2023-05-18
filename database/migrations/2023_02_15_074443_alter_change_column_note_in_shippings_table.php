@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class AlterChangeColumnNoteInShippingsTable extends Migration
 {
+    private $table_name = 'shippings';
+    private $column = 'note';
     /**
      * Run the migrations.
      *
@@ -13,8 +15,12 @@ class AlterChangeColumnNoteInShippingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('shippings', function (Blueprint $table) {
-            $table->string('note')->nullable()->change();
+        Schema::table($this->table_name, function (Blueprint $table) {
+            if (Schema::hasColumn($this->table_name, $this->column)) {
+                Schema::table($this->table_name, function (Blueprint $table) {
+                    $table->string($this->column)->nullable()->change();
+                });
+            }
         });
     }
 

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class AlterChangeColumnInCustomersTable extends Migration
 {
+    private $table_name = 'customers';
+    private $column = 'shipping_id';
     /**
      * Run the migrations.
      *
@@ -13,9 +15,12 @@ class AlterChangeColumnInCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->unsignedBigInteger('shipping_id')->change();
-
+        Schema::table($this->table_name, function (Blueprint $table) {
+            if (Schema::hasColumn($this->table_name, $this->column)) {
+                Schema::table($this->table_name, function (Blueprint $table) {
+                    $table->unsignedBigInteger($this->column)->change();
+                });
+            }
         });
     }
 
