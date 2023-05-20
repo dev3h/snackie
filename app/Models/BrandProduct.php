@@ -17,7 +17,7 @@ class BrandProduct extends Model
         'status',
     ];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
