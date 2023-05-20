@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
         // $locale = session('locale', config('app.locale'));
         // app()->setLocale($locale);
         app()->setLocale('vi');
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
 
     }
 }
