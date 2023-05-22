@@ -9,10 +9,12 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TestController;
 use App\Http\Middleware\CheckLoginAminPageMiddleware;
 use App\Http\Middleware\CheckLoginCustomerPageMiddleware;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+
 
 // lang route
 Route::get('/lang/{locale}', function ($locale) {
@@ -108,6 +110,7 @@ Route::group([
         // Category Product route
         Route::group(['prefix' => '/categories-product', 'as' => 'category_product.'], function () {
             Route::get('', [CategoryProductController::class, 'index'])->name('index');
+            Route::get('/api', [CategoryProductController::class, 'api'])->name('api');
 
             Route::get('/inactive/{category_product_id}', [CategoryProductController::class, 'inactive'])->name('inactive');
             Route::get('/active/{category_product_id}', [CategoryProductController::class, 'active'])->name('active');
@@ -181,6 +184,7 @@ Route::group([
 
             Route::delete('/destroy/{order}', [CheckoutController::class, 'destroy'])->name('destroy');
 
+            Route::get('/print-order/{order}', [CheckoutController::class, 'printOrder'])->name('print_order');
         });
 
     });

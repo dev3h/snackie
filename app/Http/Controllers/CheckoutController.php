@@ -10,7 +10,9 @@ use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Shipping;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -126,7 +128,8 @@ class CheckoutController extends Controller
 
     }
 
-    public function checkoutOnline() {
+    public function checkoutOnline()
+    {
         return view('pages.customer.checkout.payment_online');
     }
 
@@ -321,5 +324,35 @@ class CheckoutController extends Controller
     public function complete()
     {
         return view('pages.customer.checkout.complete');
+    }
+
+    public function printOrder($order_id)
+    {
+        $order = Order::query()->where('id', $order_id)->first();
+
+        $order_shipping = Order::query()->join('shippings', 'shippings.id', '=', 'shipping_id')
+            ->join('payments', 'payments.id', '=', 'payment_id')
+            ->join('customers', 'customers.id', '=', 'customer_id')
+            ->select('shippings.*', 'payments.method as payment_method')
+            ->where('orders.id', $order_id)
+            ->where('customers.id', $order->customer_id)
+            ->where('shippings.id', $order->shipping_id)
+            ->first();
+        $paymentMethod = PaymentMethodEnum::getKeyByValue($order_shipping->payment_method);
+
+        $order_products = OrderDetail::query()->join('products', 'products.id', '=', 'product_id')
+            ->select('products.name as product_name', 'products.quantity as product_quantity', 'products.price as product_price', 'order_details.quantity as order_quantity')
+            ->where('order_id', $order_id)
+            ->get();
+
+        $data = [
+            'order' => $order,
+            'order_shipping' => $order_shipping,
+            'paymentMethod' => $paymentMethod,
+            'order_products' => $order_products,
+        ];
+        $pdf = Pdf::loadView('pages.admin.Orders.preview_pdf', $data);
+        return $pdf->download('custom.pdf');
+
     }
 }

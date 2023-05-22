@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>{{$title ?? ''}}</title>
+    <title>{{ $title ?? '' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords"
@@ -28,12 +28,12 @@
     <link rel="stylesheet" href="{{ asset('backend/css/morris.css') }}" type="text/css" />
     <!-- calendar -->
     <link rel="stylesheet" href="{{ asset('backend/css/monthly.css') }}" />
+    <link rel="stylesheet" href="{{ asset('backend/css/sweetalert2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('backend/css/toastr.css') }}" />
     <!-- //calendar -->
     <!-- //font-awesome icons -->
-    <script src="{{ asset('backend/js/jquery2.0.3.min.') }}js"></script>
-    <script src="{{ asset('backend/js/raphael-min.js') }}"></script>
-    <script src="{{ asset('backend/js/morris.js') }}"></script>
     @stack('ckeditor_css')
+    @stack('datatable_css')
 </head>
 
 <body>
@@ -55,7 +55,13 @@
         <!--main content end-->
     </section>
 
-    <script src="{{ asset('backend/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('backend/js/raphael-min.js') }}"></script>
+    <script src="{{ asset('backend/js/morris.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('backend/js/monthly.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('backend/js/popper.min.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/js/jquery.dcjqaccordion.2.7.js') }}"></script>
     <script src="{{ asset('backend/js/scripts.js') }}"></script>
     <script src="{{ asset('backend/js/jquery.slimscroll.js') }}"></script>
@@ -63,8 +69,10 @@
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="{{ asset('backend/js/flot-chart/excanvas.min.js') }}">
     </script><![endif]-->
     <script src="{{ asset('backend/js/jquery.scrollTo.js') }}"></script>
+    <script src="{{ asset('backend/js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('backend/js/toastr.min.js') }}"></script>
     <!-- morris JavaScript -->
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             //BOX BUTTON SHOW AND CLOSE
             jQuery('.small-graph-box').hover(function() {
@@ -159,10 +167,10 @@
                 resize: true
             });
         });
-    </script>
+    </script> --}}
     <!-- calendar -->
-    <script type="text/javascript" src="{{ asset('backend/js/monthly.js') }}"></script>
-    <script type="text/javascript">
+    
+    {{-- <script type="text/javascript">
         $(window).load(function() {
             $('#mycalendar').monthly({
                 mode: 'event',
@@ -188,9 +196,10 @@
             }
 
         });
-    </script>
+    </script> --}}
     <!-- //calendar -->
-     @stack('ckeditor_js')
+    @stack('ckeditor_js')
+    @stack('datatable_js')
 </body>
 
 </html>

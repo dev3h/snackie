@@ -51,7 +51,7 @@ class AdminController extends Controller
     }
     public function show_dashboard()
     {
-        return view('pages.' . $this->folderName . '.dashboard', [
+        return view('pages.' . $this->folderName . '.dashboard.index', [
             'title' => 'Trang quản trị',
         ]);
     }

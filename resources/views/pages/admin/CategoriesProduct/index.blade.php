@@ -1,100 +1,165 @@
 @extends('admin_layout')
 @section('admin_content')
-<div class="table-agile-info">
-<div class="panel panel-default">
-    <div class="panel-heading">Liệt kê {{$messageName}}</div>
-    <div class="row w3-res-tb">
-      <div class="col-sm-5 m-b-xs">
-        <select class="input-sm form-control w-sm inline v-middle">
-          <option value="0">Bulk action</option>
-          <option value="1">Delete selected</option>
-          <option value="2">Bulk edit</option>
-          <option value="3">Export</option>
-        </select>
-        <button class="btn btn-sm btn-default">Apply</button>
-      </div>
-      <div class="col-sm-4">
-      </div>
-      <div class="col-sm-3">
-        <div class="input-group">
-          <input type="text" class="input-sm form-control" placeholder="Search">
-          <span class="input-group-btn">
-            <button class="btn btn-sm btn-default" type="button">Go!</button>
-          </span>
+    @push('datatable_css')
+        <link rel="stylesheet" href="{{ asset('backend/css/datatables.min.css') }}">
+    @endpush
+    <div class="card">
+        <h5 class="card-header">
+            Liệt kê {{ $messageName }}
+        </h5>
+        <div class="card-body">
+            <a href="{{route('admin.category_product.create')}}" class="btn btn-info mb-3">Thêm</a>
+            <div class="table-responsive">
+                @php
+                    $message = session()->get('message');
+                    if ($message) {
+                        echo '<span class="text-alert">' . $message . '</span>';
+                        session()->put('message', null);
+                    }
+                @endphp
+                <table class="table table-centered mb-0" id="table-index">
+                    <thead>
+                        <tr>
+                            <th>Tên danh mục</th>
+                            <th>Hiển thị</th>
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="table-responsive">
-        @php
-            $message = session()->get('message');
-            if($message) {
-                echo '<span class="text-alert">'.$message.'</span>';
-                session()->put('message', null);
-            }
-        @endphp
-      <table class="table table-striped b-t b-light">
-        <thead>
-          <tr>
-            <th style="width:20px;">
-              <label class="i-checks m-b-none">
-                <input type="checkbox"><i></i>
-              </label>
-            </th>
-            <th>Tên danh mục</th>
-            <th>Hiển thị</th>
-            <th style="width:30px;"></th>
-          </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $each)
-              <tr>
-                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-                <td>{{$each->name}}</td>
-                <td>
-                    @if ($each->status == 1)
-                        <a href="{{route($asRoute . '.inactive', $each->id)}}" class='btn btn-success' title="hiện"><span class='fa fa-eye'></span></a>
-                    @else
-                        <a href="{{route($asRoute . '.active', $each->id)}}" class='btn btn-danger' title="ẩn"><span class='fa fa-eye-slash'></span></a>
-                    @endif
-                </td>
-                <td>
-                    <div class="button-group">
-                        <a href="{{route($asRoute . '.edit', $each)}}" class="active table-button" ui-toggle-class="" title="sửa">
-                            <i class="fa fa-pencil-square-o text-success text-active"></i>
-                        </a>
-                        <form action="{{route($asRoute . '.destroy', $each)}}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Bạn có chắc muốn xóa {{$messageName}} này không?')" class="active table-button" ui-toggle-class="" title="xóa">
-                                <i class="fa fa-times text-danger text"></i>
-                            </button>
-                        </form>
 
-                    </div>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-      </table>
-    </div>
-    <footer class="panel-footer">
-      <div class="row">
-        <div class="col-sm-5 text-center">
-          <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-        </div>
-        <div class="col-sm-7 text-right text-center-xs">
-          <ul class="pagination pagination-sm m-t-none m-b-none">
-            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-            <li><a href="">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">3</a></li>
-            <li><a href="">4</a></li>
-            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </footer>
-  </div>
-</div>
+    @push('datatable_js')
+        <script src="{{ asset('backend/js/datatables.min.js') }}"></script>
+        <script>
+            $(function() {
+                // datatable
+                var buttonCommon = {
+                    exportOptions: {
+                        columns: ':visible :not(.not-export)'
+                    }
+                };
+                let table = $('#table-index').DataTable({
+                    dom: 'Bfrtip',
+                    select: true,
+                    buttons: [
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'copyHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'excelHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'csvHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'pdfHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'print'
+                        }),
+                        'colvis'
+                    ],
+                    processing: true,
+                    serverSide: true,
+                    ajax: '{!! route('admin.category_product.api') !!}',
+                    columnDefs: [{
+                        className: 'not-export',
+                        "targets": [1, 2]
+                    }],
+                    columns: [{
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'status',
+                            name: 'status',
+                            // render html
+                            render: function(data, type, row, meta) {
+                                
+                                if (data.includes('inactive')) {
+                                    return `<a href="${data}" class='btn btn-success' title="hiện"><span class='fa fa-eye'></span></a>`;
+                                } else {
+                                    return `<a href="${data}" class='btn btn-danger' title="ẩn"><span class='fa fa-eye-slash'></span></a>`;
+                                }
+                            },
+
+                        },
+                        {
+                            data: 'edit',
+                            target: 2,
+                            orderable: false,
+                            searchable: false,
+                            render: function(data, type, row, meta) {
+                                return `<a class="btn btn-primary" href="${data}">Edit</a>`;
+                            },
+                        },
+                        // dùng được blade trong js
+
+                        {
+                            data: 'destroy',
+                            target: 3,
+                            orderable: false,
+                            searchable: false,
+                            render: function(data, type, row, meta) {
+                                return `
+                                        <form action="${data}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type='button' onclick="return confirm('Bạn có chắc muốn xóa {{ $messageName }} này không?')" class="btn-delete btn btn-danger">Delete</button>
+                                        </form>
+                                    `;
+                            },
+                        },
+                    ]
+                })
+
+                // reload table when select2 change
+                $('#select-name').change(function() {
+                    table.column(0).search(this.value).draw();
+                })
+
+                $(document).on('click', '.btn-delete', function() {
+                    let row = $(this).parents('tr');
+                    let form = $(this).parents('form');
+                    $.ajax({
+                        type: "POST",
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        dataType: "json",
+                        success: function(response) {
+                            console.log('success');
+                            table.draw();
+                        },
+                        error: function(response) {
+                            console.log('error');
+                            // bắt lỗi khi middleware trả về
+                            toastr.options.escapeHtml = true;
+
+                            toastr.options = {
+                                closeButton: true,
+                                debug: false,
+                                newestOnTop: false,
+                                progressBar: false,
+                                positionClass: "toast-top-right",
+                                preventDuplicates: true,
+                                onclick: null,
+                                showDuration: "300",
+                                hideDuration: "1000",
+                                timeOut: "5000",
+                                extendedTimeOut: "1000",
+                                showEasing: "swing",
+                                hideEasing: "linear",
+                                showMethod: "fadeIn",
+                                hideMethod: "fadeOut",
+                            };
+                            toastr["error"](response.responseJSON.message, "Lỗi");
+                        }
+                    }, );
+                })
+            });
+        </script>
+    @endpush
 @endsection
-

@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Yajra\DataTables\DataTables;
 
 class CategoryProductController extends Controller
 {
@@ -40,11 +41,33 @@ class CategoryProductController extends Controller
      */
     public function index()
     {
-        $data = $this->model->orderBy('id', 'desc')->get();
+        // $data = $this->model->orderBy('id', 'desc')->get();
+        // return view('pages.admin.' . $this->folderName . '.index', [
+        //     'data' => $data,
+        //     'title' => 'Danh sách ' . $this->messageName,
+        // ]);
         return view('pages.admin.' . $this->folderName . '.index', [
-            'data' => $data,
             'title' => 'Danh sách ' . $this->messageName,
         ]);
+    }
+
+    public function api()
+    {
+        return DataTables::of($this->model)
+            ->editColumn('status', function ($object) {
+                if ($object->status == 1) {
+                    return route('admin.category_product.inactive', $object->id);
+                }
+                return route('admin.category_product.active', $object->id);
+            })
+            ->addColumn('edit', function ($object) {
+                return route('admin.category_product.edit', $object);
+            })
+            ->addColumn('destroy', function ($object) {
+                return route('admin.category_product.destroy', $object);
+            })
+            ->rawColumns(['edit'])
+            ->make(true);
     }
 
     /**
@@ -141,8 +164,11 @@ class CategoryProductController extends Controller
     {
         $categoryProduct->delete();
 
-        session()->put('message', 'xóa ' . $this->messageName . ' thành công');
-        return redirect()->route($this->asRoute . '.index');
+        $arr = [];
+        $arr['message'] = 'xóa ' . $this->messageName . ' thành công';
+        $arr['status'] = true;
+        return response()->json($arr);
+
     }
 
     // end function admin page

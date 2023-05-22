@@ -12,7 +12,7 @@ class Social extends Model
     protected $fillable = [
         'provider_user_id',
         'provider',
-        'customer_id'
+        'customer_id',
     ];
 
     public function customer()
