@@ -34,6 +34,7 @@
     <!-- //font-awesome icons -->
     @stack('ckeditor_css')
     @stack('datatable_css')
+    @stack('chart_css')
 </head>
 
 <body>
@@ -200,6 +201,7 @@
     <!-- //calendar -->
     @stack('ckeditor_js')
     @stack('datatable_js')
+    @stack('chart_js')
 </body>
 
 </html>

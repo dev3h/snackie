@@ -124,7 +124,7 @@ class CheckoutController extends Controller
             }
         }
 
-        return view('pages.customer.checkout.cash_payment');
+        return view('pages.customer.checkout.complete');
 
     }
 

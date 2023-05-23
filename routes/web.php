@@ -9,12 +9,10 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\TestController;
 use App\Http\Middleware\CheckLoginAminPageMiddleware;
 use App\Http\Middleware\CheckLoginCustomerPageMiddleware;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
-
 
 // lang route
 Route::get('/lang/{locale}', function ($locale) {
@@ -86,7 +84,6 @@ Route::group(['as' => 'customer.'], function () {
         Route::get('/hoan-thanh', [CheckoutController::class, 'complete'])->name('complete');
         Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
 
-
     });
 });
 
@@ -106,6 +103,8 @@ Route::group([
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dashboard');
+        Route::get('/revenue', [AdminController::class, 'getRevenue'])->name('get_revenue');
+        Route::get('/sold', [AdminController::class, 'getSold'])->name('get_sold');
 
         // Category Product route
         Route::group(['prefix' => '/categories-product', 'as' => 'category_product.'], function () {
@@ -138,7 +137,6 @@ Route::group([
             Route::put('/edit/{brand_product}', [BrandProductController::class, 'update'])->name('update');
 
             Route::delete('/destroy/{brand_product}', [BrandProductController::class, 'destroy'])->name('destroy');
-
         });
 
         // Product route
@@ -155,7 +153,6 @@ Route::group([
             Route::put('/edit/{product}', [ProductController::class, 'update'])->name('update');
 
             Route::delete('/destroy/{product}', [ProductController::class, 'destroy'])->name('destroy');
-
         });
 
         // Coupon route

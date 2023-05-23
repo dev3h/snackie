@@ -4,27 +4,15 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 */
-h4,
-h5,
-h6,
-h1,
-h2,
-h3 {
+* {
     margin: 0;
-}
-ul,
-ol {
-    margin: 0;
-}
-p {
-    margin: 0;
+    padding: 0;
 }
 
 html,
 body {
     font-family: "Roboto", sans-serif;
     font-size: 100%;
-    overflow-x: hidden;
     background: url(../images/bg.jpg) no-repeat 0px 0px;
     background-size: cover;
 }
