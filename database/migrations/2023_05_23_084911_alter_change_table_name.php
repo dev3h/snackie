@@ -4,8 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminsTable extends Migration
+class AlterChangeTableName extends Migration
 {
+    private $table_name = 'admin';
     /**
      * Run the migrations.
      *
@@ -13,13 +14,10 @@ class CreateAdminsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admins', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email', 100);
-            $table->string('password');
-            $table->string('phone');
-            $table->timestamps();
+        Schema::table($this->table_name, function (Blueprint $table) {
+            if (Schema::hasTable($this->table_name)) {
+                Schema::rename($this->table_name, 'admins');
+            }
         });
     }
 
@@ -30,6 +28,6 @@ class CreateAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_admins');
+
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\BrandProduct;
 use App\Models\CategoryProduct;
 use App\Models\Customer;
@@ -42,9 +43,9 @@ class AdminController extends Controller
         $email = $request->email;
         $pass = md5($request->password);
 
-        $result = DB::table('admin')->where('email', $email)->where('password', $pass)->first();
+        $result = Admin::where('email', $email)->where('password', $pass)->first();
         if ($result) {
-            session()->put('admin_name', $result->name);
+            session()->put('admin_name', $result->username);
             session()->put('admin_id', $result->id);
 
             return redirect()->route($this->asRoute . '.dashboard');

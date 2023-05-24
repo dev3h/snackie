@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckLoginAminPageMiddleware;
@@ -79,11 +80,12 @@ Route::group(['as' => 'customer.'], function () {
         // Route::get('/thanh-toan', [CheckoutController::class, 'payment'])->name('payment');
         // Route::get('/phuong-thuc-thanh-toan/{method}', [CheckoutController::class, 'paymentMethod'])->name('payment_method');
         // Route::post('/dat-hang', [CheckoutController::class, 'order'])->name('order');
-        Route::get('thanh-toan-online', [CheckoutController::class, 'checkoutOnline'])->name('checkout_online');
-        Route::post('/process-payment-online', [CheckoutController::class, 'processPaymentOnline'])->name('processPaymentOnline');
+        Route::get('/vnpay', [CheckoutController::class, 'checkoutOnline'])->name('payment_online');
+        Route::post('/process-vnpay', [CheckoutController::class, 'handleVnpayCreatePayment'])->name('handle_vnpay_create_payment');
         Route::get('/hoan-thanh', [CheckoutController::class, 'complete'])->name('complete');
-        Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
 
+        // logout
+        Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
     });
 });
 
@@ -155,6 +157,20 @@ Route::group([
             Route::delete('/destroy/{product}', [ProductController::class, 'destroy'])->name('destroy');
         });
 
+        // Employee route
+        Route::group(['prefix' => '/employee', 'as' => 'employee.'], function () {
+            Route::get('', [EmployeeController::class, 'index'])->name('index');
+
+            Route::get('/inactive/{employee_id}', [EmployeeController::class, 'inactive'])->name('inactive');
+            Route::get('/active/{employee_id}', [EmployeeController::class, 'active'])->name('active');
+
+            Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+            Route::post('/create', [EmployeeController::class, 'store'])->name('store');
+
+            Route::get('/edit/{employee}', [EmployeeController::class, 'edit'])->name('edit');
+            Route::put('/edit/{employee}', [EmployeeController::class, 'update'])->name('update');
+        });
+
         // Coupon route
         Route::group(['prefix' => '/coupon', 'as' => 'coupon.'], function () {
             Route::get('', [CouponController::class, 'index'])->name('index');
@@ -183,7 +199,6 @@ Route::group([
 
             Route::get('/print-order/{order}', [CheckoutController::class, 'printOrder'])->name('print_order');
         });
-
     });
 
 });
