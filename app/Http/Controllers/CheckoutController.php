@@ -211,54 +211,6 @@ class CheckoutController extends Controller
 
     }
 
-    // public function payment()
-    // {
-    //     $arrPaymentMethod = PaymentMethodEnum::getArrayView();
-
-    //     return view('pages.customer.checkout.payment', [
-    //         'arrPaymentMethod' => $arrPaymentMethod,
-    //     ]);
-    // }
-
-    // public function order(Request $request)
-    // {
-    //     // insert payment
-    //     $payment = Payment::create($request->except('_token'));
-
-    //     $payment_id = $payment->id;
-
-    //     // insert order
-    //     $customer_id = session()->get('customer_id');
-    //     $shipping_id = session()->get('shipping_id');
-    //     $total_price = Cart::total(0, '.', '');
-    //     $order = Order::create([
-    //         'customer_id' => $customer_id,
-    //         'shipping_id' => $shipping_id,
-    //         'payment_id' => $payment_id,
-    //         'total_price' => $total_price,
-    //     ]);
-    //     $order_id = $order->id;
-
-    //     // insert order detail
-    //     $cart = Cart::content();
-    //     foreach ($cart as $item) {
-    //         OrderDetail::create([
-    //             'order_id' => $order_id,
-    //             'product_id' => $item->id,
-    //             'quantity' => $item->qty,
-    //         ]);
-    //     }
-
-    //     if ($payment->method == 0) {
-    //         echo "Thanh toán bằng thẻ tín dụng";
-    //     } else if ($payment->method == 1) {
-    //         Cart::destroy();
-    //         return view('pages.customer.checkout.cash_payment');
-    //     } else {
-    //         echo "Thanh toán bằng thẻ ghi nợ";
-    //     }
-    // }
-
     // admin function
     public function index()
     {
