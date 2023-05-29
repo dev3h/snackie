@@ -22,11 +22,12 @@
                      </label>
                      <div class="ms-5">
                          @if (session()->get('customer_id'))
-                             <div><a class="link-underline-opacity-0" href="{{ route('customer.logout') }}">Đăng
+                             <div><a class="link-underline-opacity-0 text-light"
+                                     href="{{ route('customer.logout') }}">Đăng
                                      xuất</a>
                              </div>
                          @else
-                             <div><a class="link-offset-2 link-underline link-underline-opacity-0"
+                             <div><a class="link-offset-2 link-underline link-underline-opacity-0 text-light"
                                      href="{{ route('customer.login') }}">Đăng nhập</a>
                              </div>
                          @endif
@@ -40,7 +41,7 @@
                  <div class="container-fluid">
                      <a class="navbar-brand" href="{{ route('customer.home') }}">
                          <img src="{{ asset('frontend/images/logo.png') }}" alt=""
-                             style="width: 100px; height: 100px" class="bg-white rounded-circle" />
+                             style="width: 100px; height: 100px" loading="lazy" />
                      </a>
                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -67,24 +68,13 @@
                                  <a class="nav-link" aria-current="page"
                                      href="#">{{ __('frontpage.contact') }}</a>
                              </li>
-
-                             @if (session()->get('customer_id'))
-                                 {{-- <li><a href="{{ route('customer.logout') }}"><i class="fa fa-user"></i> Đăng xuất</a> --}}
-                                 @if (session()->get('shipping_id'))
-                                     <li class="nav-item"><a href="{{ route('customer.payment') }}"><i
-                                                 class="fa fa-crosshairs"></i>Thanh
-                                             toán</a></li>
-                                 @else
-                                     <li class="nav-item"><a href="{{ route('customer.checkout') }}"><i
-                                                 class="fa fa-crosshairs"></i>Thông tin thanh toán</a></li>
-                                 @endif
-                             @endif
                          </ul>
                          <button type="button" id="search-btn" class="btn" data-bs-toggle="modal"
                              data-bs-target="#exampleModal"><i class="fa fa-search"></i></button>
 
                          <li class="nav-item">
-                             <a type="button" href="{{route('customer.cart')}}" class="btn btn-primary position-relative">
+                             <a type="button" href="{{ route('customer.cart') }}"
+                                 class="btn btn-primary position-relative">
                                  <i class="fa fa-shopping-cart"></i>
                                  @php
                                      $customer_id = session()->get('customer_id') ?? null;

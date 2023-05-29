@@ -5,9 +5,15 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,300,600,700);
 @import url(http://fonts.googleapis.com/css?family=Abel);
 
-:root {
+:root[data-theme="light"] {
     --primary-color: #fe980f;
-    --primary-font: 'Roboto', sans-serif;
+    --primary-font: "Roboto", sans-serif;
+    --text-color: #fff;
+}
+:root[data-theme="dark"] {
+    --primary-color: #222;
+    --primary-font: "Roboto", sans-serif;
+    --text-color: #fff;
 }
 body {
     font-family: var(--primary-font);
@@ -83,6 +89,7 @@ a#scrollUp i {
 
 #header {
     background-color: var(--primary-color);
+    box-shadow: 3px 3px 7px 0px #33333369;
 }
 
 .contactinfo ul li:first-child {
@@ -679,41 +686,6 @@ ul.sub-menu {
 }
 .left-sidebar h2 {
     padding: 10px 5px;
-}
-.left-sidebar h2:after,
-h2.title:after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    background: #ccc;
-    top: 50%;
-    left: 0;
-    z-index: -1;
-}
-
-.left-sidebar h2:before {
-    content: " ";
-    position: absolute;
-    background: #fff;
-    bottom: -6px;
-    width: 130px;
-    height: 30px;
-    z-index: -1;
-    left: 50%;
-    margin-left: -65px;
-}
-
-h2.title:before {
-    content: " ";
-    position: absolute;
-    background: #fff;
-    bottom: -6px;
-    width: 220px;
-    height: 30px;
-    z-index: -1;
-    left: 50%;
-    margin-left: -110px;
 }
 
 .category-products .panel {
@@ -1430,10 +1402,6 @@ h2.title {
     float: left;
     height: 15px;
     margin-right: 5px;
-}
-
-.login-form form button {
-    margin-top: 23px;
 }
 
 :is(.login-form, .signup-form) form button {
@@ -2238,13 +2206,6 @@ textarea {
     border: 1px solid#F7F7F0;
 }
 
-.btn.btn-primary {
-    background: var(--primary-color);
-    border: 0 none;
-    border-radius: 0;
-    margin-top: 16px;
-}
-
 .blank-arrow {
     position: relative;
 }
@@ -2431,6 +2392,7 @@ textarea {
     right: 0;
     bottom: 0;
     background-color: #ccc;
+    border-radius: 50px;
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
@@ -2442,13 +2404,14 @@ textarea {
     width: 20px;
     left: 2.5px;
     bottom: 2.5px;
+    border-radius: 500rem;
     background-color: white;
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
 
 input:checked + .toggle-theme-slider {
-    background-color: #2196f3;
+    background-color: #444;
 }
 
 input:checked + .toggle-theme-slider:before {
@@ -2511,4 +2474,20 @@ input:checked + .toggle-theme-slider:before {
     display: block;
     height: auto;
     max-width: 100%;
+}
+ul#carousel-snacki {
+    height: 250px !important;
+}
+ul#carousel-snacki li {
+    height: 100%;
+}
+ul#carousel-snacki li img {
+    height: 100%;
+    object-fit: cover;
+}
+.cS-hidden {
+    height: 1px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    overflow: hidden;
 }
