@@ -4,6 +4,7 @@ import Register from "../views/customer-views/auth-views/register";
 import { Home } from "../views/customer-views/app-views";
 
 const router = createBrowserRouter([
+    // #region Customer Routes
     {
         path: "/login",
         element: <Login />,
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
         path: "/*",
         element: <Home />,
     },
+    // #endregion
 ]);
 
 export default router;
