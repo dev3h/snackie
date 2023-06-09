@@ -1,6 +1,6 @@
-[1 Introduce](##1-Introduce)
-[2 Features](##2.-Features)
-[3 Screenshots](##-3-Some-screenshots)
+[1 Introduce](#1-introduce) \
+[2 Features](#2-features) \
+[3 Screenshots](#3-some-screenshots)
 
 ---
 
